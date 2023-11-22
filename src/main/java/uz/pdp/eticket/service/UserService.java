@@ -37,12 +37,11 @@ import java.util.UUID;
 public class UserService {
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
-    private final RestTemplate restTemplate;
     private final PasswordRepository passwordRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationService authenticationService;
-    private final String URL = "http://NOTIFICATION-SERVICE/notification";
+    private final MailService mailService;
 
     public void emailSend(UserEntity userEntity) {
         if(!userEntity.getIsActive()) {
@@ -50,17 +49,9 @@ public class UserService {
         }
         String generatedString = RandomStringUtils.randomAlphanumeric(5);
         System.err.println("generatedString = " + generatedString);
-
         MailDto mailDto = new MailDto(generatedString, userEntity.getEmail());
-//        HttpEntity<MailDto> mailDtoHttpEntity = new HttpEntity<>(mailDto);
-        restTemplate.exchange(
-                URL,
-                HttpMethod.POST,
-                new HttpEntity<>(mailDto),
-                String.class
-        );
+        mailService.sendMail(mailDto);
         passwordRepository.save(new UserPassword(generatedString,userEntity, LocalDateTime.now(),3));
-
     }
 
     @Transactional
