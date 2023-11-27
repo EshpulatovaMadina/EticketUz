@@ -27,6 +27,7 @@ public class VagonController {
             method = "POST method is supported",
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
+    @SecurityRequirement(name = "Bearer Authentication")
     @PreAuthorize(value = "hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
     @PostMapping("/create")
     public ResponseEntity<VagonResponseDto> create(@RequestBody List<VagonCreateDto> vagonCreateDtos, @RequestParam Double seatPrice){////buyerga price kirib kelsin deganim bitta vagon ichoda seatlar default yaratiladi shuning un narhi vagon typega bog'liq bolganligi un pri vagon typelar bn birga admin bersin dedim
@@ -38,6 +39,7 @@ public class VagonController {
             method = "DELETE method is supported",
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
+    @SecurityRequirement(name = "Bearer Authentication")
     @PreAuthorize(value = "hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
     @DeleteMapping("/delete")
     public ResponseEntity<String> delete(@RequestParam UUID vagonId){
@@ -61,6 +63,7 @@ public class VagonController {
             method = "PUT method is supported",
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
+    @SecurityRequirement(name = "Bearer Authentication")
     @PreAuthorize(value = "hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
     @PutMapping("/isActiveUpdate")
     public ResponseEntity<VagonResponseDto> isActiveUpdate(@RequestParam UUID vagonId){
@@ -72,6 +75,7 @@ public class VagonController {
             method = "GET method is supported",
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
+    @SecurityRequirement(name = "Bearer Authentication")
     @PreAuthorize(value = "hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
     @GetMapping("/getVagonsOfLocomotive")
     public ResponseEntity<List<VagonResponseDto>> getVagonsOfLocomotive(@RequestParam UUID locomotiveId){
@@ -84,6 +88,7 @@ public class VagonController {
             method = "GET method is supported",
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
+    @SecurityRequirement(name = "Bearer Authentication")
     @PreAuthorize(value = "hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
     @GetMapping("/getById")
     public ResponseEntity<VagonResponseDto> getbyId(@RequestParam UUID vagonId){
@@ -100,6 +105,7 @@ public class VagonController {
             method = "POST method is supported",
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
+    @SecurityRequirement(name = "Bearer Authentication")
     @PreAuthorize(value = "hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
     @PostMapping("/setLocomotive")
     public ResponseEntity<List<VagonResponseDto>> setLocomotive(@RequestParam List<UUID> vagonsId, @RequestParam UUID locomotiveId){

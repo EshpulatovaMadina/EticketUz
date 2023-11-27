@@ -27,6 +27,7 @@ public class StationController {
             method = "POST method is supported",
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
+    @SecurityRequirement(name = "Bearer Authentication")
     @PreAuthorize(value = "hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
     @PostMapping("/create")
     public ResponseEntity<StationsResponseDto> create(@RequestBody StationsCreateDto stationsCreateDto){
@@ -39,6 +40,7 @@ public class StationController {
             method = "DELETE method is supported",
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
+    @SecurityRequirement(name = "Bearer Authentication")
     @PreAuthorize(value = "hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
     @DeleteMapping("/deActive")
     public ResponseEntity<StationsResponseDto> deActive(@RequestParam UUID stationId){
@@ -51,6 +53,7 @@ public class StationController {
             method = "PUT method is supported",
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
+    @SecurityRequirement(name = "Bearer Authentication")
     @PreAuthorize(value = "hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
     @PutMapping("/update")
     public ResponseEntity<StationsResponseDto> update(@RequestParam UUID stationId, @RequestBody StationsCreateDto dto){
@@ -63,6 +66,7 @@ public class StationController {
             method = "PUT method is supported",
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
+    @SecurityRequirement(name = "Bearer Authentication")
     @PreAuthorize(value = "hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
     @PutMapping("/isActive")
     public ResponseEntity<StationsResponseDto> isActive(@RequestParam UUID stationId){
@@ -74,6 +78,7 @@ public class StationController {
             method = "GET method is supported",
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
+    @SecurityRequirement(name = "Bearer Authentication")
     @PreAuthorize(value = "hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
     @GetMapping("/getById")
     public ResponseEntity<StationsResponseDto> getbyId(@RequestParam UUID seatId){

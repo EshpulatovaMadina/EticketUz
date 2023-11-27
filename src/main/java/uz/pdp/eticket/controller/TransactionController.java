@@ -26,6 +26,7 @@ public class TransactionController {
             method = "POST method is supported",
             security = @SecurityRequirement(name = "pre authorize", scopes = {"USER"})
     )
+    @SecurityRequirement(name = "Bearer Authentication")
     @PreAuthorize(value = "hasRole('USER')")
     @PostMapping("/transaction")
     public ResponseEntity<String> transaction(@RequestBody TransactionCreateDto transactionCreateDto){

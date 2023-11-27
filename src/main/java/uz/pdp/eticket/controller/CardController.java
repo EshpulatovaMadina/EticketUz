@@ -1,5 +1,6 @@
 package uz.pdp.eticket.controller;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,16 +22,19 @@ import java.util.UUID;
 public class CardController {
     private final CardService cardService;
 
+    @SecurityRequirement(name = "Bearer Authentication")
     @PostMapping("/create")
     public ResponseEntity<CardResponseDTO> add(@RequestBody CardCreateDTO dto){
         return ResponseEntity.ok(cardService.add(dto));
     }
 
+    @SecurityRequirement(name = "Bearer Authentication")
     @GetMapping("/getCardsOfUser/{userId}")
     public ResponseEntity<List<CardResponseDTO>> getCardsOfUser(@PathVariable UUID userId){
         return ResponseEntity.ok(cardService.getCardsOfUser(userId));
     }
-    @DeleteMapping("/{id}")
+    @SecurityRequirement(name = "Bearer Authentication")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<Boolean> delete(@PathVariable UUID id){
         return ResponseEntity.ok(cardService.delete(id));
     }

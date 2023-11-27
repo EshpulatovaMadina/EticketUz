@@ -26,6 +26,7 @@ public class RoadsController {
             method = "POST method is supported",
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
+    @SecurityRequirement(name = "Bearer Authentication")
     @PreAuthorize(value = "hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
     @PostMapping("/create")
     public ResponseEntity<RoadsResponseDto> create(@RequestBody RoadsCreateDto roadsCreateDto){
@@ -38,6 +39,7 @@ public class RoadsController {
             method = "DELETE method is supported",
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
+    @SecurityRequirement(name = "Bearer Authentication")
     @PreAuthorize(value = "hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
     @DeleteMapping("/deActive")
     public ResponseEntity<RoadsResponseDto> deActive(@RequestParam UUID roadsId){
@@ -49,6 +51,7 @@ public class RoadsController {
             method = "GET method is supported",
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
+    @SecurityRequirement(name = "Bearer Authentication")
     @PreAuthorize(value = "hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
     @GetMapping("/getByDirection")
     public ResponseEntity<RoadsResponseDto> getRoadByDirection(@RequestParam String direction){
@@ -61,6 +64,7 @@ public class RoadsController {
             method = "PUT method is supported",
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
+    @SecurityRequirement(name = "Bearer Authentication")
     @PreAuthorize(value = "hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
     @PutMapping("/update")
     public ResponseEntity<RoadsResponseDto> update(@RequestParam UUID roadsId, @RequestBody RoadsCreateDto dto){
@@ -73,6 +77,7 @@ public class RoadsController {
             method = "PUT method is supported",
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
+    @SecurityRequirement(name = "Bearer Authentication")
     @PreAuthorize(value = "hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
     @PutMapping("/isActive")
     public ResponseEntity<RoadsResponseDto> isActive(@RequestParam UUID roadsId){
@@ -84,6 +89,7 @@ public class RoadsController {
             method = "GET method is supported",
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
+    @SecurityRequirement(name = "Bearer Authentication")
     @PreAuthorize(value = "hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
     @GetMapping("/getById")
     public ResponseEntity<RoadsResponseDto> getbyId(@RequestParam UUID roadsId){

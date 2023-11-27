@@ -28,6 +28,7 @@ public class ReysController {
             method = "POST method is supported",
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
+    @SecurityRequirement(name = "Bearer Authentication")
     @PreAuthorize(value = "hasAuthority('ADMIN') or hasRole('SUPER_ADMIN')")
     @PostMapping("/create")
     public ResponseEntity<ReysResponseDto> create(@RequestBody ReysCreateDto dto){
@@ -39,6 +40,7 @@ public class ReysController {
             method = "DELETE method is supported",
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
+    @SecurityRequirement(name = "Bearer Authentication")
     @PreAuthorize(value = "hasAuthority('ADMIN') or hasRole('SUPER_ADMIN')")
     @DeleteMapping("/deActive")
     public ResponseEntity<String> deActive(@RequestParam UUID reysId){
@@ -51,6 +53,7 @@ public class ReysController {
             method = "GET method is supported",
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
+    @SecurityRequirement(name = "Bearer Authentication")
     @PreAuthorize(value = "hasAuthority('USER') or hasRole('ADMIN')")
     @GetMapping("/getReysByLocation")
     public ResponseEntity<List<ReysResponseDto>> getReysByLocation(

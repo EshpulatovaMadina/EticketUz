@@ -40,6 +40,7 @@ public class LocomotiveController {
             method = "PUT method is supported",
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
+    @SecurityRequirement(name = "Bearer Authentication")
     @PreAuthorize(value = "hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
     @PutMapping("/isActive")
     public ResponseEntity<LocomotiveResponseDto> isActive(@RequestParam UUID locoId){
@@ -52,6 +53,7 @@ public class LocomotiveController {
             method = "DELETE method is supported",
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
+    @SecurityRequirement(name = "Bearer Authentication")
     @PreAuthorize(value = "hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
     @DeleteMapping("/delete")
     public ResponseEntity<String> isInactive(@RequestParam UUID locomotiveId){
@@ -64,6 +66,7 @@ public class LocomotiveController {
             method = "GET method is supported",
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
+    @SecurityRequirement(name = "Bearer Authentication")
     @PreAuthorize(value = "hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
     @GetMapping("/getById")
     public ResponseEntity<LocomotiveResponseDto> getbyId(@RequestParam UUID seatId){
@@ -77,6 +80,7 @@ public class LocomotiveController {
             method = "PUT method is supported",
             security = @SecurityRequirement(name = "pre authorize"  , scopes = {"ADMIN"})
     )
+    @SecurityRequirement(name = "Bearer Authentication")
     @PreAuthorize(value = "hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
     @PutMapping("/update")
     public ResponseEntity<LocomotiveResponseDto> update(@RequestBody LocomotiveCreateDto dto, @RequestParam UUID locomotiveId){

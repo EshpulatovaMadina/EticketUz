@@ -1,4 +1,5 @@
 package uz.pdp.eticket.controller;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -13,17 +14,23 @@ import java.util.UUID;
 @RequestMapping("/user")
 public class UserController {
     private final UserService userService;
+    @SecurityRequirement(name = "Bearer Authentication")
     @PreAuthorize("hasRole('SUPER_ADMIN') or hasRole('ADMIN')")
     @GetMapping("/{userId}")
     public UserResponseDto getById(@PathVariable UUID userId) {
         return userService.getById(userId);
     }
 
+
+    @SecurityRequirement(name = "Bearer Authentication")
     @PreAuthorize("hasRole('SUPER_ADMIN') or hasRole('ADMIN')")
     @GetMapping("/get-all")
     public List<UserResponseDto> getAll(@RequestParam String role) {
         return userService.getAll(role);
     }
+
+
+    @SecurityRequirement(name = "Bearer Authentication")
     @PreAuthorize("hasRole('SUPER_ADMIN') or hasRole('ADMIN')")
     @DeleteMapping("/{userId}")
     public String delete(@PathVariable UUID userId) {

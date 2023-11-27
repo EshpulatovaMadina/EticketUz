@@ -16,12 +16,16 @@ import uz.pdp.eticket.service.UserService;
 @RequiredArgsConstructor
 public class AuthController {
     private final UserService userService;
+
+    @SecurityRequirement(name = "Bearer Authentication")
     @PermitAll
     @PostMapping("sign-up")
     public UserResponseDto signUp(@RequestBody SignUpDto dto) {
         return userService.signUp(dto);
     }
 
+
+    @SecurityRequirement(name = "Bearer Authentication")
     @PermitAll
     @GetMapping("sign-in")
     public JwtResponse signIn(
@@ -31,17 +35,22 @@ public class AuthController {
         return userService.signIn(email, password);
     }
 
+
+    @SecurityRequirement(name = "Bearer Authentication")
     @PermitAll
     @GetMapping("/get-verification-code")
     public String sendVerifyCode(@RequestParam String email) {
         return userService.getVerificationCode(email);
     }
 
+
+
     @Operation(
             description = "This API is used for verifying",
             method = "GET method is supported",
             security = @SecurityRequirement(name = "pre authorize", scopes = {"USER"})
     )
+    @SecurityRequirement(name = "Bearer Authentication")
     @PermitAll
     @GetMapping("/verify")
     public UserResponseDto verify(@RequestParam String email, @RequestParam String code) {
@@ -49,6 +58,9 @@ public class AuthController {
         return verify;
     }
 
+
+
+    @SecurityRequirement(name = "Bearer Authentication")
     @PermitAll
     @GetMapping("/verify-token")
     public SubjectDto verifyToken (@RequestParam String token) {
