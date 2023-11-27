@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import uz.pdp.eticket.exception.CannotBeChangedException;
 import uz.pdp.eticket.exception.DataAlreadyExistsException;
 import uz.pdp.eticket.exception.DataNotFoundException;
 
@@ -29,4 +30,10 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> tokenExpired(ExpiredJwtException e) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
     }
+
+    @ExceptionHandler(value = CannotBeChangedException.class)
+    public ResponseEntity<String> cannotBeChanged(CannotBeChangedException e){
+        return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(e.getMessage());
+    }
+
 }
