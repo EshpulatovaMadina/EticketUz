@@ -14,6 +14,5 @@ public interface BookingsRepository extends JpaRepository<BookingsEntity, UUID> 
     Boolean existsAllByReysId(UUID reys_id);
     Boolean existsBySeatIdAndReysId(UUID seatId, UUID reys_id);
     List<BookingsEntity> findAllByUserId(UUID userId);
-
     void deleteAllByCreatedDateBefore(LocalDateTime createdDate);
 }
