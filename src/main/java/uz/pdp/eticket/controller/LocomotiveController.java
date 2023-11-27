@@ -49,14 +49,14 @@ public class LocomotiveController {
 
 
     @Operation(
-            description = "this API makes the locomotive inactive",
+            description = "this API makes the locomotive disActive",
             method = "DELETE method is supported",
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
     @SecurityRequirement(name = "Bearer Authentication")
     @PreAuthorize(value = "hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
-    @DeleteMapping("/delete")
-    public ResponseEntity<String> isInactive(@RequestParam UUID locomotiveId){
+    @DeleteMapping("/disActive")
+    public ResponseEntity<String> disActive(@RequestParam UUID locomotiveId){
         return ResponseEntity.ok(locomotiveService.isInActive(locomotiveId));
     }
 

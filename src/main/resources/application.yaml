@@ -29,6 +29,18 @@ spring:
             enable: true
             required: true
 
+springdoc:
+  api-docs:
+    enabled: true
+    path: /api-docs
+  swagger-ui:
+    enabled: true
+    path: /swagger
+    tags-sorter: alpha
+    operations-sorter: alpha
+    disable-swagger-default-url: true
+    doc-expansion: none
+
 jwt:
-  expiry: 3000
+  expiry: 900000
   secret: gjhkoiutrefdsavzbxcnmktjyhretgwedfvbnjkrjyerhsfg

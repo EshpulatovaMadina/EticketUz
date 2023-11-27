@@ -58,6 +58,14 @@ public class BookingsController {
         return ResponseEntity.ok(bookingsService.getBookingOfUser(userId));
     }
 
+
+
+    @Operation(
+            description = "This method returns whether the ticket has been sold or not",
+            method = "GET method is supported",
+            security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
+    )
+    @PreAuthorize(value = "hasRole('ADMIN') or hasRole('USER')")
     @SecurityRequirement(name = "Bearer Authentication")
     @GetMapping("/ticketIsSoldOrNot")
     public ResponseEntity<Boolean> ticketIsSoldOrNot(@RequestParam UUID seatId,@RequestParam UUID reysId ){

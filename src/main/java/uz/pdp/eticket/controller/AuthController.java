@@ -59,7 +59,6 @@ public class AuthController {
     }
 
 
-
     @SecurityRequirement(name = "Bearer Authentication")
     @PermitAll
     @GetMapping("/verify-token")
