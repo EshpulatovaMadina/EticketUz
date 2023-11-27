@@ -46,6 +46,10 @@ public class StationRoadsServiceImpl implements StationRoadsService {
         stationRoadsRepository.deleteAll(deleteAll);
     }
 
+    @Override
+    public String findAllDirectionByStations(String fromStation, String toStation) {
+        return stationRoadsRepository.findAllDirectionByStations(fromStation, toStation);
+    }
 
 
 }

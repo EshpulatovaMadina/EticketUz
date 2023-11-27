@@ -78,16 +78,12 @@ public class RoadsServiceImpl implements RoadsService {
 
     /**
      * hullas bu method 2 ta stansiya qaysi yonalishda uchrasa shu yonalishni nameini qaytaradi
-     *
-     * @param fromStation
-     * @param toStation
      * @return
      */
-    @Override
-    public String getDirectionByStation(String fromStation, String toStation) {
-        return roadsRepository.findAllDirectionByStations(fromStation, toStation);
-    }
-
+//  @Override
+////    public String getDirectionByStation(String fromStation, String toStation) {
+////        return roadsRepository.findAllDirectionByStations(fromStation, toStation);
+////    }
     @Override
     public RoadsResponseDto parse(RoadsEntity roadsEntity) {
         RoadsResponseDto responseDto = new RoadsResponseDto(roadsEntity.getId(), roadsEntity.getDirection());

@@ -21,7 +21,6 @@ public interface RoadsService {
 
     RoadsResponseDto create(RoadsCreateDto roadsCreateDto);
     RoadsResponseDto getByDirection(String direction);
-    String  getDirectionByStation(String fromStation, String toStation);
 
     RoadsResponseDto parse(RoadsEntity roadsEntity);
 }

@@ -19,12 +19,4 @@ public interface RoadsRepository extends JpaRepository<RoadsEntity, UUID> {
     Optional<RoadsEntity> findAllByDirection(String direction);
     Boolean existsByDirection(String direction);
 
-    @Query("SELECT r.direction FROM roads r " +
-            "JOIN r.stations fromStation " +
-            "JOIN r.stations toStation " +
-            "WHERE fromStation.name = :fromStationName " +
-            "AND toStation.name = :toStationName " +
-            "AND r.direction = :direction")
-    String findAllDirectionByStations(@Param("fromStation") String fromStation,
-                                      @Param("toStation") String toStation);
-}
+  }

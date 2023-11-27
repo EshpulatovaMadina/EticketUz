@@ -10,7 +10,10 @@ import uz.pdp.eticket.entity.ReysEntity;
 import uz.pdp.eticket.exception.CannotBeChangedException;
 import uz.pdp.eticket.exception.DataNotFoundException;
 import uz.pdp.eticket.repository.ReysRepository;
+import uz.pdp.eticket.repository.StationRoadsRepository;
 import uz.pdp.eticket.service.bookingService.BookingsService;
+import uz.pdp.eticket.service.roadsService.RoadsService;
+import uz.pdp.eticket.service.stationRoadsService.StationRoadsService;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -26,16 +29,15 @@ import java.util.UUID;
 public class ReysServiceImpl implements ReysService{
     String fooResourceUrl = "STATION_SERVICE";
     private BookingsService bookingsService;
+    private StationRoadsService stationRoadsService;
     private ReysRepository reysRepository;
     private ModelMapper modelMapper;
-    private RestTemplate restTemplate;
-//    private RoadsService roadsService;
+
 
     @Override
     public List<ReysResponseDto> getReysByLocation(String fromStation, String toStation, LocalDateTime fromDate, LocalDateTime toDate) {
-        ///buyerda to date nimaga kerak ?
-        ResponseEntity<String> forEntity = restTemplate.getForEntity(fooResourceUrl + "/api/v1/roads/getDirectionByStation", String.class);
-        List<ReysEntity> allByDirectionAndFromDate = reysRepository.findAllByDirectionAndFromDate(forEntity.getBody(), fromDate);
+        String direction = stationRoadsService.findAllDirectionByStations(fromStation, toStation);
+        List<ReysEntity> allByDirectionAndFromDate = reysRepository.findAllByDirectionAndFromDate(direction, fromDate);
         return parse(allByDirectionAndFromDate);
     }
 
