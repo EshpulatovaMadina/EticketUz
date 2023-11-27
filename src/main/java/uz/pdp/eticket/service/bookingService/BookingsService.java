@@ -15,6 +15,7 @@ public interface BookingsService {
     BookingsResponseDto getById(UUID bookingId);
 
     Boolean getByReys(UUID id);
+    String checkExcpiryDate();
 
     Boolean ticketIsSoldOrNot(UUID seatId, UUID reysId);
 

@@ -2,6 +2,7 @@ package uz.pdp.eticket.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import uz.pdp.eticket.entity.BookingsEntity;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 /**
@@ -13,4 +14,6 @@ public interface BookingsRepository extends JpaRepository<BookingsEntity, UUID> 
     Boolean existsAllByReysId(UUID reys_id);
     Boolean existsBySeatIdAndReysId(UUID seatId, UUID reys_id);
     List<BookingsEntity> findAllByUserId(UUID userId);
+
+    void deleteAllByCreatedDateBefore(LocalDateTime createdDate);
 }

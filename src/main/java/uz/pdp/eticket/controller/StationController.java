@@ -79,11 +79,4 @@ public class StationController {
     public ResponseEntity<StationsResponseDto> getbyId(@RequestParam UUID seatId){
         return ResponseEntity.ok(stationService.getById(seatId));
     }
-
-
-
-
-
-
-
 }

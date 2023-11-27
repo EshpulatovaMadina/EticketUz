@@ -10,6 +10,7 @@ import uz.pdp.eticket.exception.DataNotFoundException;
 import uz.pdp.eticket.repository.BookingsRepository;
 import uz.pdp.eticket.repository.ReysRepository;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -42,6 +43,12 @@ public class BookingsServiceImpl implements BookingsService{
     @Override
     public Boolean getByReys(UUID reysId) {
         return bookingsRepository.existsAllByReysId(reysId);
+    }
+
+    @Override
+    public String checkExcpiryDate() {
+         bookingsRepository.deleteAllByCreatedDateBefore(LocalDateTime.now().minusMinutes(10));
+         return "Delete booking";
     }
 
     @Override

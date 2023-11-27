@@ -26,9 +26,8 @@ public class CardServiceImpl  implements CardService{
     private  CardRepository cardRepository;
     public CardResponseDTO add(CardCreateDTO dto) {
         CardEntity entity = new CardEntity();
-        entity.setNumber(new Random(16).nextLong());
-        LocalDate date = LocalDate.now().plusYears(5);
-        entity.setExpDate( date.getMonth()+ "/" +date.getYear());
+        entity.setNumber(dto.getNumber());
+        entity.setExpDate(dto.getExpDate());
          entity.setUserId(dto.getUserId());
         cardRepository.save(entity);
         return CardResponseDTO.toDTO(entity);

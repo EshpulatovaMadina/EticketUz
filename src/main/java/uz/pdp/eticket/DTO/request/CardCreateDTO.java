@@ -15,6 +15,8 @@ import java.util.UUID;
 @NoArgsConstructor
 @Data
 public class CardCreateDTO {
-    private UUID userId;
+    private Long number;
+    private String expDate; // 09/25
     private CardType cardType;
+    private UUID userId;
 }
