@@ -35,13 +35,17 @@ public class UserEntity extends BaseEntity implements UserDetails {
     private String name;
     private String surname;
     private String password;
+
     @Column(unique = true)
     private String email;
+
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonFormat(pattern = "yyyy-mm-dd")
     private LocalDate birthday;
+
     private Boolean isAuthenticated = false;
+
     @Enumerated(EnumType.STRING)
     private UserRole role = USER;
 

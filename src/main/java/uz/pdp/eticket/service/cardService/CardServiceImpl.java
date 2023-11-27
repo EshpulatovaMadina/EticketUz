@@ -2,6 +2,7 @@ package uz.pdp.eticket.service.cardService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import uz.pdp.eticket.DTO.request.CardCreateDTO;
 import uz.pdp.eticket.DTO.response.CardResponseDTO;
@@ -24,6 +25,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class CardServiceImpl  implements CardService{
     private  CardRepository cardRepository;
+    private ModelMapper modelMapper;
     public CardResponseDTO add(CardCreateDTO dto) {
         CardEntity entity = new CardEntity();
         entity.setNumber(dto.getNumber());
@@ -44,5 +46,19 @@ public class CardServiceImpl  implements CardService{
         card.setIsActive(false);
         cardRepository.save(card);
         return true;
+    }
+
+    @Override
+    public CardResponseDTO getById(UUID cardId) {
+        CardEntity card = cardRepository.findById(cardId).orElseThrow(() -> new DataNotFoundException("This card not found"));
+        return  modelMapper.map(card, CardResponseDTO.class);
+    }
+
+    @Override
+    public String withdrawMoney(UUID cardId, Double amount) {
+        CardEntity card = cardRepository.findById(cardId).orElseThrow(() -> new DataNotFoundException("This card not found"));
+        card.setBalance(card.getBalance() - amount);
+        cardRepository.save(card);
+        return "Successfully";
     }
 }

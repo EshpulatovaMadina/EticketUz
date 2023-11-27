@@ -47,7 +47,7 @@ public class StationRoadsServiceImpl implements StationRoadsService {
     }
 
     @Override
-    public String findAllDirectionByStations(String fromStation, String toStation) {
+    public List<String> findAllDirectionByStations(String fromStation, String toStation) {
         return stationRoadsRepository.findAllDirectionByStations(fromStation, toStation);
     }
 

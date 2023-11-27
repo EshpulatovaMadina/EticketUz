@@ -1,5 +1,6 @@
 package uz.pdp.eticket.entity;
 
+import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,6 +11,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Getter
 @Setter
+@Entity(name = "transaction")
 public class Transaction extends BaseEntity{
     private UUID cardId;
     private Double amount;

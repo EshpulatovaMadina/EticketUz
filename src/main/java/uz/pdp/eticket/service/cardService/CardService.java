@@ -14,4 +14,6 @@ public interface CardService {
     CardResponseDTO add(CardCreateDTO dto);
     List<CardResponseDTO> getCardsOfUser(UUID userId);
     Boolean delete(UUID id);
+    CardResponseDTO getById(UUID cardId);
+    String withdrawMoney(UUID cardId, Double amount);
 }

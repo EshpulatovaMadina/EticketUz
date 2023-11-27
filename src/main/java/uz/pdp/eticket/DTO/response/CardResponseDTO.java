@@ -20,8 +20,9 @@ public class CardResponseDTO {
     private Long number;
     private String expDate;
     private CardType cardType;
+    private Double balance;
 
     public static CardResponseDTO toDTO(CardEntity entity) {
-        return new CardResponseDTO(entity.getId(),entity.getNumber(),entity.getExpDate(), entity.getCardType());
+        return new CardResponseDTO(entity.getId(),entity.getNumber(),entity.getExpDate(), entity.getCardType(), entity.getBalance());
     }
 }

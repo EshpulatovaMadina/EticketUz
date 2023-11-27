@@ -13,5 +13,5 @@ import java.util.UUID;
 public interface StationRoadsService {
     void save(UUID roadId, List<StationRoadCreateDto> stations);
     void update(UUID roadId, List<StationRoadCreateDto> stations);
-    String findAllDirectionByStations( String fromStation, String toStation);
+    List<String> findAllDirectionByStations( String fromStation, String toStation);
 }

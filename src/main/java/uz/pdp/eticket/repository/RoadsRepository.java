@@ -15,7 +15,6 @@ import java.util.UUID;
  */
 @Repository
 public interface RoadsRepository extends JpaRepository<RoadsEntity, UUID> {
-    Optional<RoadsEntity> findAllByDirectionOrderByStations(String direction);
     Optional<RoadsEntity> findAllByDirection(String direction);
     Boolean existsByDirection(String direction);
 

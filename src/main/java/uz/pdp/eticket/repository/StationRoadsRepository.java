@@ -16,13 +16,11 @@ import java.util.UUID;
 public interface StationRoadsRepository extends JpaRepository<StationRoadsEntity, UUID> {
     List<StationRoadsEntity> findAllByRoadId(UUID roadId);
     List<StationRoadsEntity> findAllByRoadIdOrderByOrderNumber(UUID roadId);
-    @Query("SELECT r.road.direction FROM stationRoads r " +
-            "JOIN r.station fromStation " +
-            "JOIN r.station toStation " +
-            "WHERE fromStation.name = :fromStationName " +
-            "AND toStation.name = :toStationName " +
-            "AND r.road.direction = :direction")
-    String findAllDirectionByStations(@Param("fromStation") String fromStation,
-                                      @Param("toStation") String toStation);
+//
+//    @Query("SELECT r.road.direction FROM stationRoads r " +
+//            "JOIN r.station f " +
+//            "JOIN r.station t " +
+//            "WHERE f.name = :fromStation AND t.name = :toStation AND r.r)
+    List<String> findAllDirectionByStation(@Param("fromStation") String fromStation, @Param("toStation") String toStation);
 
 }

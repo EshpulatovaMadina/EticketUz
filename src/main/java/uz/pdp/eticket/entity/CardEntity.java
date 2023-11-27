@@ -22,5 +22,6 @@ public class CardEntity extends BaseEntity{
     private Long number;
     private String expDate; // 09/25
     private CardType cardType;
+    private Double balance;
     private UUID userId;
 }

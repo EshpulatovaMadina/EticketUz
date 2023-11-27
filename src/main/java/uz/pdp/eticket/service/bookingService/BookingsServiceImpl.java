@@ -13,6 +13,7 @@ import uz.pdp.eticket.repository.ReysRepository;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 /**
  * @author 'Sodiqova Dildora' on 27.11.2023
@@ -40,6 +41,7 @@ public class BookingsServiceImpl implements BookingsService{
         return parse(bookingsEntity);
     }
 
+
     @Override
     public Boolean getByReys(UUID reysId) {
         return bookingsRepository.existsAllByReysId(reysId);
@@ -61,6 +63,9 @@ public class BookingsServiceImpl implements BookingsService{
         List<BookingsEntity> allByUserId = bookingsRepository.findAllByUserId(userId);
         return parse(allByUserId);
     }
+
+
+
     private BookingsResponseDto parse(BookingsEntity booking){
         BookingsResponseDto map = modelMapper.map(booking, BookingsResponseDto.class);
         map.setBookingId(booking.getId());

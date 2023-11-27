@@ -20,12 +20,11 @@ import java.util.List;
 public class StationsEntity extends BaseEntity {
     private String name;
     private String location;
-     @ManyToMany(cascade = CascadeType.ALL)
-    private List<RoadsEntity> roadsEntity;
     private Integer sequenceNumber;
-    // shuyerda nimadur bor edi
+
     @OneToOne(cascade = CascadeType.ALL)
     private StationsEntity nextStation;
+
     @OneToOne(cascade = CascadeType.ALL)
     private StationsEntity prevStation;
 }

@@ -36,9 +36,13 @@ public class ReysServiceImpl implements ReysService{
 
     @Override
     public List<ReysResponseDto> getReysByLocation(String fromStation, String toStation, LocalDateTime fromDate, LocalDateTime toDate) {
-        String direction = stationRoadsService.findAllDirectionByStations(fromStation, toStation);
-        List<ReysEntity> allByDirectionAndFromDate = reysRepository.findAllByDirectionAndFromDate(direction, fromDate);
-        return parse(allByDirectionAndFromDate);
+        List<String> directions = stationRoadsService.findAllDirectionByStations(fromStation, toStation);
+        List<ReysResponseDto> parse = new ArrayList<>();
+        for (String direction : directions) {
+            List<ReysEntity> allByDirectionAndFromDate = reysRepository.findAllByDirectionAndFromDate(direction, fromDate);
+            parse.addAll(parse(allByDirectionAndFromDate));
+        }
+        return parse;
     }
 
     @Override
