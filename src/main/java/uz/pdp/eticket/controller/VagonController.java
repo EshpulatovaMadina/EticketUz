@@ -95,7 +95,14 @@ public class VagonController {
         return ResponseEntity.ok(vagonService.getById(vagonId));
     }
 
-    @GetMapping("getFreeSeat")
+    @Operation(
+            description = "This method returns a free wagons of one locomotive",
+            method = "GET method is supported",
+            security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
+    )
+    @SecurityRequirement(name = "Bearer Authentication")
+    @PreAuthorize(value = "hasRole('ADMIN') or hasRole('USER')")
+    @GetMapping("/getFreeVagon")
     public ResponseEntity<List<FreeVagonResponseDto>> getFreeVagons(@RequestParam UUID locomotiveId, @RequestParam UUID reysId){
            return ResponseEntity.ok(vagonService.getFreeVagon(locomotiveId, reysId));
     }
