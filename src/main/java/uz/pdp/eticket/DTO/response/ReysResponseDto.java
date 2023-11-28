@@ -20,7 +20,6 @@ import java.util.UUID;
 public class ReysResponseDto {
     private UUID reysId;
     private UUID roadsId;
-
     ///direction ne kk
     private Direction direction;
     private UUID fromStation;
