@@ -23,10 +23,10 @@ public class ReysCreateDto {
     private UUID roadsId;
 
     @NotBlank(message = "")
-    private String direction;
+    private UUID direction;
 
     @NotNull(message = "")
-    private String fromStation;
+    private UUID fromStation;
 
     @NotNull(message = "")
     private String toStation;
