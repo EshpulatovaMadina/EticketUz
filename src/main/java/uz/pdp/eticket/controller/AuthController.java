@@ -2,6 +2,7 @@ package uz.pdp.eticket.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.security.PermitAll;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -14,10 +15,13 @@ import uz.pdp.eticket.service.UserService;
 @RestController
 @RequestMapping("/user")
 @RequiredArgsConstructor
+@Tag(name = "Auth Management")
+@SecurityRequirement(name = "Bearer Authentication")
 public class AuthController {
     private final UserService userService;
 
-    @SecurityRequirement(name = "Bearer Authentication")
+
+
     @PermitAll
     @PostMapping("sign-up")
     public UserResponseDto signUp(@RequestBody SignUpDto dto) {
@@ -25,7 +29,7 @@ public class AuthController {
     }
 
 
-    @SecurityRequirement(name = "Bearer Authentication")
+
     @PermitAll
     @GetMapping("sign-in")
     public JwtResponse signIn(
@@ -36,7 +40,8 @@ public class AuthController {
     }
 
 
-    @SecurityRequirement(name = "Bearer Authentication")
+
+
     @PermitAll
     @GetMapping("/get-verification-code")
     public String sendVerifyCode(@RequestParam String email) {
@@ -50,7 +55,8 @@ public class AuthController {
             method = "GET method is supported",
             security = @SecurityRequirement(name = "pre authorize", scopes = {"USER"})
     )
-    @SecurityRequirement(name = "Bearer Authentication")
+
+
     @PermitAll
     @GetMapping("/verify")
     public UserResponseDto verify(@RequestParam String email, @RequestParam String code) {
@@ -59,7 +65,8 @@ public class AuthController {
     }
 
 
-    @SecurityRequirement(name = "Bearer Authentication")
+
+
     @PermitAll
     @GetMapping("/verify-token")
     public SubjectDto verifyToken (@RequestParam String token) {

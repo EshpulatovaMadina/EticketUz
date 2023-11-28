@@ -20,6 +20,7 @@ import java.util.UUID;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/booking")
+@SecurityRequirement(name = "Bearer Authentication")
 public class BookingsController {
     private BookingsService bookingsService;
     @Operation(
@@ -27,7 +28,6 @@ public class BookingsController {
             method = "POST method is supported",
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
-    @SecurityRequirement(name = "Bearer Authentication")
     @PreAuthorize(value = "hasAuthority('ADMIN') or hasRole('USER')") /// shuyerini sorash kk user boooking create qiladimi  ozi
     @PostMapping("/create")
     public ResponseEntity<BookingsResponseDto> create(@Valid @RequestBody BookingCreateDto dto){
@@ -39,7 +39,6 @@ public class BookingsController {
             method = "GET method is supported",
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
-    @SecurityRequirement(name = "Bearer Authentication")
     @PreAuthorize(value = "hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
     @GetMapping("/getById")
     public ResponseEntity<BookingsResponseDto> getById(@RequestParam UUID bookingId){
@@ -51,7 +50,6 @@ public class BookingsController {
             method = "GET method is supported",
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
-    @SecurityRequirement(name = "Bearer Authentication")
     @PreAuthorize(value = "hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
     @PutMapping("/getBookingOfUser")
     public ResponseEntity<List<BookingsResponseDto>> getBookingOfUser(@RequestParam UUID userId){
@@ -66,7 +64,6 @@ public class BookingsController {
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
     @PreAuthorize(value = "hasRole('ADMIN') or hasRole('USER')")
-    @SecurityRequirement(name = "Bearer Authentication")
     @GetMapping("/ticketIsSoldOrNot")
     public ResponseEntity<Boolean> ticketIsSoldOrNot(@RequestParam UUID seatId,@RequestParam UUID reysId ){
         return ResponseEntity.ok(bookingsService.ticketIsSoldOrNot(seatId, reysId));

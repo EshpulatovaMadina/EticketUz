@@ -17,6 +17,7 @@ import java.util.UUID;
  */
 @RestController
 @RequiredArgsConstructor
+@SecurityRequirement(name = "Bearer Authentication")
 @RequestMapping("/api/v1/seat")
 public class SeatsController {
     private final SeatsService seatsService;
@@ -25,7 +26,6 @@ public class SeatsController {
             method = "POST method is supported",
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
-    @SecurityRequirement(name = "Bearer Authentication")
     @PreAuthorize(value = "hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
     @PostMapping("/create")
     public ResponseEntity<List<SeatsResponseDto>> create(@RequestBody UUID vagonId, @RequestParam Double seatPrice){
@@ -38,7 +38,6 @@ public class SeatsController {
             method = "DELETE method is supported",
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
-    @SecurityRequirement(name = "Bearer Authentication")
     @PreAuthorize(value = "hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
     @DeleteMapping("/deActive")
     public ResponseEntity<String> deActice(@RequestParam UUID seatId){
@@ -63,7 +62,6 @@ public class SeatsController {
             method = "PUT method is supported",
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
-    @SecurityRequirement(name = "Bearer Authentication")
     @PreAuthorize(value = "hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
     @PutMapping("/isActiveUpdate")
     public ResponseEntity<SeatsResponseDto> isActive(@RequestParam UUID seatId){
@@ -75,7 +73,6 @@ public class SeatsController {
             method = "GET method is supported",
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
-    @SecurityRequirement(name = "Bearer Authentication")
     @PreAuthorize(value = "hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
     @GetMapping("/getById")
     public ResponseEntity<SeatsResponseDto> getbyId(@RequestParam UUID seatId){
@@ -88,7 +85,6 @@ public class SeatsController {
             method = "GET method is supported",
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
-    @SecurityRequirement(name = "Bearer Authentication")
     @PreAuthorize(value = "hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
     @GetMapping("/getSeatsOfVagon")
     public ResponseEntity<List<SeatsResponseDto>> getSeatsOfVagon(@RequestParam UUID vagonId ){

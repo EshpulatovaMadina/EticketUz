@@ -18,6 +18,7 @@ import java.util.UUID;
  */
 @RestController
 @RequiredArgsConstructor
+@SecurityRequirement(name = "Bearer Authentication")
 @RequestMapping("/api/v1/locomative")
 public class LocomotiveController {
     private final LocomotiveService locomotiveService;
@@ -28,7 +29,6 @@ public class LocomotiveController {
     )
     @PreAuthorize(value = "hasAuthority('ADMIN') or hasRole('SUPER_ADMIN')")
     @PostMapping("/create")
-    @SecurityRequirement(name = "Bearer Authentication")
     public ResponseEntity<LocomotiveResponseDto> create(@RequestBody LocomotiveCreateDto locomotiveCreateDto){
         return ResponseEntity.ok(locomotiveService.create(locomotiveCreateDto));
     }
@@ -40,7 +40,6 @@ public class LocomotiveController {
             method = "PUT method is supported",
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
-    @SecurityRequirement(name = "Bearer Authentication")
     @PreAuthorize(value = "hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
     @PutMapping("/isActive")
     public ResponseEntity<LocomotiveResponseDto> isActive(@RequestParam UUID locoId){
@@ -53,7 +52,6 @@ public class LocomotiveController {
             method = "DELETE method is supported",
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
-    @SecurityRequirement(name = "Bearer Authentication")
     @PreAuthorize(value = "hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
     @DeleteMapping("/disActive")
     public ResponseEntity<String> disActive(@RequestParam UUID locomotiveId){
@@ -66,7 +64,6 @@ public class LocomotiveController {
             method = "GET method is supported",
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
-    @SecurityRequirement(name = "Bearer Authentication")
     @PreAuthorize(value = "hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
     @GetMapping("/getById")
     public ResponseEntity<LocomotiveResponseDto> getbyId(@RequestParam UUID seatId){
@@ -80,7 +77,6 @@ public class LocomotiveController {
             method = "PUT method is supported",
             security = @SecurityRequirement(name = "pre authorize"  , scopes = {"ADMIN"})
     )
-    @SecurityRequirement(name = "Bearer Authentication")
     @PreAuthorize(value = "hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
     @PutMapping("/update")
     public ResponseEntity<LocomotiveResponseDto> update(@RequestBody LocomotiveCreateDto dto, @RequestParam UUID locomotiveId){

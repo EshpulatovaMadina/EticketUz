@@ -11,10 +11,10 @@ import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
+@SecurityRequirement(name = "Bearer Authentication")
 @RequestMapping("/user")
 public class UserController {
     private final UserService userService;
-    @SecurityRequirement(name = "Bearer Authentication")
     @PreAuthorize("hasRole('SUPER_ADMIN') or hasRole('ADMIN')")
     @GetMapping("/{userId}")
     public UserResponseDto getById(@PathVariable UUID userId) {
@@ -22,7 +22,6 @@ public class UserController {
     }
 
 
-    @SecurityRequirement(name = "Bearer Authentication")
     @PreAuthorize("hasRole('SUPER_ADMIN') or hasRole('ADMIN')")
     @GetMapping("/get-all")
     public List<UserResponseDto> getAll(@RequestParam String role) {
@@ -30,7 +29,6 @@ public class UserController {
     }
 
 
-    @SecurityRequirement(name = "Bearer Authentication")
     @PreAuthorize("hasRole('SUPER_ADMIN') or hasRole('ADMIN')")
     @DeleteMapping("/{userId}")
     public String delete(@PathVariable UUID userId) {

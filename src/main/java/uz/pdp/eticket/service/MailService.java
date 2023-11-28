@@ -19,8 +19,7 @@ public class MailService {
     }
 
     // it's just a test for scheduled
-    @Scheduled(fixedRate = 10000)
-    public static void out() {
-        System.err.println("I'm auto method, I work every 10 seconds");
-    }
+//      public static void out() {
+//        System.err.println("I'm auto method, I work every 10 seconds");
+//    }
 }

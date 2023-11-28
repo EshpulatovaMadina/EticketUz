@@ -18,6 +18,7 @@ import uz.pdp.eticket.service.transaction.TransactionService;
  */
 @RestController
 @RequiredArgsConstructor
+@SecurityRequirement(name = "Bearer Authentication")
 @RequestMapping("/api/transaction")
 public class TransactionController {
     private TransactionService transactionService;
@@ -26,7 +27,6 @@ public class TransactionController {
             method = "POST method is supported",
             security = @SecurityRequirement(name = "pre authorize", scopes = {"USER"})
     )
-    @SecurityRequirement(name = "Bearer Authentication")
     @PreAuthorize(value = "hasRole('USER')")
     @PostMapping("/transaction")
     public ResponseEntity<String> transaction(@RequestBody TransactionCreateDto transactionCreateDto){
