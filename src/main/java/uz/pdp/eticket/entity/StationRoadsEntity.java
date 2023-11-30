@@ -20,8 +20,8 @@ import java.util.UUID;
 @Entity(name = "stationRoads")
 public class StationRoadsEntity extends BaseEntity {
 
-    @Column(name = "station_id")
-    private UUID stationId;
+//    @Column(name = "station_id")
+//    private UUID stationId;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "station_Id", insertable = false, updatable = false)
@@ -36,9 +36,9 @@ public class StationRoadsEntity extends BaseEntity {
     private RoadsEntity road;
 
     private Integer orderNumber; //buuu jstationnning roadda qaysi orinda turgani
-    public StationRoadsEntity(UUID stationId, UUID roadId) {
-//        this.roadId = roadId;
-        this.stationId = stationId;
-        this.orderNumber = getOrderNumber();
-    }
+//    public StationRoadsEntity(UUID stationId, UUID roadId) {
+////        this.roadId = roadId;
+////        this.stationId = stationId;
+//        this.orderNumber = getOrderNumber();
+//    }
 }

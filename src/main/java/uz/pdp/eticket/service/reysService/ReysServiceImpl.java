@@ -34,8 +34,6 @@ public class ReysServiceImpl implements ReysService{
     private final StationRoadsService stationRoadsService;
     private final ReysRepository reysRepository;
     private final ModelMapper modelMapper;
-    private final UserRepository userRepository;
-    private final MailService mailService;
 
 
     @Override
