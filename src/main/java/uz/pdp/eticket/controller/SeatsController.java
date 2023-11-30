@@ -73,7 +73,7 @@ public class SeatsController {
             method = "GET method is supported",
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
-    @PreAuthorize(value = "hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
+    @PreAuthorize(value = "hasRole('ADMIN') or hasRole('USER')")
     @GetMapping("/get-by-id")
     public ResponseEntity<SeatsResponseDto> getbyId(@RequestParam UUID seatId){
         return ResponseEntity.ok(seatsService.getById(seatId));
@@ -85,7 +85,7 @@ public class SeatsController {
             method = "GET method is supported",
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
-    @PreAuthorize(value = "hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
+    @PreAuthorize(value = "hasRole('ADMIN') or hasRole('USER')")
     @GetMapping("/get-seats-of-vagon")
     public ResponseEntity<List<SeatsResponseDto>> getSeatsOfVagon(@RequestParam UUID vagonId ){
         return ResponseEntity.ok(seatsService.getSeatsOfVagon(vagonId));

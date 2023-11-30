@@ -18,6 +18,7 @@ import java.util.UUID;
  * @contact @dildora1_04
  */
 @RequiredArgsConstructor
+
 @RestController
 @SecurityRequirement(name = "Bearer Authentication")
 @RequestMapping("/api/v1/station")
