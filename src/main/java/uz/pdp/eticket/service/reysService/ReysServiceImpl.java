@@ -1,7 +1,9 @@
 package uz.pdp.eticket.service.reysService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import uz.pdp.eticket.DTO.request.MailDto;
@@ -26,6 +28,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ReysServiceImpl implements ReysService{
     private final BookingsService bookingsService;
     private final StationRoadsService stationRoadsService;
@@ -64,15 +67,7 @@ public class ReysServiceImpl implements ReysService{
         return "Successfully";
     }
 
-    @Override
-    public void warnAllUsers() {
-        List<UserEntity> userEntities = userRepository.findAllByStartDate(LocalDateTime.now().minusDays(1));
 
-        userEntities.forEach(item -> {
-            MailDto mailDto = new MailDto("the flight for which you bought a ticket will depart in 1 day", item.getEmail());
-            mailService.sendMail(mailDto);
-        });
-    }
 
 
     private ReysResponseDto parse(ReysEntity entity) {

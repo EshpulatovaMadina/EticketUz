@@ -26,7 +26,7 @@ public class TransactionServiceImpl implements TransactionService{
 
     @Override
     public String transaction(TransactionCreateDto transaction, UUID userId) {
-        Optional<BookingsEntity> byId = bookingsRepository.findById(transaction.getBookingId());
+        Optional<BookingEntity> byId = bookingsRepository.findById(transaction.getBookingId());
         if (byId.isEmpty()){
             throw new DataNotFoundException("Because you have not paid within 10 minutes, the booking has been canceled for you.");
         }
