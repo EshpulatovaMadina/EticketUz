@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import uz.pdp.eticket.DTO.response.UserResponseDto;
 import uz.pdp.eticket.service.UserService;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.UUID;
 
@@ -16,11 +17,10 @@ import java.util.UUID;
 public class UserController {
     private final UserService userService;
     @PreAuthorize("hasRole('SUPER_ADMIN') or hasRole('ADMIN')")
-    @GetMapping("/{userId}")
-    public UserResponseDto getById(@PathVariable UUID userId) {
-        return userService.getById(userId);
+    @GetMapping("/me")
+    public UserResponseDto getById(Principal principal) {
+        return userService.getById(UUID.fromString(principal.getName()));
     }
-
 
     @PreAuthorize("hasRole('SUPER_ADMIN') or hasRole('ADMIN')")
     @GetMapping("/get-all")
@@ -28,7 +28,7 @@ public class UserController {
         return userService.getAll(role);
     }
 
-
+    // this api for only Admin or super admin
     @PreAuthorize("hasRole('SUPER_ADMIN') or hasRole('ADMIN')")
     @DeleteMapping("/{userId}")
     public String delete(@PathVariable UUID userId) {
