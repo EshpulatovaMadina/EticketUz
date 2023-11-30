@@ -15,11 +15,7 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
-/**
- * @author 'Sodiqova Dildora' on 27.11.2023
- * @project RailwayUZ
- * @contact @dildora1_04
- */
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter
@@ -41,5 +37,5 @@ public class ReysEntity extends BaseEntity {
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime startDate ; /// bu qachon yo'lga chiqish vaqti.
+    private LocalDateTime startDate; /// bu qachon yo'lga chiqish vaqti.
 }

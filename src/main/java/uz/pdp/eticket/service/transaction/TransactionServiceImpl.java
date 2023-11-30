@@ -4,15 +4,13 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import uz.pdp.eticket.DTO.request.TransactionCreateDto;
-import uz.pdp.eticket.DTO.response.BookingsResponseDto;
 import uz.pdp.eticket.DTO.response.CardResponseDTO;
-import uz.pdp.eticket.entity.BookingsEntity;
+import uz.pdp.eticket.entity.BookingEntity;
 import uz.pdp.eticket.entity.Transaction;
 import uz.pdp.eticket.exception.BadRequestException;
 import uz.pdp.eticket.exception.DataNotFoundException;
 import uz.pdp.eticket.repository.BookingsRepository;
 import uz.pdp.eticket.repository.TransactionRepository;
-import uz.pdp.eticket.service.bookingService.BookingsService;
 import uz.pdp.eticket.service.cardService.CardService;
 
 import java.util.Optional;
