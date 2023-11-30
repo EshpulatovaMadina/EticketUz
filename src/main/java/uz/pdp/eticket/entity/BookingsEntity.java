@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 /**
  * @author 'Sodiqova Dildora' on 27.11.2023
@@ -41,4 +42,16 @@ public class BookingsEntity extends BaseEntity {
 
     private LocalDateTime date;
 
+    @Override
+    public String toString() {
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+        return "--Ticket--\n" +
+               " user: " + userId.getName() + "\n" +
+               " identity: '" + identity + "\n" +
+               " seat: " + seatId.getSequenceNumber() + "\n" +
+               " price: " + price + "\n" +
+               " date: " + date.format(formatter);
+    }
 }
