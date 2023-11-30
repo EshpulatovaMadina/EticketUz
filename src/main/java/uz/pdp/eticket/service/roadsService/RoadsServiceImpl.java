@@ -66,7 +66,7 @@ public class RoadsServiceImpl implements RoadsService {
                     s.getStationId(),
                     s.getStation().getName(),
                     s.getStation().getLocation(),
-                    new RoadsResponseDto(s.getRoadId(), s.getRoad().getDirection()),
+                    new RoadsResponseDto(s.getRoad().getId(), s.getRoad().getDirection()),
                     null,
                     null,
                     s.getCreatedDate()
