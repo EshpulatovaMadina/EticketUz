@@ -16,20 +16,20 @@ import java.util.UUID;
 @RequestMapping("/user")
 public class UserController {
     private final UserService userService;
-    @PreAuthorize("hasRole('SUPER_ADMIN') or hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('SUPER_ADMIN') or hasAuthority('ADMIN')")
     @GetMapping("/me")
     public UserResponseDto getById(Principal principal) {
         return userService.getById(UUID.fromString(principal.getName()));
     }
 
-    @PreAuthorize("hasRole('SUPER_ADMIN') or hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('SUPER_ADMIN') or hasAuthority('ADMIN')")
     @GetMapping("/get-all")
     public List<UserResponseDto> getAll(@RequestParam String role) {
         return userService.getAll(role);
     }
 
     // this api for only Admin or super admin
-    @PreAuthorize("hasRole('SUPER_ADMIN') or hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('SUPER_ADMIN') or hasAuthority('ADMIN')")
     @DeleteMapping("/{userId}")
     public String delete(@PathVariable UUID userId) {
         return userService.deleteUser(userId);

@@ -3,13 +3,16 @@ package uz.pdp.eticket.service.stationsService;
 import org.modelmapper.ModelMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import uz.pdp.eticket.DTO.request.StationRoadCreateDto;
 import uz.pdp.eticket.DTO.request.StationsCreateDto;
 import uz.pdp.eticket.DTO.response.StationsResponseDto;
 import uz.pdp.eticket.entity.StationsEntity;
 import uz.pdp.eticket.exception.DataNotFoundException;
 import uz.pdp.eticket.repository.StationsRepository;
 import uz.pdp.eticket.service.roadsService.RoadsService;
+import uz.pdp.eticket.service.stationRoadsService.StationRoadsService;
 
+import java.util.List;
 import java.util.UUID;
 /**
  * @author 'Sodiqova Dildora' on 27.11.2023
@@ -22,11 +25,16 @@ public class StationServiceImpl implements StationService{
     private final RoadsService roadsService;
     private final StationsRepository stationsRepository;
     private final ModelMapper modelMapper;
+    private final StationRoadsService stationRoadsService;
     @Override
     public StationsResponseDto create(StationsCreateDto stationsCreateDto) {
         StationsEntity map = modelMapper.map(stationsCreateDto, StationsEntity.class);
-        stationsRepository.save(map);
-        return parse(map);
+        StationsEntity save = stationsRepository.save(map);
+
+        if (stationsCreateDto.getRoadId() != null) {
+            stationRoadsService.save(stationsCreateDto.getRoadId(), List.of(new StationRoadCreateDto(save.getId(), save.getSequenceNumber())));
+        }
+        return parse(save);
     }
 
     @Override

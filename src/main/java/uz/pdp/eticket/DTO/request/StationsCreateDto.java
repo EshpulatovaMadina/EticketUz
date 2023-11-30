@@ -22,6 +22,10 @@ public class StationsCreateDto {
     @NotBlank(message = "")
     private String location;
 
+    private UUID roadId;
+
+    private Integer number;
+
 //    private UUID nextStation;
 //    private StationsEntity prevStation;// hammasi kere yaxshi qiz smile🙁🙁
 

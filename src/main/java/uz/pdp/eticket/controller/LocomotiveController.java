@@ -11,11 +11,7 @@ import uz.pdp.eticket.DTO.response.LocomotiveResponseDto;
 import uz.pdp.eticket.service.locomotiveService.LocomotiveService;
 
 import java.util.UUID;
-/**
- * @author 'Sodiqova Dildora' on 27.11.2023
- * @project RailwayUZ
- * @contact @dildora1_04
- */
+
 @RestController
 @RequiredArgsConstructor
 @SecurityRequirement(name = "Bearer Authentication")
@@ -27,7 +23,7 @@ public class LocomotiveController {
             method = "POST method is supported",
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
-    @PreAuthorize(value = "hasAuthority('ADMIN') or hasRole('SUPER_ADMIN')")
+    @PreAuthorize(value = "hasAuthority('ADMIN') or hasAuthority('SUPER_ADMIN')")
     @PostMapping("/create")
     public ResponseEntity<LocomotiveResponseDto> create(@RequestBody LocomotiveCreateDto locomotiveCreateDto){
         return ResponseEntity.ok(locomotiveService.create(locomotiveCreateDto));
