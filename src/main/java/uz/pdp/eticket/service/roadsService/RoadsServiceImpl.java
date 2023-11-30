@@ -25,10 +25,10 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class RoadsServiceImpl implements RoadsService {
-    private RoadsRepository roadsRepository;
-    private ModelMapper modelMapper;
-    private StationRoadsService stationRoadsService;
-    private StationRoadsRepository sr;
+    private final RoadsRepository roadsRepository;
+    private final ModelMapper modelMapper;
+    private final StationRoadsService stationRoadsService;
+    private final StationRoadsRepository sr;
 
     @Override
     public RoadsResponseDto create(RoadsCreateDto roadsCreateDto) {

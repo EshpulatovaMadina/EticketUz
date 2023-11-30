@@ -35,8 +35,7 @@ public class VagonServiceImpl implements VagonService{
     private final VagonRepository vagonRepository;
     private final ModelMapper modelMapper;
     private final SeatsService seatsService;
-    private BookingsService bookingsService;
-    private RestTemplate restTemplate;
+    private final BookingsService bookingsService;
     String  url = "TICKET_SERVICE";
     @Override
     public VagonResponseDto create(List<VagonCreateDto> dtos, Double seatPrice) {

@@ -19,10 +19,10 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class TransactionServiceImpl implements TransactionService{
-    private TransactionRepository transactionRepository;
-    private ModelMapper modelMapper;
-    private BookingsRepository bookingsRepository;
-    private CardService cardService;
+    private final TransactionRepository transactionRepository;
+    private final ModelMapper modelMapper;
+    private final BookingsRepository bookingsRepository;
+    private final CardService cardService;
 
     @Override
     public String transaction(TransactionCreateDto transaction, UUID userId) {
