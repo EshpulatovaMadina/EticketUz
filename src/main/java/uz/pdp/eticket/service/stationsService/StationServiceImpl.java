@@ -19,12 +19,12 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class StationServiceImpl implements StationService{
-    private RoadsService roadsService;
-    private StationsRepository stationsRepository;
-    private ModelMapper modelMapper;
+    private final RoadsService roadsService;
+    private final StationsRepository stationsRepository;
+    private final ModelMapper modelMapper;
     @Override
     public StationsResponseDto create(StationsCreateDto stationsCreateDto) {
-        StationsEntity map = modelMapper.map(stationsRepository, StationsEntity.class);
+        StationsEntity map = modelMapper.map(stationsCreateDto, StationsEntity.class);
         stationsRepository.save(map);
         return parse(map);
     }
@@ -61,9 +61,8 @@ public class StationServiceImpl implements StationService{
 
 
     private StationsResponseDto parse(StationsEntity stationsEntity){
-        StationsResponseDto map = modelMapper.map(stationsEntity, StationsResponseDto.class);
-//        RoadsResponseDto responseDto = roadsService.parse(stationsEntity.getRoadsEntity());
+        //        RoadsResponseDto responseDto = roadsService.parse(stationsEntity.getRoadsEntity());
 //        map.setRoadsResponseDto();
-        return map;
+        return modelMapper.map(stationsEntity, StationsResponseDto.class);
     }
 }
