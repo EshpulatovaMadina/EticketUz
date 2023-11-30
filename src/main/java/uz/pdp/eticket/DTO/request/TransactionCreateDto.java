@@ -13,6 +13,6 @@ import java.util.UUID;
 public class TransactionCreateDto {
     private UUID cardId;
     private Double amount;
-    private UUID userId;
+//    private UUID userId;
     private UUID bookingId;
 }

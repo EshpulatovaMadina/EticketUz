@@ -63,7 +63,7 @@ public class SeatsController {
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
     @PreAuthorize(value = "hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
-    @PutMapping("/isActiveUpdate")
+    @PutMapping("/is-active-update")
     public ResponseEntity<SeatsResponseDto> isActive(@RequestParam UUID seatId){
         return ResponseEntity.ok(seatsService.isActive(seatId));
     }
@@ -74,7 +74,7 @@ public class SeatsController {
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
     @PreAuthorize(value = "hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
-    @GetMapping("/getById")
+    @GetMapping("/get-by-id")
     public ResponseEntity<SeatsResponseDto> getbyId(@RequestParam UUID seatId){
         return ResponseEntity.ok(seatsService.getById(seatId));
     }
@@ -86,7 +86,7 @@ public class SeatsController {
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
     @PreAuthorize(value = "hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
-    @GetMapping("/getSeatsOfVagon")
+    @GetMapping("/get-seats-of-vagon")
     public ResponseEntity<List<SeatsResponseDto>> getSeatsOfVagon(@RequestParam UUID vagonId ){
         return ResponseEntity.ok(seatsService.getSeatsOfVagon(vagonId));
     }

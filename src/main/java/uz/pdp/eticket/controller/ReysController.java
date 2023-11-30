@@ -53,7 +53,7 @@ public class ReysController {
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
     @PreAuthorize(value = "hasAuthority('USER') or hasRole('ADMIN')")
-    @GetMapping("/getReysByLocation")
+    @GetMapping("/get-reys-by-location")
     public ResponseEntity<List<ReysResponseDto>> getReysByLocation(
             @RequestParam String fromStation,
             @RequestParam String toStation,

@@ -18,5 +18,5 @@ public class CardCreateDTO {
     private Long number;
     private String expDate; // 09/25
     private CardType cardType;
-    private UUID userId;
+//    private UUID userId;
 }

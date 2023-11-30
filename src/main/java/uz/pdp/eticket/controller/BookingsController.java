@@ -17,6 +17,7 @@ import uz.pdp.eticket.DTO.request.BookingCreateDto;
 import uz.pdp.eticket.DTO.response.BookingsResponseDto;
 import uz.pdp.eticket.service.bookingService.BookingsService;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.UUID;
 /**
@@ -64,8 +65,8 @@ public class BookingsController {
     )
     @PreAuthorize(value = "hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
     @PutMapping("/get-booking-of-user")
-    public ResponseEntity<List<BookingsResponseDto>> getBookingOfUser(@RequestParam UUID userId){
-        return ResponseEntity.ok(bookingsService.getBookingOfUser(userId));
+    public ResponseEntity<List<BookingsResponseDto>> getBookingOfUser(Principal principal){
+        return ResponseEntity.ok(bookingsService.getBookingOfUser(UUID.fromString(principal.getName())));
     }
 
 

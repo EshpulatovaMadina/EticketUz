@@ -26,11 +26,11 @@ import java.util.UUID;
 public class CardServiceImpl  implements CardService{
     private  CardRepository cardRepository;
     private ModelMapper modelMapper;
-    public CardResponseDTO add(CardCreateDTO dto) {
+    public CardResponseDTO add(CardCreateDTO dto, UUID userId) {
         CardEntity entity = new CardEntity();
         entity.setNumber(dto.getNumber());
         entity.setExpDate(dto.getExpDate());
-         entity.setUserId(dto.getUserId());
+         entity.setUserId(userId);
         cardRepository.save(entity);
         return CardResponseDTO.toDTO(entity);
     }
