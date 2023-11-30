@@ -51,7 +51,7 @@ public class RoadsController {
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
     @PreAuthorize(value = "hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
-    @GetMapping("/getByDirection")
+    @GetMapping("/get-by-direction")
     public ResponseEntity<RoadsResponseDto> getRoadByDirection(@RequestParam String direction){
         return ResponseEntity.ok(roadsService.getByDirection(direction));
     }
@@ -86,7 +86,7 @@ public class RoadsController {
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
     @PreAuthorize(value = "hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
-    @GetMapping("/getById")
+    @GetMapping("/get-by-id")
     public ResponseEntity<RoadsResponseDto> getbyId(@RequestParam UUID roadsId){
         return ResponseEntity.ok(roadsService.getById(roadsId));
     }

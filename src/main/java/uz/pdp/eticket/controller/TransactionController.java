@@ -11,6 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import uz.pdp.eticket.DTO.request.TransactionCreateDto;
 import uz.pdp.eticket.service.transaction.TransactionService;
+
+import java.security.Principal;
+import java.util.UUID;
+
 /**
  * @author 'Sodiqova Dildora' on 27.11.2023
  * @project RailwayUZ
@@ -29,7 +33,7 @@ public class TransactionController {
     )
     @PreAuthorize(value = "hasRole('USER')")
     @PostMapping("/transaction")
-    public ResponseEntity<String> transaction(@RequestBody TransactionCreateDto transactionCreateDto){
-       return ResponseEntity.ok(transactionService.transaction(transactionCreateDto));
+    public ResponseEntity<String> transaction(@RequestBody TransactionCreateDto transactionCreateDto, Principal principal){
+       return ResponseEntity.ok(transactionService.transaction(transactionCreateDto, UUID.fromString(principal.getName())));
     }
 }

@@ -41,7 +41,7 @@ public class LocomotiveController {
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
     @PreAuthorize(value = "hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
-    @PutMapping("/isActive")
+    @PutMapping("/is-active")
     public ResponseEntity<LocomotiveResponseDto> isActive(@RequestParam UUID locoId){
         return ResponseEntity.ok(locomotiveService.isActive(locoId));
     }
@@ -65,7 +65,7 @@ public class LocomotiveController {
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
     @PreAuthorize(value = "hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
-    @GetMapping("/getById")
+    @GetMapping("/get-by-id")
     public ResponseEntity<LocomotiveResponseDto> getbyId(@RequestParam UUID seatId){
         return ResponseEntity.ok(locomotiveService.getById(seatId));
     }

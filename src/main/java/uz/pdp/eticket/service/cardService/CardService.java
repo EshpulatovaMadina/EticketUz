@@ -11,7 +11,7 @@ import java.util.UUID;
  * @contact @dildora1_04
  */
 public interface CardService {
-    CardResponseDTO add(CardCreateDTO dto);
+    CardResponseDTO add(CardCreateDTO dto, UUID userId);
     List<CardResponseDTO> getCardsOfUser(UUID userId);
     Boolean delete(UUID id);
     CardResponseDTO getById(UUID cardId);

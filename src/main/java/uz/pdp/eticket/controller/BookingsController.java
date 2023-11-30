@@ -10,6 +10,7 @@ import uz.pdp.eticket.DTO.request.BookingCreateDto;
 import uz.pdp.eticket.DTO.response.BookingsResponseDto;
 import uz.pdp.eticket.service.bookingService.BookingsService;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.UUID;
 /**
@@ -40,7 +41,7 @@ public class BookingsController {
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
     @PreAuthorize(value = "hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
-    @GetMapping("/getById")
+    @GetMapping("/get-by-id")
     public ResponseEntity<BookingsResponseDto> getById(@RequestParam UUID bookingId){
         return ResponseEntity.ok(bookingsService.getById(bookingId));
     }
@@ -51,9 +52,9 @@ public class BookingsController {
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
     @PreAuthorize(value = "hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
-    @PutMapping("/getBookingOfUser")
-    public ResponseEntity<List<BookingsResponseDto>> getBookingOfUser(@RequestParam UUID userId){
-        return ResponseEntity.ok(bookingsService.getBookingOfUser(userId));
+    @PutMapping("/get-booking-of-user")
+    public ResponseEntity<List<BookingsResponseDto>> getBookingOfUser(Principal principal){
+        return ResponseEntity.ok(bookingsService.getBookingOfUser(UUID.fromString(principal.getName())));
     }
 
 
@@ -64,7 +65,7 @@ public class BookingsController {
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
     @PreAuthorize(value = "hasRole('ADMIN') or hasRole('USER')")
-    @GetMapping("/ticketIsSoldOrNot")
+    @GetMapping("/ticket-is-sold-or-not")
     public ResponseEntity<Boolean> ticketIsSoldOrNot(@RequestParam UUID seatId,@RequestParam UUID reysId ){
         return ResponseEntity.ok(bookingsService.ticketIsSoldOrNot(seatId, reysId));
     }

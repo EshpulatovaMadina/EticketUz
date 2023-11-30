@@ -41,5 +41,5 @@ public class ReysEntity extends BaseEntity {
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime fromDate; /// bu qachon yo'lga chiqish vaqti.
+    private LocalDateTime startDate ; /// bu qachon yo'lga chiqish vaqti.
 }

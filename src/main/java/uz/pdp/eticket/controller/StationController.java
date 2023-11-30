@@ -76,7 +76,7 @@ public class StationController {
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
     @PreAuthorize(value = "hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
-    @GetMapping("/getById")
+    @GetMapping("/get-by-id")
     public ResponseEntity<StationsResponseDto> getbyId(@RequestParam UUID seatId){
         return ResponseEntity.ok(stationService.getById(seatId));
     }

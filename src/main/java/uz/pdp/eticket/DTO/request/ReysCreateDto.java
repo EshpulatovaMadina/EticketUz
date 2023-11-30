@@ -35,5 +35,5 @@ public class ReysCreateDto {
     private UUID locomotiveId;
     ///documentatsiyada formatni aytish kerak     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @NotNull(message = "")
-    private LocalDateTime dateTime;
+    private LocalDateTime startDate; //yurish vaqt
 }
