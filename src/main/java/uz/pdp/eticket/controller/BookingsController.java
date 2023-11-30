@@ -1,6 +1,7 @@
 package uz.pdp.eticket.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.annotation.security.PermitAll;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -41,7 +42,7 @@ public class BookingsController {
             method = "POST method is supported",
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
-    @PreAuthorize(value = "hasAuthority('ADMIN') or hasRole('USER')") /// shuyerini sorash kk user boooking create qiladimi  ozi
+    @PreAuthorize(value = "hasAuthority('USER')") /// shuyerini sorash kk user boooking create qiladimi  ozi
     @PostMapping("/create")
     public ResponseEntity<BookingsResponseDto> create(@Valid @RequestBody BookingCreateDto dto){
         return ResponseEntity.ok(bookingsService.create(dto));
@@ -52,7 +53,7 @@ public class BookingsController {
             method = "GET method is supported",
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
-    @PreAuthorize(value = "hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
+    @PreAuthorize(value = "hasRole('ADMIN') or hasRole('USER')")
     @GetMapping("/get-by-id")
     public ResponseEntity<BookingsResponseDto> getById(@RequestParam UUID bookingId){
         return ResponseEntity.ok(bookingsService.getById(bookingId));
@@ -63,7 +64,7 @@ public class BookingsController {
             method = "GET method is supported",
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
-    @PreAuthorize(value = "hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
+    @PreAuthorize(value = "hasRole('USER')")
     @PutMapping("/get-booking-of-user")
     public ResponseEntity<List<BookingsResponseDto>> getBookingOfUser(Principal principal){
         return ResponseEntity.ok(bookingsService.getBookingOfUser(UUID.fromString(principal.getName())));
@@ -82,6 +83,7 @@ public class BookingsController {
         return ResponseEntity.ok(bookingsService.ticketIsSoldOrNot(seatId, reysId));
     }
 
+    @PermitAll
     @GetMapping("/qr-code")
     public ResponseEntity<InputStreamResource> getQRCode() {
         HttpHeaders headers = new HttpHeaders();
