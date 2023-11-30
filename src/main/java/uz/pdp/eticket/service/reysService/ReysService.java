@@ -7,11 +7,7 @@ import uz.pdp.eticket.entity.ReysEntity;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
-/**
- * @author 'Sodiqova Dildora' on 27.11.2023
- * @project RailwayUZ
- * @contact @dildora1_04
- */
+
 public interface ReysService {
     List<ReysResponseDto> getReysByLocation(String fromStation, String toStation, LocalDateTime fromDate, LocalDateTime toDate);
 
@@ -19,6 +15,5 @@ public interface ReysService {
 
     String deActive(UUID reysId);
 
-    @Scheduled(fixedRate = 30000)
-    void warnAllUsers();
+
 }

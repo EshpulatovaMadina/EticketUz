@@ -13,9 +13,4 @@ public class BeanConfig {
         return modelMapper;
     }
 
-//    @Bean
-//    @LoadBalanced
-//    public RestTemplate restTemplate () {
-//        return new RestTemplate();
-//    }
 }
