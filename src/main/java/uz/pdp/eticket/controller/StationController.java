@@ -12,24 +12,20 @@ import uz.pdp.eticket.service.stationsService.StationService;
 
 import java.util.List;
 import java.util.UUID;
-/**
- * @author 'Sodiqova Dildora' on 27.11.2023
- * @project RailwayUZ
- * @contact @dildora1_04
- */
-@RequiredArgsConstructor
+
 
 @RestController
 @SecurityRequirement(name = "Bearer Authentication")
+@RequiredArgsConstructor
 @RequestMapping("/api/v1/station")
 public class StationController {
-    private StationService stationService;
+    private final StationService stationService;
     @Operation(
             description = "This method is used to add station",
             method = "POST method is supported",
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
-    @PreAuthorize(value = "hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
+    @PreAuthorize(value = "hasAuthority('ADMIN') or hasRole('SUPER_ADMIN')")
     @PostMapping("/create")
     public ResponseEntity<StationsResponseDto> create(@RequestBody StationsCreateDto stationsCreateDto){
         return ResponseEntity.ok(stationService.create(stationsCreateDto));
