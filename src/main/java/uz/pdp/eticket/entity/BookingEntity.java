@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.UUID;
+
 /**
  * @author 'Sodiqova Dildora' on 27.11.2023
  * @project RailwayUZ
@@ -20,10 +20,10 @@ import java.util.UUID;
 @NoArgsConstructor
 @Setter
 @Getter
-@Entity(name = "bookings")
-public class BookingsEntity extends BaseEntity {
+@Entity(name = "booking")
+public class BookingEntity extends BaseEntity {
     @ManyToOne(cascade = CascadeType.ALL)
-    private UserEntity userId;
+    private UserEntity user;
 
     private String firstName;
     private String lastName;
@@ -31,14 +31,14 @@ public class BookingsEntity extends BaseEntity {
     private String birthday;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    private StationsEntity seatId;
+    private StationsEntity seat;
     private Double price;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private ReysEntity reys;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    private VagonEntity vagonId;
+    private VagonEntity vagon;
 
     private LocalDateTime date;
 
@@ -48,9 +48,9 @@ public class BookingsEntity extends BaseEntity {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
         return "--Ticket--\n" +
-               " user: " + userId.getName() + "\n" +
+               " user: " + user.getName() + "\n" +
                " identity: '" + identity + "\n" +
-               " seat: " + seatId.getSequenceNumber() + "\n" +
+               " seat: " + seat.getSequenceNumber() + "\n" +
                " price: " + price + "\n" +
                " date: " + date.format(formatter);
     }
