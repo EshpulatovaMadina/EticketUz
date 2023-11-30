@@ -18,5 +18,6 @@ import java.util.UUID;
 public class RoadsCreateDto {
     ///   jjjjj birinchi qqq station tanlaydi .
     private String direction;
-   
+    ///bundagi ordernumberni frontent qiladi.
+    private List<StationRoadCreateDto> stations;
 }

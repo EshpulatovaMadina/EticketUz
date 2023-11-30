@@ -31,7 +31,7 @@ public class TransactionController {
             method = "POST method is supported",
             security = @SecurityRequirement(name = "pre authorize", scopes = {"USER"})
     )
-    @PreAuthorize(value = "hasRole('USER')")
+    @PreAuthorize(value = "hasAuthority('USER')")
     @PostMapping("/transaction")
     public ResponseEntity<String> transaction(@RequestBody TransactionCreateDto transactionCreateDto, Principal principal){
        return ResponseEntity.ok(transactionService.transaction(transactionCreateDto, UUID.fromString(principal.getName())));

@@ -25,10 +25,10 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class RoadsServiceImpl implements RoadsService {
-    private final RoadsRepository roadsRepository;
-    private final ModelMapper modelMapper;
-    private final StationRoadsService stationRoadsService;
-    private final StationRoadsRepository sr;
+    private RoadsRepository roadsRepository;
+    private ModelMapper modelMapper;
+    private StationRoadsService stationRoadsService;
+    private StationRoadsRepository sr;
 
     @Override
     public RoadsResponseDto create(RoadsCreateDto roadsCreateDto) {
@@ -37,7 +37,9 @@ public class RoadsServiceImpl implements RoadsService {
             throw new DataAlreadyExistsException("This Road name already exists . Please can you create other name ?");
         }
         RoadsEntity save = roadsRepository.save(parse);
-        stationRoadsService.save(save.getId(), roadsCreateDto.getStations());
+        if (!roadsCreateDto.getStations().isEmpty()) {
+            stationRoadsService.save(save.getId(), roadsCreateDto.getStations());
+        }
         return new RoadsResponseDto(save.getId(), save.getDirection());
     }
 
@@ -63,7 +65,7 @@ public class RoadsServiceImpl implements RoadsService {
         for (int i = 1; i < stations.size()-1; i++) {
             StationRoadsEntity s = stations.get(i);
             list.add(new StationsResponseDto(
-                    s.getStationId(),
+                    s.getStation().getId(),
                     s.getStation().getName(),
                     s.getStation().getLocation(),
                     new RoadsResponseDto(s.getRoad().getId(), s.getRoad().getDirection()),

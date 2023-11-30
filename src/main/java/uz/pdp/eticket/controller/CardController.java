@@ -14,11 +14,6 @@ import java.security.Principal;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * @author 'Sodiqova Dildora' on 27.11.2023
- * @project RailwayUZ
- * @contact @dildora1_04
- */
 @RequestMapping("/api/card")
 @RestController
 @RequiredArgsConstructor
@@ -31,7 +26,7 @@ public class CardController {
             method = "POST method is supported",
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
-    @PreAuthorize(value = "hasRole('USER')")
+    @PreAuthorize(value = "hasAuthority('USER')")
     @PostMapping("/create")
     public ResponseEntity<CardResponseDTO> add(@RequestBody CardCreateDTO dto, Principal principal){
         return ResponseEntity.ok(cardService.add(dto, UUID.fromString(principal.getName())));
