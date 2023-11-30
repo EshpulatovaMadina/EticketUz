@@ -20,18 +20,15 @@ import uz.pdp.eticket.service.UserService;
 public class AuthController {
     private final UserService userService;
 
-
-
     @PermitAll
-    @PostMapping("sign-up")
+    @PostMapping("/sign-up")
     public UserResponseDto signUp(@RequestBody SignUpDto dto) {
         return userService.signUp(dto);
     }
 
 
-
     @PermitAll
-    @GetMapping("sign-in")
+    @GetMapping("/sign-in")
     public JwtResponse signIn(
             @RequestParam String email,
             @RequestParam String password
@@ -40,14 +37,11 @@ public class AuthController {
     }
 
 
-
-
     @PermitAll
     @GetMapping("/get-verification-code")
     public String sendVerifyCode(@RequestParam String email) {
         return userService.getVerificationCode(email);
     }
-
 
 
     @Operation(
@@ -63,8 +57,6 @@ public class AuthController {
         UserResponseDto verify = userService.verify(email, code);
         return verify;
     }
-
-
 
 
     @PermitAll

@@ -1,14 +1,16 @@
 package uz.pdp.eticket.service.bookingService;
+import lombok.Setter;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import uz.pdp.eticket.DTO.request.BookingCreateDto;
 import uz.pdp.eticket.DTO.response.BookingsResponseDto;
 
 import java.util.List;
 import java.util.UUID;
-/**
- * @author 'Sodiqova Dildora' on 27.11.2023
- * @project RailwayUZ
- * @contact @dildora1_04
- */
+
+@Service
 public interface BookingsService {
     BookingsResponseDto create(BookingCreateDto dto);
 
@@ -21,4 +23,5 @@ public interface BookingsService {
 
     List<BookingsResponseDto> getBookingOfUser(UUID userId);
 
+    InputStreamResource getQRCode(UUID ticketId);
 }
