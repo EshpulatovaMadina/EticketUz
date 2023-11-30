@@ -4,13 +4,17 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import uz.pdp.eticket.DTO.request.MailDto;
 import uz.pdp.eticket.DTO.request.ReysCreateDto;
 import uz.pdp.eticket.DTO.response.ReysResponseDto;
 import uz.pdp.eticket.entity.ReysEntity;
+import uz.pdp.eticket.entity.UserEntity;
 import uz.pdp.eticket.exception.CannotBeChangedException;
 import uz.pdp.eticket.exception.DataNotFoundException;
 import uz.pdp.eticket.repository.ReysRepository;
 import uz.pdp.eticket.repository.StationRoadsRepository;
+import uz.pdp.eticket.repository.UserRepository;
+import uz.pdp.eticket.service.MailService;
 import uz.pdp.eticket.service.bookingService.BookingsService;
 import uz.pdp.eticket.service.roadsService.RoadsService;
 import uz.pdp.eticket.service.stationRoadsService.StationRoadsService;
@@ -19,19 +23,16 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-/**
- * @author 'Sodiqova Dildora' on 27.11.2023
- * @project RailwayUZ
- * @contact @dildora1_04
- */
+
 @Service
 @RequiredArgsConstructor
 public class ReysServiceImpl implements ReysService{
-    String fooResourceUrl = "STATION_SERVICE";
-    private BookingsService bookingsService;
-    private StationRoadsService stationRoadsService;
-    private ReysRepository reysRepository;
-    private ModelMapper modelMapper;
+    private final BookingsService bookingsService;
+    private final StationRoadsService stationRoadsService;
+    private final ReysRepository reysRepository;
+    private final ModelMapper modelMapper;
+    private final UserRepository userRepository;
+    private final MailService mailService;
 
 
     @Override
@@ -39,7 +40,7 @@ public class ReysServiceImpl implements ReysService{
         List<String> directions = stationRoadsService.findAllDirectionByStations(fromStation, toStation);
         List<ReysResponseDto> parse = new ArrayList<>();
         for (String direction : directions) {
-            List<ReysEntity> allByDirectionAndFromDate = reysRepository.findAllByDirectionAndFromDate(direction, fromDate);
+            List<ReysEntity> allByDirectionAndFromDate = reysRepository.findAllByDirectionAndStartDate(direction, fromDate);
             parse.addAll(parse(allByDirectionAndFromDate));
         }
         return parse;
@@ -63,14 +64,25 @@ public class ReysServiceImpl implements ReysService{
         return "Successfully";
     }
 
-    private ReysResponseDto parse(ReysEntity entity){
+    @Override
+    public void warnAllUsers() {
+        List<UserEntity> userEntities = userRepository.findAllByStartDate(LocalDateTime.now().minusDays(1));
+
+        userEntities.forEach(item -> {
+            MailDto mailDto = new MailDto("the flight for which you bought a ticket will depart in 1 day", item.getEmail());
+            mailService.sendMail(mailDto);
+        });
+    }
+
+
+    private ReysResponseDto parse(ReysEntity entity) {
         ReysResponseDto map = modelMapper.map(entity, ReysResponseDto.class);
         map.setReysId(entity.getId());
         map.setCreateDate(entity.getCreatedDate());
         return map;
     }
 
-    private List<ReysResponseDto> parse(List<ReysEntity> entities){
+    private List<ReysResponseDto> parse(List<ReysEntity> entities) {
         List<ReysResponseDto> list = new ArrayList<>();
         for (ReysEntity entity : entities) {
             ReysResponseDto map = modelMapper.map(entity, ReysResponseDto.class);
@@ -80,6 +92,5 @@ public class ReysServiceImpl implements ReysService{
         }
         return list;
     }
-
 
 }
