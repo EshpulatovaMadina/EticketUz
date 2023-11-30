@@ -16,7 +16,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @Service
 public class StationRoadsServiceImpl implements StationRoadsService {
-    private StationRoadsRepository stationRoadsRepository;
+    private final StationRoadsRepository stationRoadsRepository;
 
     public void save(UUID roadId, List<StationRoadCreateDto> stations) {
         for (StationRoadCreateDto station : stations) {
