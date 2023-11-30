@@ -1,4 +1,5 @@
 package uz.pdp.eticket.service.reysService;
+import org.springframework.scheduling.annotation.Scheduled;
 import uz.pdp.eticket.DTO.request.ReysCreateDto;
 import uz.pdp.eticket.DTO.response.ReysResponseDto;
 import uz.pdp.eticket.entity.ReysEntity;
@@ -17,4 +18,7 @@ public interface ReysService {
     ReysResponseDto create(ReysCreateDto dto);
 
     String deActive(UUID reysId);
+
+    @Scheduled(fixedRate = 30000)
+    void warnAllUsers();
 }

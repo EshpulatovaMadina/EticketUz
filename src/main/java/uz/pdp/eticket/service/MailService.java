@@ -18,8 +18,4 @@ public class MailService {
         mailSender.send(simpleMailMessage);
     }
 
-    // it's just a test for scheduled
-//      public static void out() {
-//        System.err.println("I'm auto method, I work every 10 seconds");
-//    }
 }
