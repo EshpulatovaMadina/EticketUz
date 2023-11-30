@@ -19,5 +19,4 @@ import java.util.List;
 @Entity(name = "roads")
 public class RoadsEntity extends BaseEntity{
     private String direction;
-
 }

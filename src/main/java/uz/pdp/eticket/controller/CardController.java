@@ -10,6 +10,7 @@ import uz.pdp.eticket.DTO.request.CardCreateDTO;
 import uz.pdp.eticket.DTO.response.CardResponseDTO;
 import uz.pdp.eticket.service.cardService.CardService;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.UUID;
 
@@ -32,8 +33,8 @@ public class CardController {
     )
     @PreAuthorize(value = "hasRole('USER')")
     @PostMapping("/create")
-    public ResponseEntity<CardResponseDTO> add(@RequestBody CardCreateDTO dto){
-        return ResponseEntity.ok(cardService.add(dto));
+    public ResponseEntity<CardResponseDTO> add(@RequestBody CardCreateDTO dto, Principal principal){
+        return ResponseEntity.ok(cardService.add(dto, UUID.fromString(principal.getName())));
     }
 
 
@@ -44,9 +45,9 @@ public class CardController {
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
     @PreAuthorize(value = "hasRole('USER')")
-    @GetMapping("/getCardsOfUser/{userId}")
-    public ResponseEntity<List<CardResponseDTO>> getCardsOfUser(@PathVariable UUID userId){
-        return ResponseEntity.ok(cardService.getCardsOfUser(userId));
+    @GetMapping("/get-cards-of-user/{userId}")
+    public ResponseEntity<List<CardResponseDTO>> getCardsOfUser(Principal principal){
+        return ResponseEntity.ok(cardService.getCardsOfUser(UUID.fromString(principal.getName())));
     }
 
 
@@ -57,7 +58,7 @@ public class CardController {
     )
     @PreAuthorize(value = "hasRole('USER')")
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Boolean> delete(@PathVariable UUID id){
-        return ResponseEntity.ok(cardService.delete(id));
+    public ResponseEntity<Boolean> delete(@PathVariable UUID cardId){
+        return ResponseEntity.ok(cardService.delete(cardId));
     }
 }

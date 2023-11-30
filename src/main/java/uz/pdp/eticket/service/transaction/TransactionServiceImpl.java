@@ -16,6 +16,7 @@ import uz.pdp.eticket.service.bookingService.BookingsService;
 import uz.pdp.eticket.service.cardService.CardService;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -26,7 +27,7 @@ public class TransactionServiceImpl implements TransactionService{
     private CardService cardService;
 
     @Override
-    public String transaction(TransactionCreateDto transaction) {
+    public String transaction(TransactionCreateDto transaction, UUID userId) {
         Optional<BookingsEntity> byId = bookingsRepository.findById(transaction.getBookingId());
         if (byId.isEmpty()){
             throw new DataNotFoundException("Because you have not paid within 10 minutes, the booking has been canceled for you.");
@@ -34,7 +35,9 @@ public class TransactionServiceImpl implements TransactionService{
         CardResponseDTO byId1 = cardService.getById(transaction.getCardId());
         if (byId1.getBalance() >= transaction.getAmount() * 0.1 +transaction.getAmount()){
             String s = cardService.withdrawMoney(byId1.getId(), transaction.getAmount());
-            transactionRepository.save(modelMapper.map(transaction, Transaction.class));
+            Transaction map = modelMapper.map(transaction, Transaction.class);
+            map.setUserId(userId);
+            transactionRepository.save(map);
             return "Successfully transaction";
         }
             throw  new BadRequestException("There are insufficient funds on your card.");

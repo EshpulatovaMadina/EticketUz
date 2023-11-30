@@ -26,10 +26,10 @@ public class StationRoadsEntity extends BaseEntity {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "station_Id", insertable = false, updatable = false)
     private StationsEntity station;
-
-
-    @Column(name = "road_id")
-    private UUID roadId;
+//
+//
+//    @Column(name = "road_id")
+//    private UUID roadId;
 
     @ManyToOne()
     @JoinColumn(name = "road_id", insertable = false, updatable = false)
@@ -37,7 +37,7 @@ public class StationRoadsEntity extends BaseEntity {
 
     private Integer orderNumber; //buuu jstationnning roadda qaysi orinda turgani
     public StationRoadsEntity(UUID stationId, UUID roadId) {
-        this.roadId = roadId;
+//        this.roadId = roadId;
         this.stationId = stationId;
         this.orderNumber = getOrderNumber();
     }

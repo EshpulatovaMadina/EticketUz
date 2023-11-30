@@ -32,10 +32,8 @@ public class ReysEntity extends BaseEntity {
 //    @Enumerated(EnumType.STRING)
     ///buyerdagi direction roaddagi direction bn bir hil boladi yani unga qarab buni beradi
     private String direction;
-
-    private String fromStation;
-
-    private String toStation;
+    private UUID fromStation;
+    private UUID toStation;
 
     @ManyToOne(cascade = CascadeType.ALL)
     private LocomotiveEntity locomotiveId;
@@ -43,5 +41,5 @@ public class ReysEntity extends BaseEntity {
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime fromDate; /// bu qachon yo'lga chiqish vaqti.
+    private LocalDateTime startDate ; /// bu qachon yo'lga chiqish vaqti.
 }

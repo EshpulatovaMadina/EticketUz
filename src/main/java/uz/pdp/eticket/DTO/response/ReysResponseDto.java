@@ -20,12 +20,10 @@ import java.util.UUID;
 public class ReysResponseDto {
     private UUID reysId;
     private UUID roadsId;
-
     ///direction ne kk
-
     private Direction direction;
-    private String fromStation;
-    private String toStation;
+    private UUID fromStation;
+    private UUID toStation;
     private UUID locomotiveId;
     ///documentatsiyada formatni aytish kerak     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime startDate; ///poyezd qachon  jo'nashi'
