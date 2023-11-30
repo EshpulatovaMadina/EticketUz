@@ -5,13 +5,10 @@ import io.jsonwebtoken.Jws;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.modelmapper.ModelMapper;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.RestTemplate;
 import uz.pdp.eticket.DTO.request.MailDto;
 import uz.pdp.eticket.DTO.request.SignUpDto;
 import uz.pdp.eticket.DTO.response.JwtResponse;
@@ -123,7 +120,7 @@ public class UserService {
     }
 
     public List<UserResponseDto> getAll(String role) {
-        List<UserEntity> users = userRepository.getAllByRoleAndIsActiveTrue(role);
+        List<UserEntity> users = userRepository.findAllByRoleAndIsActiveTrue(role);
         return users.stream().map(userEntity -> modelMapper.map(userEntity, UserResponseDto.class))
                 .toList();
     }
