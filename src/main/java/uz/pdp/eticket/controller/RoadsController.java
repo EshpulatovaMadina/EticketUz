@@ -9,13 +9,8 @@ import org.springframework.web.bind.annotation.*;
 import uz.pdp.eticket.DTO.request.RoadsCreateDto;
 import uz.pdp.eticket.DTO.response.RoadsResponseDto;
 import uz.pdp.eticket.service.roadsService.RoadsService;
-
 import java.util.UUID;
-/**
- * @author 'Sodiqova Dildora' on 27.11.2023
- * @project RailwayUZ
- * @contact @dildora1_04
- */
+
 @RequiredArgsConstructor
 @RestController
 @SecurityRequirement(name = "Bearer Authentication")
@@ -40,7 +35,7 @@ public class RoadsController {
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
     @PreAuthorize(value = "hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
-    @DeleteMapping("/deActive")
+    @DeleteMapping("/de-active")
     public ResponseEntity<RoadsResponseDto> deActive(@RequestParam UUID roadsId){
         return ResponseEntity.ok(roadsService.deActive(roadsId));
     }
@@ -75,7 +70,7 @@ public class RoadsController {
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
     @PreAuthorize(value = "hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
-    @PutMapping("/isActive")
+    @PutMapping("/is-active")
     public ResponseEntity<RoadsResponseDto> isActive(@RequestParam UUID roadsId){
         return ResponseEntity.ok(roadsService.isActive(roadsId));
     }
