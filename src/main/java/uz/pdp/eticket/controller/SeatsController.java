@@ -35,8 +35,8 @@ public class SeatsController {
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
     @PreAuthorize(value = "hasAuthority('ADMIN') or hasAuthority('SUPER_ADMIN')")
-    @DeleteMapping("/deActive")
-    public ResponseEntity<String> deActice(@RequestParam UUID seatId){
+    @DeleteMapping("/dis-active")
+    public ResponseEntity<String> disActive(@RequestParam UUID seatId){
         return ResponseEntity.ok(seatsService.deActive(seatId));
     }
 
@@ -46,7 +46,7 @@ public class SeatsController {
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
     @PreAuthorize(value = "hasAuthority('ADMIN') or hasAuthority('SUPER_ADMIN')")
-    @PutMapping("/is-active-update")
+    @PutMapping("/is-active")
     public ResponseEntity<SeatsResponseDto> isActive(@RequestParam UUID seatId){
         return ResponseEntity.ok(seatsService.isActive(seatId));
     }

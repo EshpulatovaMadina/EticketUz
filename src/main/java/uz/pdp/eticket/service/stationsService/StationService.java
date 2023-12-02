@@ -9,7 +9,7 @@ import java.util.UUID;
 public interface StationService {
     StationResponseDto create(StationsCreateDto stationsCreateDto);
 
-     StationResponseDto deActive(UUID stationId);
+     StationResponseDto disActive(UUID stationId);
 
     StationResponseDto update(UUID seatId, StationsCreateDto dto);
 

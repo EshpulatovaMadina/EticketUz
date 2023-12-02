@@ -39,9 +39,9 @@ public class StationController {
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
     @PreAuthorize(value = "hasAuthority('ADMIN') or hasAuthority('SUPER_ADMIN')")
-    @DeleteMapping("/de-active")
-    public ResponseEntity<StationResponseDto> deActive(@RequestParam UUID stationId){
-        return ResponseEntity.ok(stationService.deActive(stationId));
+    @DeleteMapping("/dis-active")
+    public ResponseEntity<StationResponseDto> disActive(@RequestParam UUID stationId){
+        return ResponseEntity.ok(stationService.disActive(stationId));
     }
 
 

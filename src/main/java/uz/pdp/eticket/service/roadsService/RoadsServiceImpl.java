@@ -97,7 +97,7 @@ public class RoadsServiceImpl implements RoadsService {
     }
 
     @Override
-    public RoadsResponseDto deActive(UUID roadsId) {
+    public RoadsResponseDto disActive(UUID roadsId) {
         RoadsEntity road = roadsRepository.findById(roadsId).orElseThrow(() -> new DataNotFoundException("Roads not found"));
         road.setIsActive(false);
         roadsRepository.save(road);

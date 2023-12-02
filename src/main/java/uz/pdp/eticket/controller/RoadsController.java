@@ -35,9 +35,9 @@ public class RoadsController {
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
     @PreAuthorize(value = "hasAuthority('ADMIN') or hasAuthority('SUPER_ADMIN')")
-    @DeleteMapping("/de-active")
-    public ResponseEntity<RoadsResponseDto> deActive(@RequestParam UUID roadsId){
-        return ResponseEntity.ok(roadsService.deActive(roadsId));
+    @DeleteMapping("/dis-active")
+    public ResponseEntity<RoadsResponseDto> disActive(@RequestParam UUID roadsId){
+        return ResponseEntity.ok(roadsService.disActive(roadsId));
     }
 
     @Operation(

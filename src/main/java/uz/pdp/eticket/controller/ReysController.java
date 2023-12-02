@@ -37,9 +37,9 @@ public class ReysController {
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
     @PreAuthorize(value = "hasAuthority('ADMIN') or hasAuthority('SUPER_ADMIN')")
-    @DeleteMapping("/deActive")
+    @DeleteMapping("/dis-active")
     public ResponseEntity<String> disActive(@RequestParam UUID reysId){
-        return ResponseEntity.ok(reysService.deActive(reysId));
+        return ResponseEntity.ok(reysService.disActive(reysId));
     }
 
 

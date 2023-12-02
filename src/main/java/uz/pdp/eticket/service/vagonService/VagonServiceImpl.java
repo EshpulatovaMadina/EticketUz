@@ -81,7 +81,7 @@ public class VagonServiceImpl implements VagonService{
 
 
     @Override
-    public String isInActive(UUID vagonId) {
+    public String disActive(UUID vagonId) {
         VagonEntity vagon = vagonRepository.findById(vagonId).orElseThrow(() -> new DataNotFoundException("Vagon not found"));
         vagon.setIsActive(false);
         vagonRepository.save(vagon);

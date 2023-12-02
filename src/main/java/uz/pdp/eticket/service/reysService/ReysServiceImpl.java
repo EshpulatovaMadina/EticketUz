@@ -55,7 +55,7 @@ public class ReysServiceImpl implements ReysService{
     }
 
     @Override
-    public String deActive(UUID reysId) {
+    public String disActive(UUID reysId) {
         ReysEntity reysNotFound = reysRepository.findById(reysId).orElseThrow(() -> new DataNotFoundException("Reys not found"));
         Boolean bool =   bookingsService.getByReys(reysNotFound.getId());
         if (bool){

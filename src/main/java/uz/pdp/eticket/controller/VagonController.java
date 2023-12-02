@@ -38,7 +38,7 @@ public class VagonController {
     @PreAuthorize(value = "hasAuthority('ADMIN') or hasAuthority('SUPER_ADMIN')")
     @DeleteMapping("/delete")
     public ResponseEntity<String> delete(@RequestParam UUID vagonId){
-        return ResponseEntity.ok(vagonService.isInActive(vagonId));
+        return ResponseEntity.ok(vagonService.disActive(vagonId));
     }
 
 

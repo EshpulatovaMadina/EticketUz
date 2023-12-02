@@ -24,14 +24,14 @@ public class StationServiceImpl implements StationService {
     private final StationRoadsService stationRoadsService;
 
     @Override
-    public StationResponseDto create(StationsCreateDto stationsCreateDto) {
-        if(stationsCreateDto.getRoadId() != null && stationsCreateDto.getNumber() != null) {
-            StationEntity map = modelMapper.map(stationsCreateDto, StationEntity.class);
+    public StationResponseDto create(StationsCreateDto station) {
+        if(station.getRoadId() != null && station.getNumber() != null) {
+            StationEntity map = modelMapper.map(station, StationEntity.class);
             StationEntity save = stationsRepository.save(map);
-            stationRoadsService.save(stationsCreateDto.getRoadId(), List.of(new StationRoadCreateDto(save.getId(),stationsCreateDto.getNumber())));
+            stationRoadsService.save(station.getRoadId(), List.of(new StationRoadCreateDto(save.getId(),station.getNumber())));
             return parse(save);
-        }else if(stationsCreateDto.getRoadId() == null && stationsCreateDto.getNumber() == null) {
-            StationEntity map = modelMapper.map(stationsCreateDto, StationEntity.class);
+        }else if(station.getRoadId() == null && station.getNumber() == null) {
+            StationEntity map = modelMapper.map(station, StationEntity.class);
             StationEntity save = stationsRepository.save(map);
             return parse(save);
         }else {
@@ -40,7 +40,7 @@ public class StationServiceImpl implements StationService {
     }
 
     @Override
-    public StationResponseDto deActive(UUID stationId) {
+    public StationResponseDto disActive(UUID stationId) {
         StationEntity station = stationsRepository.findById(stationId).orElseThrow(() -> new DataNotFoundException("Station not found."));
         station.setIsActive(false);
         stationsRepository.save(station);
@@ -48,24 +48,23 @@ public class StationServiceImpl implements StationService {
     }
 
     @Override
-    public StationResponseDto update(UUID stationId, StationsCreateDto dto) {
-        StationEntity stationEntity = stationsRepository.findById(stationId).orElseThrow(() -> new DataNotFoundException("Station not found."));
-        modelMapper.map(dto, stationEntity);
-        return parse(stationEntity);
+    public StationResponseDto update(UUID stationId, StationsCreateDto stationsCreateDto) {
+        StationEntity station = stationsRepository.findById(stationId).orElseThrow(() -> new DataNotFoundException("Station not found."));
+        modelMapper.map(stationsCreateDto, station);
+        return parse(station);
     }
 
     @Override
     public StationResponseDto isActive(UUID stationId) {
-        StationEntity stationEntity = stationsRepository.findById(stationId).orElseThrow(() -> new DataNotFoundException("Station not found."));
-        stationEntity.setIsActive(true);
-        stationsRepository.save(stationEntity);
-        return parse(stationEntity);
+        StationEntity station = stationsRepository.findById(stationId).orElseThrow(() -> new DataNotFoundException("Station not found."));
+        station.setIsActive(true);
+        stationsRepository.save(station);
+        return parse(station);
     }
 
     @Override
     public StationResponseDto getById(UUID stationId) {
-        StationEntity stationEntity = stationsRepository.findById(stationId).orElseThrow(() -> new DataNotFoundException("Station not found."));
-        return parse(stationEntity);
+        return parse(stationsRepository.findById(stationId).orElseThrow(() -> new DataNotFoundException("Station not found")));
     }
 
     @Override
