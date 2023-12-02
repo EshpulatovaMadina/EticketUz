@@ -16,13 +16,13 @@ import java.util.UUID;
 @SecurityRequirement(name = "Bearer Authentication")
 @RequestMapping("/api/v1/roads")
 public class RoadsController {
-    private RoadsService roadsService;
+    private final RoadsService roadsService;
     @Operation(
             description = "This method is used to add roads",
             method = "POST method is supported",
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
-    @PreAuthorize(value = "hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
+    @PreAuthorize(value = "hasAuthority('ADMIN') or hasAuthority('SUPER_ADMIN')")
     @PostMapping("/create")
     public ResponseEntity<RoadsResponseDto> create(@RequestBody RoadsCreateDto roadsCreateDto){
         return ResponseEntity.ok(roadsService.create(roadsCreateDto));
@@ -34,7 +34,7 @@ public class RoadsController {
             method = "DELETE method is supported",
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
-    @PreAuthorize(value = "hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
+    @PreAuthorize(value = "hasAuthority('ADMIN') or hasAuthority('SUPER_ADMIN')")
     @DeleteMapping("/de-active")
     public ResponseEntity<RoadsResponseDto> deActive(@RequestParam UUID roadsId){
         return ResponseEntity.ok(roadsService.deActive(roadsId));
@@ -45,7 +45,7 @@ public class RoadsController {
             method = "GET method is supported",
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
-    @PreAuthorize(value = "hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
+    @PreAuthorize(value = "hasAuthority('ADMIN') or hasAuthority('SUPER_ADMIN')")
     @GetMapping("/get-by-direction")
     public ResponseEntity<RoadsResponseDto> getRoadByDirection(@RequestParam String direction){
         return ResponseEntity.ok(roadsService.getByDirection(direction));
@@ -57,7 +57,7 @@ public class RoadsController {
             method = "PUT method is supported",
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
-    @PreAuthorize(value = "hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
+    @PreAuthorize(value = "hasAuthority('ADMIN') or hasAuthority('SUPER_ADMIN')")
     @PutMapping("/update")
     public ResponseEntity<RoadsResponseDto> update(@RequestParam UUID roadsId, @RequestBody RoadsCreateDto dto){
         return ResponseEntity.ok(roadsService.update(roadsId, dto));
@@ -69,7 +69,7 @@ public class RoadsController {
             method = "PUT method is supported",
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
-    @PreAuthorize(value = "hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
+    @PreAuthorize(value = "hasAuthority('ADMIN') or hasAuthority('SUPER_ADMIN')")
     @PutMapping("/is-active")
     public ResponseEntity<RoadsResponseDto> isActive(@RequestParam UUID roadsId){
         return ResponseEntity.ok(roadsService.isActive(roadsId));
@@ -80,7 +80,7 @@ public class RoadsController {
             method = "GET method is supported",
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
-    @PreAuthorize(value = "hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
+    @PreAuthorize(value = "hasAuthority('ADMIN') or hasAuthority('SUPER_ADMIN')")
     @GetMapping("/get-by-id")
     public ResponseEntity<RoadsResponseDto> getbyId(@RequestParam UUID roadsId){
         return ResponseEntity.ok(roadsService.getById(roadsId));

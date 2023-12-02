@@ -12,11 +12,7 @@ import uz.pdp.eticket.service.reysService.ReysService;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
-/**
- * @author 'Sodiqova Dildora' on 27.11.2023
- * @project RailwayUZ
- * @contact @dildora1_04
- */
+
 @RestController
 @RequiredArgsConstructor
 @SecurityRequirement(name = "Bearer Authentication")

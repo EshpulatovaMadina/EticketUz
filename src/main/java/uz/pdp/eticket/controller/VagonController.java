@@ -12,23 +12,19 @@ import uz.pdp.eticket.service.vagonService.VagonService;
 
 import java.util.List;
 import java.util.UUID;
-/**
- * @author 'Sodiqova Dildora' on 27.11.2023
- * @project RailwayUZ
- * @contact @dildora1_04
- */
+
 @RestController
 @RequiredArgsConstructor
 @SecurityRequirement(name = "Bearer Authentication")
 @RequestMapping("/api/v1/vagon")
 public class VagonController {
-    private VagonService vagonService;
+    private final VagonService vagonService;
     @Operation(
             description = "This method is used to add a wagon",
             method = "POST method is supported",
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
-    @PreAuthorize(value = "hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
+    @PreAuthorize(value = "hasAuthority('ADMIN') or hasAuthority('SUPER_ADMIN')")
     @PostMapping("/create")
     public ResponseEntity<VagonResponseDto> create(@RequestBody List<VagonCreateDto> vagonCreateDtos, @RequestParam Double seatPrice){////buyerga price kirib kelsin deganim bitta vagon ichoda seatlar default yaratiladi shuning un narhi vagon typega bog'liq bolganligi un pri vagon typelar bn birga admin bersin dedim
         return ResponseEntity.ok(vagonService.create(vagonCreateDtos, seatPrice));
@@ -39,7 +35,7 @@ public class VagonController {
             method = "DELETE method is supported",
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
-    @PreAuthorize(value = "hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
+    @PreAuthorize(value = "hasAuthority('ADMIN') or hasAuthority('SUPER_ADMIN')")
     @DeleteMapping("/delete")
     public ResponseEntity<String> delete(@RequestParam UUID vagonId){
         return ResponseEntity.ok(vagonService.isInActive(vagonId));
@@ -51,7 +47,7 @@ public class VagonController {
 //            method = "PUT method is supported",
 //            security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
 //    )
-//    @PreAuthorize(value = "hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
+//    @PreAuthorize(value = "hasAuthority()('ADMIN') or hasAuthority()('SUPER_ADMIN')")
 //    @PutMapping("/update")
 //    public ResponseEntity<VagonResponseDto> update(@RequestBody VagonCreateDto dto, @RequestParam UUID vagonId){
 //        return ResponseEntity.ok(vagonService.u(vagonId, dto));
@@ -62,7 +58,7 @@ public class VagonController {
             method = "PUT method is supported",
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
-    @PreAuthorize(value = "hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
+    @PreAuthorize(value = "hasAuthority('ADMIN') or hasAuthority('SUPER_ADMIN')")
     @PutMapping("/isActiveUpdate")
     public ResponseEntity<VagonResponseDto> isActiveUpdate(@RequestParam UUID vagonId){
         return ResponseEntity.ok(vagonService.isActive(vagonId));
@@ -73,7 +69,7 @@ public class VagonController {
             method = "GET method is supported",
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
-    @PreAuthorize(value = "hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
+    @PreAuthorize(value = "hasAuthority('ADMIN') or hasAuthority('SUPER_ADMIN')")
     @GetMapping("/getVagonsOfLocomotive")
     public ResponseEntity<List<VagonResponseDto>> getVagonsOfLocomotive(@RequestParam UUID locomotiveId){
         return ResponseEntity.ok(vagonService.getVagonsOfLocomotive(locomotiveId));
@@ -85,7 +81,7 @@ public class VagonController {
             method = "GET method is supported",
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
-    @PreAuthorize(value = "hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
+    @PreAuthorize(value = "hasAuthority('ADMIN') or hasAuthority('SUPER_ADMIN')")
     @GetMapping("/getById")
     public ResponseEntity<VagonResponseDto> getbyId(@RequestParam UUID vagonId){
         return ResponseEntity.ok(vagonService.getById(vagonId));
@@ -96,7 +92,7 @@ public class VagonController {
             method = "GET method is supported",
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
-    @PreAuthorize(value = "hasRole('ADMIN') or hasRole('USER')")
+    @PreAuthorize(value = "hasAuthority('ADMIN') or hasAuthority('USER')")
     @GetMapping("/getFreeVagon")
     public ResponseEntity<List<FreeVagonResponseDto>> getFreeVagons(@RequestParam UUID locomotiveId, @RequestParam UUID reysId){
            return ResponseEntity.ok(vagonService.getFreeVagon(locomotiveId, reysId));
@@ -107,7 +103,7 @@ public class VagonController {
             method = "POST method is supported",
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
-    @PreAuthorize(value = "hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
+    @PreAuthorize(value = "hasAuthority('ADMIN') or hasAuthority('SUPER_ADMIN')")
     @PostMapping("/setLocomotive")
     public ResponseEntity<List<VagonResponseDto>> setLocomotive(@RequestParam List<UUID> vagonsId, @RequestParam UUID locomotiveId){
         return ResponseEntity.ok(vagonService.setLocomotive(vagonsId, locomotiveId));

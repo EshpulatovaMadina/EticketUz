@@ -3,67 +3,87 @@ package uz.pdp.eticket.service.stationsService;
 import org.modelmapper.ModelMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import uz.pdp.eticket.DTO.request.StationRoadCreateDto;
 import uz.pdp.eticket.DTO.request.StationsCreateDto;
-import uz.pdp.eticket.DTO.response.StationsResponseDto;
-import uz.pdp.eticket.entity.StationsEntity;
+import uz.pdp.eticket.DTO.response.StationResponseDto;
+import uz.pdp.eticket.entity.StationEntity;
+import uz.pdp.eticket.exception.BadRequestException;
 import uz.pdp.eticket.exception.DataNotFoundException;
 import uz.pdp.eticket.repository.StationsRepository;
 import uz.pdp.eticket.service.roadsService.RoadsService;
+import uz.pdp.eticket.service.stationRoadsService.StationRoadsService;
 
+import java.util.List;
 import java.util.UUID;
-/**
- * @author 'Sodiqova Dildora' on 27.11.2023
- * @project RailwayUZ
- * @contact @dildora1_04
- */
+
 @Service
 @RequiredArgsConstructor
-public class StationServiceImpl implements StationService{
+public class StationServiceImpl implements StationService {
     private final RoadsService roadsService;
     private final StationsRepository stationsRepository;
     private final ModelMapper modelMapper;
+    private final StationRoadsService stationRoadsService;
+
     @Override
-    public StationsResponseDto create(StationsCreateDto stationsCreateDto) {
-        StationsEntity map = modelMapper.map(stationsRepository, StationsEntity.class);
-        stationsRepository.save(map);
-        return parse(map);
+    public StationResponseDto create(StationsCreateDto stationsCreateDto) {
+
+        if(stationsCreateDto.getRoadId() != null && stationsCreateDto.getNumber() != null) {
+            StationEntity map = modelMapper.map(stationsCreateDto, StationEntity.class);
+            StationEntity save = stationsRepository.save(map);
+            stationRoadsService.save(stationsCreateDto.getRoadId(), List.of(new StationRoadCreateDto(save.getId(),stationsCreateDto.getNumber())));
+            return parseToResponse(save);
+        }else if(stationsCreateDto.getRoadId() == null && stationsCreateDto.getNumber() == null) {
+            StationEntity map = modelMapper.map(stationsCreateDto, StationEntity.class);
+            StationEntity save = stationsRepository.save(map);
+            return parseToResponse(save);
+        }else {
+            throw new BadRequestException("Road id and order number both should be present or none");
+        }
     }
 
     @Override
-    public StationsResponseDto deActive(UUID stationId) {
-        StationsEntity stationsEntity = stationsRepository.findById(stationId).orElseThrow(() -> new DataNotFoundException("Station not found."));
-        stationsEntity.setIsActive(false);
-        stationsRepository.save(stationsEntity);
-        return parse(stationsEntity);
+    public StationResponseDto deActive(UUID stationId) {
+        StationEntity stationEntity = stationsRepository.findById(stationId).orElseThrow(() -> new DataNotFoundException("Station not found."));
+        stationEntity.setIsActive(false);
+        stationsRepository.save(stationEntity);
+        return parseToResponse(stationEntity);
     }
 
     @Override
-    public StationsResponseDto update(UUID stationId, StationsCreateDto dto) {
-        StationsEntity stationsEntity = stationsRepository.findById(stationId).orElseThrow(() -> new DataNotFoundException("Station not found."));
-         modelMapper.map(dto, stationsEntity);
-        return parse(stationsEntity);
+    public StationResponseDto update(UUID stationId, StationsCreateDto dto) {
+        StationEntity stationEntity = stationsRepository.findById(stationId).orElseThrow(() -> new DataNotFoundException("Station not found."));
+        modelMapper.map(dto, stationEntity);
+        return parseToResponse(stationEntity);
     }
 
     @Override
-    public StationsResponseDto isActive(UUID stationId) {
-        StationsEntity stationsEntity = stationsRepository.findById(stationId).orElseThrow(() -> new DataNotFoundException("Station not found."));
-        stationsEntity.setIsActive(true);
-        stationsRepository.save(stationsEntity);
-        return parse(stationsEntity);
+    public StationResponseDto isActive(UUID stationId) {
+        StationEntity stationEntity = stationsRepository.findById(stationId).orElseThrow(() -> new DataNotFoundException("Station not found."));
+        stationEntity.setIsActive(true);
+        stationsRepository.save(stationEntity);
+        return parseToResponse(stationEntity);
     }
 
     @Override
-    public StationsResponseDto getById(UUID stationId) {
-        StationsEntity stationsEntity = stationsRepository.findById(stationId).orElseThrow(() -> new DataNotFoundException("Station not found."));
-        return parse(stationsEntity);
+    public StationResponseDto getById(UUID stationId) {
+        StationEntity stationEntity = stationsRepository.findById(stationId).orElseThrow(() -> new DataNotFoundException("Station not found."));
+        return parseToResponse(stationEntity);
+    }
+
+    @Override
+    public List<StationResponseDto> getAll(String location) {
+
+        if (location.isEmpty())
+            return stationsRepository.findAll().stream().map(this::parseToResponse).toList();
+
+        else return stationsRepository.findAllByLocation(location).stream().map(this::parseToResponse).toList();
     }
 
 
-
-    private StationsResponseDto parse(StationsEntity stationsEntity){
-        StationsResponseDto map = modelMapper.map(stationsEntity, StationsResponseDto.class);
-//        RoadsResponseDto responseDto = roadsService.parse(stationsEntity.getRoadsEntity());
+    private StationResponseDto parseToResponse(StationEntity stationEntity) {
+        //        RoadsResponseDto responseDto = roadsService.parse(stationsEntity.getRoadsEntity());
 //        map.setRoadsResponseDto();
-        return map;
+        return modelMapper.map(stationEntity, StationResponseDto.class);
     }
+
 }

@@ -6,27 +6,20 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
-/**
- * @author 'Sodiqova Dildora' on 27.11.2023
- * @project RailwayUZ
- * @contact @dildora1_04
- */
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @Entity(name = "station")
-public class StationsEntity extends BaseEntity {
+public class StationEntity extends BaseEntity {
     private String name;
     private String location;
-    private Integer sequenceNumber;
 
     @OneToOne(cascade = CascadeType.ALL)
-    private StationsEntity nextStation;
+    private StationEntity nextStation;
 
     @OneToOne(cascade = CascadeType.ALL)
-    private StationsEntity prevStation;
+    private StationEntity prevStation;
 }
 
 

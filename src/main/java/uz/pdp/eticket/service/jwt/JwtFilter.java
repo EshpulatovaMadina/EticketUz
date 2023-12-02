@@ -3,13 +3,14 @@ package uz.pdp.eticket.service.jwt;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jws;
-import jakarta.security.auth.message.AuthException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.servlet.HandlerExceptionResolver;
+import uz.pdp.eticket.exception.AuthException;
 
 import java.io.IOException;
 
@@ -17,6 +18,7 @@ import java.io.IOException;
 public class JwtFilter extends OncePerRequestFilter {
     private JwtService jwtService;
     private AuthenticationService authenticationService;
+    private HandlerExceptionResolver handlerExceptionResolver;
 
 
     @Override
@@ -33,11 +35,7 @@ public class JwtFilter extends OncePerRequestFilter {
             authenticationService.authenticate(claimsJws.getBody(),request);
             filterChain.doFilter(request,response);
         }catch (ExpiredJwtException e) {
-            try {
-                throw  new AuthException("Token expired");
-            } catch (AuthException ex) {
-                throw new RuntimeException(ex);
-            }
+            handlerExceptionResolver.resolveException(request,response,null,new AuthException("Token expired"));
         }
     }
 }

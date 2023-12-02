@@ -1,7 +1,7 @@
 package uz.pdp.eticket.service.seatsService;
 
 import uz.pdp.eticket.DTO.response.SeatsResponseDto;
-import uz.pdp.eticket.entity.SeatsEntity;
+import uz.pdp.eticket.entity.SeatEntity;
 
 import java.util.List;
 import java.util.UUID;
@@ -17,5 +17,5 @@ public interface SeatsService {
 //    SeatsResponseDto update(UUID seatId, SeatsCreateDto dto);
     SeatsResponseDto getById(UUID seatId);
     List<SeatsResponseDto> getSeatsOfVagon(UUID vagonId);
-    SeatsResponseDto parse(SeatsEntity seatsEntity);
+    SeatsResponseDto parse(SeatEntity seatEntity);
 }
