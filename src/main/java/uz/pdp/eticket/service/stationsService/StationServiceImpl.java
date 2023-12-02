@@ -51,6 +51,7 @@ public class StationServiceImpl implements StationService {
     public StationResponseDto update(UUID stationId, StationsCreateDto stationsCreateDto) {
         StationEntity station = stationsRepository.findById(stationId).orElseThrow(() -> new DataNotFoundException("Station not found."));
         modelMapper.map(stationsCreateDto, station);
+        stationsRepository.save(station);
         return parse(station);
     }
 

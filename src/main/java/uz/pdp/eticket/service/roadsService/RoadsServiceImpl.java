@@ -68,8 +68,8 @@ public class RoadsServiceImpl implements RoadsService {
                     new RoadsResponseDto(s.getRoad().getId(), s.getRoad().getDirection()),
                     null,
                     null,
-                    s.getCreatedDate()
-                    ));
+                    s.getCreatedDate(),
+                    s.getIsActive()));
         }
         return list;
     }

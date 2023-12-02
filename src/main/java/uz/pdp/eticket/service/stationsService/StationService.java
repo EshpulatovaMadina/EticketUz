@@ -15,7 +15,7 @@ public interface StationService {
 
     StationResponseDto isActive(UUID stationId);
 
-    StationResponseDto getById(UUID seatId);
+    StationResponseDto getById(UUID stationId);
 
     List<StationResponseDto> getAll(String location);
 }

@@ -75,8 +75,8 @@ public class StationController {
     )
     @PreAuthorize(value = "hasAuthority('ADMIN') or hasAuthority('SUPER_ADMIN')")
     @GetMapping("/get-by-id")
-    public ResponseEntity<StationResponseDto> getbyId(@RequestParam UUID seatId){
-        return ResponseEntity.ok(stationService.getById(seatId));
+    public ResponseEntity<StationResponseDto> getbyId(@RequestParam UUID stationId){
+        return ResponseEntity.ok(stationService.getById(stationId));
     }
 
     @PreAuthorize(value = "hasAuthority('ADMIN')")

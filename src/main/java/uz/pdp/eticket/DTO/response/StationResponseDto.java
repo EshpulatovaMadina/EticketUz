@@ -20,4 +20,5 @@ public class StationResponseDto {
     private StationResponseDto nextStation;
     private StationResponseDto prevStation;
     private LocalDateTime cratedDate;
+    private Boolean isActive;
 }

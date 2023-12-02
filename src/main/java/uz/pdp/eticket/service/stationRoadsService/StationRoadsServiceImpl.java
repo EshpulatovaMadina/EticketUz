@@ -3,6 +3,7 @@ package uz.pdp.eticket.service.stationRoadsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import uz.pdp.eticket.DTO.request.StationRoadCreateDto;
+import uz.pdp.eticket.DTO.response.StationRoadsResponseDto;
 import uz.pdp.eticket.entity.RoadsEntity;
 import uz.pdp.eticket.entity.StationEntity;
 import uz.pdp.eticket.entity.StationRoadsEntity;
@@ -25,14 +26,16 @@ public class StationRoadsServiceImpl implements StationRoadsService {
     private final RoadsRepository roadsRepository;
     private final StationsRepository stationsRepository;
 
-    public void save(UUID roadId, List<StationRoadCreateDto> stations) {
-        for (StationRoadCreateDto station : stations) {
-            StationEntity stationEntity = stationsRepository.findById(station.getStationId())
-                    .orElseThrow(() -> new DataNotFoundException("Station not found with id: " + station.getStationId()));
+    public StationRoadsResponseDto save(UUID roadId, List<StationRoadCreateDto> stations) {
+        StationRoadsEntity save = null;
+        for (StationRoadCreateDto stationCreate : stations) {
+            StationEntity station = stationsRepository.findById(stationCreate.getStationId())
+                    .orElseThrow(() -> new DataNotFoundException("Station not found with id: " + stationCreate.getStationId()));
             RoadsEntity roadsEntity = roadsRepository.findById(roadId)
                     .orElseThrow(() -> new DataNotFoundException("Road not found with id: " + roadId));
-            stationRoadsRepository.save(new StationRoadsEntity(stationEntity, roadsEntity, station.getOrderNumber()));
+             save = stationRoadsRepository.save(new StationRoadsEntity(station, roadsEntity, stationCreate.getOrderNumber()));
         }
+        return new StationRoadsResponseDto(save.getId(), save.getStation().getId(),save.getStation().getName(), save.getRoad().getId(), save.getRoad().getDirection(), save.getOrderNumber() );
     }
 
     @Override
