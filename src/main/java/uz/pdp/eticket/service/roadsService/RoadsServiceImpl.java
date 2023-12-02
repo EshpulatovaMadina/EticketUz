@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import uz.pdp.eticket.DTO.request.RoadsCreateDto;
+import uz.pdp.eticket.DTO.request.StationRoadCreateDto;
 import uz.pdp.eticket.DTO.response.RoadsResponseDto;
 import uz.pdp.eticket.DTO.response.StationsResponseDto;
 import uz.pdp.eticket.entity.RoadsEntity;
@@ -32,20 +33,23 @@ public class RoadsServiceImpl implements RoadsService {
 
     @Override
     public RoadsResponseDto create(RoadsCreateDto roadsCreateDto) {
-        RoadsEntity parse = parse(roadsCreateDto);
-        if (roadsRepository.existsByDirection(parse.getDirection())) {
+        if (roadsRepository.existsByDirection(roadsCreateDto.getDirection())) {
             throw new DataAlreadyExistsException("This Road name already exists . Please can you create other name ?");
         }
+        RoadsEntity parse = parse(roadsCreateDto);
         RoadsEntity save = roadsRepository.save(parse);
-        stationRoadsService.save(save.getId(), roadsCreateDto.getStations());
-        return new RoadsResponseDto(save.getId(), save.getDirection());
+        return parse(save);
+//        RoadsEntity save = roadsRepository.save(parse);
+//        stationRoadsService.save(save.getId(), roadsCreateDto.getStations());
+//        return new RoadsResponseDto(save.getId(), save.getDirection());
     }
 
     @Override
-    public RoadsResponseDto update(UUID roadsId, RoadsCreateDto dto) {
+    public RoadsResponseDto update(UUID roadsId, RoadsCreateDto dto){
         RoadsEntity road = roadsRepository.findById(roadsId).orElseThrow(() -> new DataNotFoundException("Roads not found"));
         road.setDirection(dto.getDirection());
-        stationRoadsService.update(road.getId(), dto.getStations());
+        roadsRepository.save(road);
+//        stationRoadsService.update(road.getId(), dto.getStations());
         return new RoadsResponseDto(roadsId, road.getDirection());
     }
 
@@ -63,7 +67,7 @@ public class RoadsServiceImpl implements RoadsService {
         for (int i = 1; i < stations.size()-1; i++) {
             StationRoadsEntity s = stations.get(i);
             list.add(new StationsResponseDto(
-                    s.getStationId(),
+                    s.getStation().getId(),
                     s.getStation().getName(),
                     s.getStation().getLocation(),
                     new RoadsResponseDto(s.getRoad().getId(), s.getRoad().getDirection()),

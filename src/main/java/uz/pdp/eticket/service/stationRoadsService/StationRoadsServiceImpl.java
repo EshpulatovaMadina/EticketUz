@@ -36,7 +36,7 @@ public class StationRoadsServiceImpl implements StationRoadsService {
             return new StationRoadsEntity(newStationId, roadId);
         }).toList(); // save qiladigan list
         List<StationRoadsEntity> deleteAll = all.stream().filter(item -> {
-            return !newStations.contains(item.getStationId());
+            return !newStations.contains(item.getStation().getId());
         }).toList();
 
         stationRoadsRepository.saveAll(saveList);

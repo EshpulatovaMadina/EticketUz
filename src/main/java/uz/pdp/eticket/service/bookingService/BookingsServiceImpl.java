@@ -45,6 +45,7 @@ public class BookingsServiceImpl implements BookingsService{
     public BookingsResponseDto create(BookingCreateDto dto) {
         ReysEntity reys = reysRepository.findById(dto.getReysId()).orElseThrow(() -> new DataNotFoundException("Reys not found"));
         BookingEntity map = modelMapper.map(dto, BookingEntity.class);
+        new BookingEntity();
         map.setReys(reys);
         bookingsRepository.save(map);
         return parse(map);
