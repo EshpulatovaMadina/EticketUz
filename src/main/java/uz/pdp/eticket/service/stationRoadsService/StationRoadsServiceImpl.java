@@ -27,7 +27,6 @@ public class StationRoadsServiceImpl implements StationRoadsService {
 
     public void save(UUID roadId, List<StationRoadCreateDto> stations) {
         for (StationRoadCreateDto station : stations) {
-
             StationEntity stationEntity = stationsRepository.findById(station.getStationId())
                     .orElseThrow(() -> new DataNotFoundException("Station not found with id: " + station.getStationId()));
             RoadsEntity roadsEntity = roadsRepository.findById(roadId)

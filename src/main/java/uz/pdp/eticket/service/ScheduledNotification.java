@@ -23,23 +23,16 @@ public class ScheduledNotification {
 
     @Scheduled(fixedRate = 60000)
     public void scheduleTaskUsingCronExpression() {
-        log.info("Checking ticket expiry");
         bookingsService.checkExcpiryDate();
-        log.info("Finished checking ticket expiry");
     }
 
     @Scheduled(fixedRate = 50000)
     public void warnAllUsers() {
-        log.info("Checking reys");
-
         List<UserEntity> userEntities = userRepository.findAllByStartDate(LocalDateTime.now().minusDays(1));
-
         userEntities.forEach(item -> {
             MailDto mailDto = new MailDto("the flight for which you bought a ticket will depart in 1 day", item.getEmail());
             mailService.sendMail(mailDto);
         });
-
-        log.info("Finished checking reys");
     }
 
 }

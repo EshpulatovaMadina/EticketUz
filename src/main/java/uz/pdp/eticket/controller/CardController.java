@@ -39,7 +39,7 @@ public class CardController {
             method = "GET method is supported",
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
-    @PreAuthorize(value = "hasRole('USER')")
+    @PreAuthorize(value = "hasAuthority('USER')")
     @GetMapping("/get-cards-of-user/{userId}")
     public ResponseEntity<List<CardResponseDTO>> getCardsOfUser(Principal principal){
         return ResponseEntity.ok(cardService.getCardsOfUser(UUID.fromString(principal.getName())));
@@ -51,7 +51,7 @@ public class CardController {
             method = "DELETE method is supported",
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
-    @PreAuthorize(value = "hasRole('USER')")
+    @PreAuthorize(value = "hasAuthority('USER')")
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Boolean> delete(@PathVariable UUID cardId){
         return ResponseEntity.ok(cardService.delete(cardId));

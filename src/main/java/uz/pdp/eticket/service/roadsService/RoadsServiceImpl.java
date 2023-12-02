@@ -5,7 +5,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import uz.pdp.eticket.DTO.request.RoadsCreateDto;
 import uz.pdp.eticket.DTO.response.RoadsResponseDto;
-import uz.pdp.eticket.DTO.response.StationsResponseDto;
+import uz.pdp.eticket.DTO.response.StationResponseDto;
 import uz.pdp.eticket.entity.RoadsEntity;
 import uz.pdp.eticket.entity.StationRoadsEntity;
 import uz.pdp.eticket.exception.DataAlreadyExistsException;
@@ -35,9 +35,10 @@ public class RoadsServiceImpl implements RoadsService {
         if (roadsRepository.existsByDirection(roadsCreateDto.getDirection())) {
             throw new DataAlreadyExistsException("This Road name already exists . Please can you create other name ?");
         }
-        RoadsEntity save = roadsRepository.save(parse);
-        stationRoadsService.save(save.getId(), roadsCreateDto.getStations());
-        return new RoadsResponseDto(save.getId(), save.getDirection());
+        RoadsEntity parse = parse(roadsCreateDto);
+         roadsRepository.save(parse);
+        stationRoadsService.save(parse.getId(), roadsCreateDto.getStations());
+        return new RoadsResponseDto(parse.getId(), parse.getDirection());
     }
 
     @Override
@@ -52,12 +53,12 @@ public class RoadsServiceImpl implements RoadsService {
     public RoadsResponseDto getByDirection(String direction) {
         RoadsEntity road = roadsRepository.findAllByDirection(direction).orElseThrow(() -> new DataNotFoundException("This road not found"));
         List<StationRoadsEntity> all = sr.findAllByRoadIdOrderByOrderNumber(road.getId());
-        List<StationsResponseDto> parse = parse(all);
+        List<StationResponseDto> parse = parse(all);
         return new RoadsResponseDto(road.getId(), road.getDirection(), parse);
     }
 
-    private List<StationsResponseDto> parse(List<StationRoadsEntity> stations) {
-        List<StationsResponseDto> list = new ArrayList<>();
+    private List<StationResponseDto> parse(List<StationRoadsEntity> stations) {
+        List<StationResponseDto> list = new ArrayList<>();
 
         for (int i = 1; i < stations.size()-1; i++) {
             StationRoadsEntity s = stations.get(i);
@@ -74,15 +75,6 @@ public class RoadsServiceImpl implements RoadsService {
         return list;
     }
 
-
-    /**
-     * hullas bu method 2 ta stansiya qaysi yonalishda uchrasa shu yonalishni nameini qaytaradi
-     * @return
-     */
-//  @Override
-////    public String getDirectionByStation(String fromStation, String toStation) {
-////        return roadsRepository.findAllDirectionByStations(fromStation, toStation);
-////    }
     @Override
     public RoadsResponseDto parse(RoadsEntity roadsEntity) {
         RoadsResponseDto responseDto = new RoadsResponseDto(roadsEntity.getId(), roadsEntity.getDirection());

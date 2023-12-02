@@ -41,8 +41,8 @@ public class ReysServiceImpl implements ReysService{
         List<String> directions = stationRoadsService.findAllDirectionByStations(fromStation, toStation);
         List<ReysResponseDto> parse = new ArrayList<>();
         for (String direction : directions) {
-            List<ReysEntity> allByDirectionAndFromDate = reysRepository.findAllByDirectionAndStartDate(direction, fromDate);
-            parse.addAll(parse(allByDirectionAndFromDate));
+            List<ReysEntity> all = reysRepository.findAllByDirectionAndStartDate(direction, fromDate);
+            parse.addAll(parse(all));
         }
         return parse;
     }
@@ -64,9 +64,6 @@ public class ReysServiceImpl implements ReysService{
           reysNotFound.setIsActive(false);
         return "Successfully";
     }
-
-
-
 
     private ReysResponseDto parse(ReysEntity entity) {
         ReysResponseDto map = modelMapper.map(entity, ReysResponseDto.class);

@@ -39,13 +39,11 @@ public class BookingsServiceImpl implements BookingsService{
     private final BookingsRepository bookingsRepository;
     private final ReysRepository reysRepository;
     private final ModelMapper modelMapper;
-    private final UserRepository userRepository;
 
     @Override
     public BookingsResponseDto create(BookingCreateDto dto) {
         ReysEntity reys = reysRepository.findById(dto.getReysId()).orElseThrow(() -> new DataNotFoundException("Reys not found"));
         BookingEntity map = modelMapper.map(dto, BookingEntity.class);
-        new BookingEntity();
         map.setReys(reys);
         bookingsRepository.save(map);
         return parse(map);
@@ -53,8 +51,7 @@ public class BookingsServiceImpl implements BookingsService{
 
     @Override
     public BookingsResponseDto getById(UUID bookingId) {
-        BookingEntity bookingEntity = bookingsRepository.findById(bookingId).orElseThrow(() -> new DataNotFoundException("Booking not found !!!"));
-        return parse(bookingEntity);
+        return parse(bookingsRepository.findById(bookingId).orElseThrow(() -> new DataNotFoundException("Booking not found !!!")));
     }
 
 

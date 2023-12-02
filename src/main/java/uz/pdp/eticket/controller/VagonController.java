@@ -42,17 +42,6 @@ public class VagonController {
     }
 
 
-//    @Operation(
-//            description = "This method updates the data of one wagon",
-//            method = "PUT method is supported",
-//            security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
-//    )
-//    @PreAuthorize(value = "hasAuthority()('ADMIN') or hasAuthority()('SUPER_ADMIN')")
-//    @PutMapping("/update")
-//    public ResponseEntity<VagonResponseDto> update(@RequestBody VagonCreateDto dto, @RequestParam UUID vagonId){
-//        return ResponseEntity.ok(vagonService.u(vagonId, dto));
-//    }
-
     @Operation(
             description = "This method changes the active wagon",
             method = "PUT method is supported",

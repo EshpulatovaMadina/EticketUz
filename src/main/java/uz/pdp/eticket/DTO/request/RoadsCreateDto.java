@@ -17,4 +17,5 @@ import java.util.UUID;
 @Setter
 public class RoadsCreateDto {
     private String direction;
+    private List<StationRoadCreateDto> stations;
 }

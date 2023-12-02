@@ -52,50 +52,37 @@ public class SeatsServiceImpl implements SeatsService{
 
     @Override
     public String deActive(UUID seatId) {
-        SeatEntity seatEntity = seatsRepository.findById(seatId).orElseThrow(() -> new DataNotFoundException("Seat not found !!!"));
-        seatEntity.setIsActive(false);
-        seatsRepository.save(seatEntity);
+        SeatEntity seat = seatsRepository.findById(seatId).orElseThrow(() -> new DataNotFoundException("Seat not found !!!"));
+        seat.setIsActive(false);
+        seatsRepository.save(seat);
         return "Successfully";
     }
 
-//    @Override
-//    public SeatsResponseDto update(UUID seatId, SeatsCreateDto dto) {
-//        SeatsEntity seatsEntity = seatsRepository.findById(seatId).orElseThrow(() -> new DataNotFoundException("Seat not found !!!"));
-//
-//        ///numberini ham set qil garang.
-//        seatsEntity.setLocation(dto.getLocation());
-//        return null;
-//    }
-
     @Override
     public SeatsResponseDto getById(UUID seatId) {
-        SeatEntity seatEntity = seatsRepository.findById(seatId).orElseThrow(() -> new DataNotFoundException("Seat not found !!!"));
-        return parse(seatEntity);
+        return parse(seatsRepository.findById(seatId).orElseThrow(() -> new DataNotFoundException("Seat not found !!!")));
+
     }
 
     @Override
     public List<SeatsResponseDto> getSeatsOfVagon(UUID vagonId) {
-        List<SeatEntity> allByVagonId = seatsRepository.findAllByVagonId(vagonId);
-        return parse(allByVagonId);
+        return parse(seatsRepository.findAllByVagonId(vagonId));
     }
-    private List<SeatsResponseDto> parse(List<SeatEntity> entities){
+
+    private List<SeatsResponseDto> parse(List<SeatEntity> seats){
         List<SeatsResponseDto> list = new ArrayList<>();
-        for (SeatEntity entity : entities) {
-            SeatsResponseDto map = modelMapper.map(entity, SeatsResponseDto.class);
-            map.setVagonId(entity.getVagonId().getId());
+        for (SeatEntity seat : seats) {
+            SeatsResponseDto map = modelMapper.map(seat, SeatsResponseDto.class);
+            map.setVagonId(seat.getVagonId().getId());
             list.add(map);
         }
         return list;
     }
 
-    private SeatEntity parse(SeatsCreateDto seatsCreateDto){
-        return modelMapper.map(seatsCreateDto, SeatEntity.class);
-    }
-
     @Override
-    public SeatsResponseDto parse(SeatEntity seatEntity) {
-        SeatsResponseDto map = modelMapper.map(seatEntity, SeatsResponseDto.class);
-        map.setVagonId(seatEntity.getVagonId().getId());
+    public SeatsResponseDto parse(SeatEntity seat) {
+        SeatsResponseDto map = modelMapper.map(seat, SeatsResponseDto.class);
+        map.setVagonId(seat.getVagonId().getId());
         return map;
     }
 
