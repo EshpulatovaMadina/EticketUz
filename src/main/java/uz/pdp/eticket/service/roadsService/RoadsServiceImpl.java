@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import uz.pdp.eticket.DTO.request.RoadsCreateDto;
 import uz.pdp.eticket.DTO.response.RoadsResponseDto;
 import uz.pdp.eticket.DTO.response.StationResponseDto;
+import uz.pdp.eticket.DTO.response.StationRoadsResponseDto;
 import uz.pdp.eticket.entity.RoadsEntity;
 import uz.pdp.eticket.entity.StationRoadsEntity;
 import uz.pdp.eticket.exception.DataAlreadyExistsException;
@@ -37,7 +38,7 @@ public class RoadsServiceImpl implements RoadsService {
         }
         RoadsEntity parse = parse(roadsCreateDto);
          roadsRepository.save(parse);
-        stationRoadsService.save(parse.getId(), roadsCreateDto.getStations());
+        StationRoadsResponseDto save = stationRoadsService.save(parse.getId(), roadsCreateDto.getStations());
         return new RoadsResponseDto(parse.getId(), parse.getDirection());
     }
 
