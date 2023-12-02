@@ -23,16 +23,7 @@ public class BookingCreateDto {
     private UUID userId;
 
     @NotBlank(message = "")
-    private String firstName;
-
-    @NotBlank(message = "")
-    private String lastName;
-
-    @NotBlank(message = "")
     private String identity;
-
-    @NotBlank(message = "")
-    private String birthday;
 
     @NotNull(message = "")
     private UUID reysId;

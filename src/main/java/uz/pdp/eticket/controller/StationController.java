@@ -26,7 +26,7 @@ public class StationController {
             method = "POST method is supported",
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
-    @PreAuthorize(value = "hasAuthority('ADMIN') or hasRole('SUPER_ADMIN')")
+    @PreAuthorize(value = "hasAuthority('ADMIN') or hasAuthority('SUPER_ADMIN')")
     @PostMapping("/create")
     public ResponseEntity<StationResponseDto> create(@RequestBody StationsCreateDto stationsCreateDto){
         return ResponseEntity.ok(stationService.create(stationsCreateDto));
@@ -38,10 +38,10 @@ public class StationController {
             method = "DELETE method is supported",
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
-    @PreAuthorize(value = "hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
-    @DeleteMapping("/de-active")
-    public ResponseEntity<StationResponseDto> deActive(@RequestParam UUID stationId){
-        return ResponseEntity.ok(stationService.deActive(stationId));
+    @PreAuthorize(value = "hasAuthority('ADMIN') or hasAuthority('SUPER_ADMIN')")
+    @DeleteMapping("/dis-active")
+    public ResponseEntity<StationResponseDto> disActive(@RequestParam UUID stationId){
+        return ResponseEntity.ok(stationService.disActive(stationId));
     }
 
 
@@ -50,7 +50,7 @@ public class StationController {
             method = "PUT method is supported",
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
-    @PreAuthorize(value = "hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
+    @PreAuthorize(value = "hasAuthority('ADMIN') or hasAuthority('SUPER_ADMIN')")
     @PutMapping("/update")
     public ResponseEntity<StationResponseDto> update(@RequestParam UUID stationId, @RequestBody StationsCreateDto dto){
         return ResponseEntity.ok(stationService.update(stationId, dto));
@@ -62,7 +62,7 @@ public class StationController {
             method = "PUT method is supported",
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
-    @PreAuthorize(value = "hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
+    @PreAuthorize(value = "hasAuthority('ADMIN') or hasAuthority('SUPER_ADMIN')")
     @PutMapping("/is-active")
     public ResponseEntity<StationResponseDto> isActive(@RequestParam UUID stationId){
         return ResponseEntity.ok(stationService.isActive(stationId));
@@ -75,8 +75,8 @@ public class StationController {
     )
     @PreAuthorize(value = "hasAuthority('ADMIN') or hasAuthority('SUPER_ADMIN')")
     @GetMapping("/get-by-id")
-    public ResponseEntity<StationResponseDto> getbyId(@RequestParam UUID seatId){
-        return ResponseEntity.ok(stationService.getById(seatId));
+    public ResponseEntity<StationResponseDto> getbyId(@RequestParam UUID stationId){
+        return ResponseEntity.ok(stationService.getById(stationId));
     }
 
     @PreAuthorize(value = "hasAuthority('ADMIN')")

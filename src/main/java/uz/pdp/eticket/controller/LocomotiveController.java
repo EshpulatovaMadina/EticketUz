@@ -36,7 +36,7 @@ public class LocomotiveController {
             method = "PUT method is supported",
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
-    @PreAuthorize(value = "hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
+    @PreAuthorize(value = "hasAuthority('ADMIN') or hasAuthority('SUPER_ADMIN')")
     @PutMapping("/is-active")
     public ResponseEntity<LocomotiveResponseDto> isActive(@RequestParam UUID locoId){
         return ResponseEntity.ok(locomotiveService.isActive(locoId));
@@ -48,7 +48,7 @@ public class LocomotiveController {
             method = "DELETE method is supported",
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
-    @PreAuthorize(value = "hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
+    @PreAuthorize(value = "hasAuthority('ADMIN') or hasAuthority('SUPER_ADMIN')")
     @DeleteMapping("/disActive")
     public ResponseEntity<String> disActive(@RequestParam UUID locomotiveId){
         return ResponseEntity.ok(locomotiveService.isInActive(locomotiveId));
@@ -60,7 +60,7 @@ public class LocomotiveController {
             method = "GET method is supported",
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
-    @PreAuthorize(value = "hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
+    @PreAuthorize(value = "hasAuthority('ADMIN') or hasAuthority('SUPER_ADMIN')")
     @GetMapping("/get-by-id")
     public ResponseEntity<LocomotiveResponseDto> getbyId(@RequestParam UUID seatId){
         return ResponseEntity.ok(locomotiveService.getById(seatId));
@@ -73,7 +73,7 @@ public class LocomotiveController {
             method = "PUT method is supported",
             security = @SecurityRequirement(name = "pre authorize"  , scopes = {"ADMIN"})
     )
-    @PreAuthorize(value = "hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
+    @PreAuthorize(value = "hasAuthority('ADMIN') or hasAuthority('SUPER_ADMIN')")
     @PutMapping("/update")
     public ResponseEntity<LocomotiveResponseDto> update(@RequestBody LocomotiveCreateDto dto, @RequestParam UUID locomotiveId){
         return ResponseEntity.ok(locomotiveService.update(locomotiveId, dto));

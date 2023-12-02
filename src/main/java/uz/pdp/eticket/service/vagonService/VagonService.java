@@ -15,7 +15,7 @@ import java.util.UUID;
 public interface VagonService {
     VagonResponseDto create(List<VagonCreateDto> dto, Double seatPrice);
     List<VagonResponseDto> setLocomotive(List<UUID> vagonsId, UUID locomotiveId);
-    String isInActive(UUID vagonId);
+    String disActive(UUID vagonId);
     VagonResponseDto isActive(UUID vagonId);
     VagonResponseDto getById(UUID vagonId);
     List<VagonResponseDto> getVagonsOfLocomotive(UUID locomotiveId);

@@ -19,12 +19,9 @@ import java.util.UUID;
 public class BookingsResponseDto {
     private UUID bookingId;
     private UUID userId;
-    private String firstName;
-    private String lastName;
     private String identity;
-    private String birthday;
-    private ReysEntity reys;
-    private UUID vagonId;
-    private LocalDateTime date;
+    private UUID  reysId;
+    private Integer vagonNumber;
+    private LocalDateTime startDate;
     private LocalDateTime createdDate;
 }

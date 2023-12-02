@@ -13,7 +13,7 @@ public interface ReysService {
 
     ReysResponseDto create(ReysCreateDto dto);
 
-    String deActive(UUID reysId);
+    String disActive(UUID reysId);
 
 
 }

@@ -9,13 +9,13 @@ import java.util.UUID;
 public interface StationService {
     StationResponseDto create(StationsCreateDto stationsCreateDto);
 
-     StationResponseDto deActive(UUID stationId);
+     StationResponseDto disActive(UUID stationId);
 
     StationResponseDto update(UUID seatId, StationsCreateDto dto);
 
     StationResponseDto isActive(UUID stationId);
 
-    StationResponseDto getById(UUID seatId);
+    StationResponseDto getById(UUID stationId);
 
     List<StationResponseDto> getAll(String location);
 }

@@ -21,7 +21,7 @@ import java.util.UUID;
 @Service
 public class LocomotiveServiceImpl implements LocomotiveService {
     private final LocomotiveRepository locomotiveRepository;
-    private ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
     @Override
     public LocomotiveResponseDto create(LocomotiveCreateDto dto) {
         Optional<LocomotiveEntity> byName = locomotiveRepository.findByName(dto.getName());

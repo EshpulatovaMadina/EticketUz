@@ -34,32 +34,19 @@ public class SeatsController {
             method = "DELETE method is supported",
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
-    @PreAuthorize(value = "hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
-    @DeleteMapping("/deActive")
-    public ResponseEntity<String> deActice(@RequestParam UUID seatId){
+    @PreAuthorize(value = "hasAuthority('ADMIN') or hasAuthority('SUPER_ADMIN')")
+    @DeleteMapping("/dis-active")
+    public ResponseEntity<String> disActive(@RequestParam UUID seatId){
         return ResponseEntity.ok(seatsService.deActive(seatId));
     }
-
-
-//    @Operation(
-//            description = "This method updates the data of one seat",
-//            method = "PUT method is supported",
-//            security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
-//    )
-//    @PreAuthorize(value = "hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
-//    @PutMapping("/update")
-//    public ResponseEntity<SeatsResponseDto> update(@RequestParam UUID seatId, @RequestBody SeatsCreateDto dto){
-//        return ResponseEntity.ok(seatsService.(seatId, dto));
-//    }
-
 
     @Operation(
             description = "This method changes the active seat",
             method = "PUT method is supported",
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
-    @PreAuthorize(value = "hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
-    @PutMapping("/is-active-update")
+    @PreAuthorize(value = "hasAuthority('ADMIN') or hasAuthority('SUPER_ADMIN')")
+    @PutMapping("/is-active")
     public ResponseEntity<SeatsResponseDto> isActive(@RequestParam UUID seatId){
         return ResponseEntity.ok(seatsService.isActive(seatId));
     }
@@ -69,7 +56,7 @@ public class SeatsController {
             method = "GET method is supported",
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
-    @PreAuthorize(value = "hasRole('ADMIN') or hasRole('USER')")
+    @PreAuthorize(value = "hasAuthority('ADMIN') or hasAuthority('USER')")
     @GetMapping("/get-by-id")
     public ResponseEntity<SeatsResponseDto> getbyId(@RequestParam UUID seatId){
         return ResponseEntity.ok(seatsService.getById(seatId));
@@ -81,7 +68,7 @@ public class SeatsController {
             method = "GET method is supported",
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
-    @PreAuthorize(value = "hasRole('ADMIN') or hasRole('USER')")
+    @PreAuthorize(value = "hasAuthority('ADMIN') or hasAuthority('USER')")
     @GetMapping("/get-seats-of-vagon")
     public ResponseEntity<List<SeatsResponseDto>> getSeatsOfVagon(@RequestParam UUID vagonId ){
         return ResponseEntity.ok(seatsService.getSeatsOfVagon(vagonId));

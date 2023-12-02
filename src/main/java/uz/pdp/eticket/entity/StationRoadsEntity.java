@@ -7,15 +7,12 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.UUID;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-@Entity(name = "stationRoads")
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"station_id","road_id","order_number"}))
+@Entity(name = "station-roads")
 public class StationRoadsEntity extends BaseEntity {
-
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "station_id", insertable = false, updatable = false)
     private StationEntity station;
