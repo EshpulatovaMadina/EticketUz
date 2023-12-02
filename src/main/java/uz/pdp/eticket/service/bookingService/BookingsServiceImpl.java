@@ -43,10 +43,10 @@ public class BookingsServiceImpl implements BookingsService{
     @Override
     public BookingsResponseDto create(BookingCreateDto dto) {
         ReysEntity reys = reysRepository.findById(dto.getReysId()).orElseThrow(() -> new DataNotFoundException("Reys not found"));
-        BookingEntity map = modelMapper.map(dto, BookingEntity.class);
-        map.setReys(reys);
-        bookingsRepository.save(map);
-        return parse(map);
+        BookingEntity booking = modelMapper.map(dto, BookingEntity.class);
+        booking.setReys(reys);
+        bookingsRepository.save(booking);
+        return parse(booking);
     }
 
     @Override
@@ -73,8 +73,8 @@ public class BookingsServiceImpl implements BookingsService{
 
     @Override
     public List<BookingsResponseDto> getBookingOfUser(UUID userId) {
-        List<BookingEntity> allByUserId = bookingsRepository.findAllByUserId(userId);
-        return parse(allByUserId);
+        List<BookingEntity> bookingOfUser = bookingsRepository.findAllByUserId(userId);
+        return parse(bookingOfUser);
     }
 
 
