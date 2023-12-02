@@ -59,7 +59,6 @@ public class RoadsServiceImpl implements RoadsService {
 
     private List<StationResponseDto> parse(List<StationRoadsEntity> stations) {
         List<StationResponseDto> list = new ArrayList<>();
-
         for (int i = 1; i < stations.size()-1; i++) {
             StationRoadsEntity s = stations.get(i);
             list.add(new StationResponseDto(

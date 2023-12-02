@@ -24,8 +24,8 @@ import java.util.UUID;
 @Slf4j
 @RequiredArgsConstructor
 public class CardServiceImpl  implements CardService{
-    private  CardRepository cardRepository;
-    private ModelMapper modelMapper;
+    private final CardRepository cardRepository;
+    private final ModelMapper modelMapper;
     public CardResponseDTO add(CardCreateDTO dto, UUID userId) {
         CardEntity entity = new CardEntity();
         entity.setNumber(dto.getNumber());
