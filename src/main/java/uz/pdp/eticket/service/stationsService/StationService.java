@@ -1,23 +1,21 @@
 package uz.pdp.eticket.service.stationsService;
 
 import uz.pdp.eticket.DTO.request.StationsCreateDto;
-import uz.pdp.eticket.DTO.response.StationsResponseDto;
+import uz.pdp.eticket.DTO.response.StationResponseDto;
 
+import java.util.List;
 import java.util.UUID;
-/**
- * @author 'Sodiqova Dildora' on 27.11.2023
- * @project RailwayUZ
- * @contact @dildora1_04
- */
+
 public interface StationService {
-    StationsResponseDto create(StationsCreateDto stationsCreateDto);
+    StationResponseDto create(StationsCreateDto stationsCreateDto);
 
-     StationsResponseDto deActive(UUID stationId);
+     StationResponseDto deActive(UUID stationId);
 
-    StationsResponseDto update(UUID seatId, StationsCreateDto dto);
+    StationResponseDto update(UUID seatId, StationsCreateDto dto);
 
-    StationsResponseDto isActive(UUID stationId);
+    StationResponseDto isActive(UUID stationId);
 
-    StationsResponseDto getById(UUID seatId);
+    StationResponseDto getById(UUID seatId);
 
+    List<StationResponseDto> getAll(String location);
 }

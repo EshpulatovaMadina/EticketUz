@@ -31,7 +31,7 @@ public class BookingEntity extends BaseEntity {
     private String birthday;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    private StationsEntity seat;
+    private SeatEntity seat;
     private Double price;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -50,7 +50,7 @@ public class BookingEntity extends BaseEntity {
         return "--Ticket--\n" +
                " user: " + user.getName() + "\n" +
                " identity: '" + identity + "\n" +
-               " seat: " + seat.getSequenceNumber() + "\n" +
+               " seat: " + seat.getNumber() + "\n" +
                " price: " + price + "\n" +
                " date: " + date.format(formatter);
     }

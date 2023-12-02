@@ -5,7 +5,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import uz.pdp.eticket.DTO.request.SeatsCreateDto;
 import uz.pdp.eticket.DTO.response.SeatsResponseDto;
-import uz.pdp.eticket.entity.SeatsEntity;
+import uz.pdp.eticket.entity.SeatEntity;
 import uz.pdp.eticket.entity.VagonEntity;
 import uz.pdp.eticket.entity.enums.SeatType;
 import uz.pdp.eticket.exception.DataNotFoundException;
@@ -32,10 +32,10 @@ public class SeatsServiceImpl implements SeatsService{
         List<SeatsResponseDto> list = new ArrayList<>();
         for (int i = 1; i <= vagon.getVagonTypes().getSeats(); i++) {
             if (i % 2 == 0){
-                SeatsEntity entity = seatsRepository.save(new SeatsEntity(seatPrice, i, vagon, SeatType.UP));
+                SeatEntity entity = seatsRepository.save(new SeatEntity(seatPrice, i, vagon, SeatType.UP));
                 list.add(parse(entity));
             }else {
-                SeatsEntity entity = seatsRepository.save(new SeatsEntity(seatPrice, i, vagon, SeatType.DOWN));
+                SeatEntity entity = seatsRepository.save(new SeatEntity(seatPrice, i, vagon, SeatType.DOWN));
                 list.add(parse(entity));
             }
         }
@@ -44,7 +44,7 @@ public class SeatsServiceImpl implements SeatsService{
 
     @Override
     public SeatsResponseDto isActive(UUID seatId) {
-        SeatsEntity seat = seatsRepository.findById(seatId).orElseThrow(() -> new DataNotFoundException("Seat not found"));
+        SeatEntity seat = seatsRepository.findById(seatId).orElseThrow(() -> new DataNotFoundException("Seat not found"));
             seat.setIsActive(true);
             seatsRepository.save(seat);
             return parse(seat);
@@ -52,9 +52,9 @@ public class SeatsServiceImpl implements SeatsService{
 
     @Override
     public String deActive(UUID seatId) {
-        SeatsEntity seatsEntity = seatsRepository.findById(seatId).orElseThrow(() -> new DataNotFoundException("Seat not found !!!"));
-        seatsEntity.setIsActive(false);
-        seatsRepository.save(seatsEntity);
+        SeatEntity seatEntity = seatsRepository.findById(seatId).orElseThrow(() -> new DataNotFoundException("Seat not found !!!"));
+        seatEntity.setIsActive(false);
+        seatsRepository.save(seatEntity);
         return "Successfully";
     }
 
@@ -69,18 +69,18 @@ public class SeatsServiceImpl implements SeatsService{
 
     @Override
     public SeatsResponseDto getById(UUID seatId) {
-        SeatsEntity seatsEntity = seatsRepository.findById(seatId).orElseThrow(() -> new DataNotFoundException("Seat not found !!!"));
-        return parse(seatsEntity);
+        SeatEntity seatEntity = seatsRepository.findById(seatId).orElseThrow(() -> new DataNotFoundException("Seat not found !!!"));
+        return parse(seatEntity);
     }
 
     @Override
     public List<SeatsResponseDto> getSeatsOfVagon(UUID vagonId) {
-        List<SeatsEntity> allByVagonId = seatsRepository.findAllByVagonId(vagonId);
+        List<SeatEntity> allByVagonId = seatsRepository.findAllByVagonId(vagonId);
         return parse(allByVagonId);
     }
-    private List<SeatsResponseDto> parse(List<SeatsEntity> entities){
+    private List<SeatsResponseDto> parse(List<SeatEntity> entities){
         List<SeatsResponseDto> list = new ArrayList<>();
-        for (SeatsEntity entity : entities) {
+        for (SeatEntity entity : entities) {
             SeatsResponseDto map = modelMapper.map(entity, SeatsResponseDto.class);
             map.setVagonId(entity.getVagonId().getId());
             list.add(map);
@@ -88,14 +88,14 @@ public class SeatsServiceImpl implements SeatsService{
         return list;
     }
 
-    private SeatsEntity parse(SeatsCreateDto seatsCreateDto){
-        return modelMapper.map(seatsCreateDto, SeatsEntity.class);
+    private SeatEntity parse(SeatsCreateDto seatsCreateDto){
+        return modelMapper.map(seatsCreateDto, SeatEntity.class);
     }
 
     @Override
-    public SeatsResponseDto parse(SeatsEntity seatsEntity) {
-        SeatsResponseDto map = modelMapper.map(seatsEntity, SeatsResponseDto.class);
-        map.setVagonId(seatsEntity.getVagonId().getId());
+    public SeatsResponseDto parse(SeatEntity seatEntity) {
+        SeatsResponseDto map = modelMapper.map(seatEntity, SeatsResponseDto.class);
+        map.setVagonId(seatEntity.getVagonId().getId());
         return map;
     }
 

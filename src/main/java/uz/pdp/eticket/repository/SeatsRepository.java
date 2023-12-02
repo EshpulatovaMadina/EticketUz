@@ -2,7 +2,7 @@ package uz.pdp.eticket.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import uz.pdp.eticket.entity.SeatsEntity;
+import uz.pdp.eticket.entity.SeatEntity;
 
 import java.util.List;
 import java.util.UUID;
@@ -12,7 +12,7 @@ import java.util.UUID;
  * @contact @dildora1_04
  */
 @Repository
-public interface SeatsRepository extends JpaRepository<SeatsEntity, UUID> {
+public interface SeatsRepository extends JpaRepository<SeatEntity, UUID> {
     Boolean existsByVagonIdAndNumber(UUID vagon_id, Integer number);
-    List<SeatsEntity> findAllByVagonId(UUID vagon_id);
+    List<SeatEntity> findAllByVagonId(UUID vagon_id);
 }
