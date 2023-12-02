@@ -2,6 +2,7 @@ package uz.pdp.eticket.service.stationRoadsService;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import uz.pdp.eticket.DTO.request.StationRoadCreateDto;
 import uz.pdp.eticket.DTO.response.StationRoadsResponseDto;
 import uz.pdp.eticket.entity.RoadsEntity;
@@ -12,6 +13,7 @@ import uz.pdp.eticket.repository.RoadsRepository;
 import uz.pdp.eticket.repository.StationRoadsRepository;
 import uz.pdp.eticket.repository.StationsRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 /**
@@ -26,16 +28,17 @@ public class StationRoadsServiceImpl implements StationRoadsService {
     private final RoadsRepository roadsRepository;
     private final StationsRepository stationsRepository;
 
+    @Transactional
     public StationRoadsResponseDto save(UUID roadId, List<StationRoadCreateDto> stations) {
         StationRoadsEntity save = null;
+        RoadsEntity roadsEntity = roadsRepository.findById(roadId)
+                .orElseThrow(() -> new DataNotFoundException("Road not found with id: " + roadId));
         for (StationRoadCreateDto stationCreate : stations) {
             StationEntity station = stationsRepository.findById(stationCreate.getStationId())
                     .orElseThrow(() -> new DataNotFoundException("Station not found with id: " + stationCreate.getStationId()));
-            RoadsEntity roadsEntity = roadsRepository.findById(roadId)
-                    .orElseThrow(() -> new DataNotFoundException("Road not found with id: " + roadId));
-             save = stationRoadsRepository.save(new StationRoadsEntity(station, roadsEntity, stationCreate.getOrderNumber()));
+            save = stationRoadsRepository.save(new StationRoadsEntity(station, roadsEntity, stationCreate.getOrderNumber()));
         }
-        return new StationRoadsResponseDto(save.getId(), save.getStation().getId(),save.getStation().getName(), save.getRoad().getId(), save.getRoad().getDirection(), save.getOrderNumber() );
+        return new StationRoadsResponseDto(save.getId(), save.getStation().getId(),save.getStation().getName(), save.getRoad().getId(), save.getRoad().getDirection(), save.getOrderNumber() , save.getCreatedDate());
     }
 
     @Override
@@ -66,6 +69,20 @@ public class StationRoadsServiceImpl implements StationRoadsService {
     @Override
     public List<String> findAllDirectionByStations(String fromStation, String toStation) {
         return stationRoadsRepository.findAllDirectionByStation(fromStation, toStation);
+    }
+
+    @Override
+    public List<StationRoadsResponseDto> getStationOfRoad(UUID roadId) {
+        List<StationRoadsEntity> all = stationRoadsRepository.findAllByRoadId(roadId);///oldin bor stationlar bu jjjj
+        return parse(all);
+    }
+
+    private List<StationRoadsResponseDto> parse(List<StationRoadsEntity> stations){
+        List<StationRoadsResponseDto> list = new ArrayList<>();
+        for (StationRoadsEntity station : stations) {
+            list.add(new StationRoadsResponseDto(station.getId(), station.getStation().getId(),station.getStation().getName(), station.getRoad().getId(), station.getRoad().getDirection(), station.getOrderNumber(), station.getCreatedDate()));
+        }
+        return list;
     }
 
 

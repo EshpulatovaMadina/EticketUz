@@ -16,6 +16,7 @@ public interface StationRoadsRepository extends JpaRepository<StationRoadsEntity
     List<StationRoadsEntity> findAllByRoadId(UUID roadId);
     List<StationRoadsEntity> findAllByRoadIdOrderByOrderNumber(UUID roadId);
 
+
     @Query("SELECT r.road.direction FROM stationRoads r  WHERE r.station.name = :fromStation " +
             "  AND r.orderNumber < (SELECT r2.orderNumber FROM stationRoads r2 WHERE r2.station.name = :toStation AND r2.road = r.road)")
     List<String> findAllDirectionByStation(@Param("fromStation") String fromStation, @Param("toStation") String toStation);

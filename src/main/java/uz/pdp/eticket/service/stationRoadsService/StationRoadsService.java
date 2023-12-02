@@ -15,4 +15,5 @@ public interface StationRoadsService {
     StationRoadsResponseDto save(UUID roadId, List<StationRoadCreateDto> stations);
     void update(UUID roadId, List<StationRoadCreateDto> stations);
     List<String> findAllDirectionByStations( String fromStation, String toStation);
+    List<StationRoadsResponseDto> getStationOfRoad(UUID roadId);
 }
