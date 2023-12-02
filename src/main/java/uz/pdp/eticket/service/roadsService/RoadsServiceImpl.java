@@ -5,7 +5,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import uz.pdp.eticket.DTO.request.RoadsCreateDto;
 import uz.pdp.eticket.DTO.response.RoadsResponseDto;
-import uz.pdp.eticket.DTO.response.StationsResponseDto;
+import uz.pdp.eticket.DTO.response.StationResponseDto;
 import uz.pdp.eticket.entity.RoadsEntity;
 import uz.pdp.eticket.entity.StationRoadsEntity;
 import uz.pdp.eticket.exception.DataAlreadyExistsException;
@@ -17,18 +17,14 @@ import uz.pdp.eticket.service.stationRoadsService.StationRoadsService;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-/**
- * @author 'Sodiqova Dildora' on 27.11.2023
- * @project RailwayUZ
- * @contact @dildora1_04
- */
+
 @Service
 @RequiredArgsConstructor
 public class RoadsServiceImpl implements RoadsService {
-    private RoadsRepository roadsRepository;
-    private ModelMapper modelMapper;
-    private StationRoadsService stationRoadsService;
-    private StationRoadsRepository sr;
+    private final RoadsRepository roadsRepository;
+    private final ModelMapper modelMapper;
+    private final StationRoadsService stationRoadsService;
+    private final StationRoadsRepository sr;
 
     @Override
     public RoadsResponseDto create(RoadsCreateDto roadsCreateDto) {
@@ -37,7 +33,7 @@ public class RoadsServiceImpl implements RoadsService {
             throw new DataAlreadyExistsException("This Road name already exists . Please can you create other name ?");
         }
         RoadsEntity save = roadsRepository.save(parse);
-        if (!roadsCreateDto.getStations().isEmpty()) {
+        if (roadsCreateDto.getStations() != null && !roadsCreateDto.getStations().isEmpty()) {
             stationRoadsService.save(save.getId(), roadsCreateDto.getStations());
         }
         return new RoadsResponseDto(save.getId(), save.getDirection());
@@ -55,16 +51,16 @@ public class RoadsServiceImpl implements RoadsService {
     public RoadsResponseDto getByDirection(String direction) {
         RoadsEntity road = roadsRepository.findAllByDirection(direction).orElseThrow(() -> new DataNotFoundException("This road not found"));
         List<StationRoadsEntity> all = sr.findAllByRoadIdOrderByOrderNumber(road.getId());
-        List<StationsResponseDto> parse = parse(all);
+        List<StationResponseDto> parse = parse(all);
         return new RoadsResponseDto(road.getId(), road.getDirection(), parse);
     }
 
-    private List<StationsResponseDto> parse(List<StationRoadsEntity> stations) {
-        List<StationsResponseDto> list = new ArrayList<>();
+    private List<StationResponseDto> parse(List<StationRoadsEntity> stations) {
+        List<StationResponseDto> list = new ArrayList<>();
 
         for (int i = 1; i < stations.size()-1; i++) {
             StationRoadsEntity s = stations.get(i);
-            list.add(new StationsResponseDto(
+            list.add(new StationResponseDto(
                     s.getStation().getId(),
                     s.getStation().getName(),
                     s.getStation().getLocation(),

@@ -16,7 +16,7 @@ import java.util.UUID;
 @SecurityRequirement(name = "Bearer Authentication")
 @RequestMapping("/api/v1/roads")
 public class RoadsController {
-    private RoadsService roadsService;
+    private final RoadsService roadsService;
     @Operation(
             description = "This method is used to add roads",
             method = "POST method is supported",

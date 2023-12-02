@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 /**
@@ -20,7 +19,7 @@ import java.util.UUID;
 public class RoadsResponseDto {
     private UUID id;
     private String direction;
-    private List<StationsResponseDto> stations;
+    private List<StationResponseDto> stations;
 
     public RoadsResponseDto(UUID id, String direction) {
         this.id = id;

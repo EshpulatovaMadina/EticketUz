@@ -15,7 +15,7 @@ import uz.pdp.eticket.entity.enums.SeatType;
 @Setter
 @Getter
 @Entity(name = "seats")
-public class SeatsEntity extends BaseEntity {
+public class SeatEntity extends BaseEntity {
     private Double price;
     private Integer number;
 

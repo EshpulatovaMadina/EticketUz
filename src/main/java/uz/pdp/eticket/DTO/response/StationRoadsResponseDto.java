@@ -1,14 +1,9 @@
 package uz.pdp.eticket.DTO.response;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import uz.pdp.eticket.entity.RoadsEntity;
-import uz.pdp.eticket.entity.StationsEntity;
 
 import java.util.UUID;
 @AllArgsConstructor
