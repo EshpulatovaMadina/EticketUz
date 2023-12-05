@@ -25,7 +25,7 @@ public class ReysController {
             method = "POST method is supported",
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
-    @PreAuthorize(value = "hasAuthority('ADMIN') or hasRole('SUPER_ADMIN')")
+    @PreAuthorize(value = "hasAuthority('ADMIN') or hasAuthority('SUPER_ADMIN')")
     @PostMapping("/create")
     public ResponseEntity<ReysResponseDto> create(@RequestBody ReysCreateDto dto){
         return ResponseEntity.ok(reysService.create(dto));
@@ -36,10 +36,10 @@ public class ReysController {
             method = "DELETE method is supported",
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
-    @PreAuthorize(value = "hasAuthority('ADMIN') or hasRole('SUPER_ADMIN')")
-    @DeleteMapping("/deActive")
+    @PreAuthorize(value = "hasAuthority('ADMIN') or hasAuthority('SUPER_ADMIN')")
+    @DeleteMapping("/dis-active")
     public ResponseEntity<String> disActive(@RequestParam UUID reysId){
-        return ResponseEntity.ok(reysService.deActive(reysId));
+        return ResponseEntity.ok(reysService.disActive(reysId));
     }
 
 
@@ -48,7 +48,7 @@ public class ReysController {
             method = "GET method is supported",
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
-    @PreAuthorize(value = "hasAuthority('USER') or hasRole('ADMIN')")
+    @PreAuthorize(value = "hasAuthority('USER') or hasAuthority('ADMIN')")
     @GetMapping("/get-reys-by-location")
     public ResponseEntity<List<ReysResponseDto>> getReysByLocation(
             @RequestParam String fromStation,

@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
@@ -17,4 +18,5 @@ public class StationRoadsResponseDto {
     private UUID roadId;
     private String roadName;
     private Integer orderNumber;
+    private LocalDateTime createdDate;
 }

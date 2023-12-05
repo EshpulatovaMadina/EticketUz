@@ -14,10 +14,6 @@ import java.util.UUID;
 @Setter
 public class StationResponseDto {
     private UUID id;
-    private String name;
     private String location;
-    private RoadsResponseDto roadsResponseDto;
-    private StationResponseDto nextStation;
-    private StationResponseDto prevStation;
     private LocalDateTime cratedDate;
 }

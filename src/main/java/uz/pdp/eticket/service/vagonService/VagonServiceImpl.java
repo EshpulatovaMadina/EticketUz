@@ -81,25 +81,13 @@ public class VagonServiceImpl implements VagonService{
 
 
     @Override
-    public String isInActive(UUID vagonId) {
+    public String disActive(UUID vagonId) {
         VagonEntity vagon = vagonRepository.findById(vagonId).orElseThrow(() -> new DataNotFoundException("Vagon not found"));
         vagon.setIsActive(false);
         vagonRepository.save(vagon);
         return "Successfully";
     }
 
-//    @Override
-//    public VagonResponseDto update(UUID vagonId, VagonCreateDto dto) {
-//        VagonEntity vagon = vagonRepository.findById(vagonId).orElseThrow(() -> new DataNotFoundException("Vagon not found"));
-////        LocomotiveEntity locomotive = locomotiveService.findById(dto.getLocomotiveId());
-////        vagon.setLocomotive(locomotive);
-//        vagon.setNumber(dto.getNumber());
-//        vagon.setVagonTypes(dto.getVagonTypes());
-////        vagon.setIsActive(true);
-//        vagonRepository.save(vagon);
-//        return parse(vagon);
-//
-//    }
 
     @Override
     public VagonResponseDto isActive(UUID vagonId) {

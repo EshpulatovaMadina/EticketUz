@@ -15,7 +15,7 @@ public interface RoadsService {
 
     RoadsResponseDto update(UUID roadsId, RoadsCreateDto dto);
 
-    RoadsResponseDto deActive(UUID roadsId);
+    RoadsResponseDto disActive(UUID roadsId);
 
     RoadsResponseDto create(RoadsCreateDto roadsCreateDto);
     RoadsResponseDto getByDirection(String direction);

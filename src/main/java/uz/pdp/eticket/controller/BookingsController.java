@@ -53,7 +53,7 @@ public class BookingsController {
             method = "GET method is supported",
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
-    @PreAuthorize(value = "hasRole('ADMIN') or hasRole('USER')")
+    @PreAuthorize(value = "hasAuthority('ADMIN') or hasAuthority('USER')")
     @GetMapping("/get-by-id")
     public ResponseEntity<BookingsResponseDto> getById(@RequestParam UUID bookingId){
         return ResponseEntity.ok(bookingsService.getById(bookingId));
@@ -64,7 +64,7 @@ public class BookingsController {
             method = "GET method is supported",
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
-    @PreAuthorize(value = "hasRole('USER')")
+    @PreAuthorize(value = "hasAuthority('USER')")
     @PutMapping("/get-booking-of-user")
     public ResponseEntity<List<BookingsResponseDto>> getBookingOfUser(Principal principal){
         return ResponseEntity.ok(bookingsService.getBookingOfUser(UUID.fromString(principal.getName())));
@@ -77,7 +77,7 @@ public class BookingsController {
             method = "GET method is supported",
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
-    @PreAuthorize(value = "hasRole('ADMIN') or hasRole('USER')")
+    @PreAuthorize(value = "hasAuthority('ADMIN') or hasAuthority('USER')")
     @GetMapping("/ticket-is-sold-or-not")
     public ResponseEntity<Boolean> ticketIsSoldOrNot(@RequestParam UUID seatId,@RequestParam UUID reysId ){
         return ResponseEntity.ok(bookingsService.ticketIsSoldOrNot(seatId, reysId));

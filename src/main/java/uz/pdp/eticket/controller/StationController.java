@@ -26,7 +26,7 @@ public class StationController {
             method = "POST method is supported",
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
-    @PreAuthorize(value = "hasAuthority('ADMIN') or hasRole('SUPER_ADMIN')")
+    @PreAuthorize(value = "hasAuthority('ADMIN') or hasAuthority('SUPER_ADMIN')")
     @PostMapping("/create")
     public ResponseEntity<StationResponseDto> create(@RequestBody StationsCreateDto stationsCreateDto) {
         return ResponseEntity.ok(stationService.create(stationsCreateDto));
@@ -39,9 +39,9 @@ public class StationController {
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
     @PreAuthorize(value = "hasAuthority('ADMIN') or hasAuthority('SUPER_ADMIN')")
-    @DeleteMapping("/de-active")
-    public ResponseEntity<StationResponseDto> deActive(@RequestParam UUID stationId) {
-        return ResponseEntity.ok(stationService.deActive(stationId));
+    @DeleteMapping("/dis-active")
+    public ResponseEntity<StationResponseDto> disActive(@RequestParam UUID stationId){
+        return ResponseEntity.ok(stationService.disActive(stationId));
     }
 
 
@@ -75,7 +75,7 @@ public class StationController {
     )
     @PreAuthorize(value = "hasAuthority('ADMIN') or hasAuthority('SUPER_ADMIN')")
     @GetMapping("/get-by-id")
-    public ResponseEntity<StationResponseDto> getbyId(@RequestParam UUID seatId) {
+    public ResponseEntity<StationResponseDto> getbyId(@RequestParam UUID stationId) {
         return ResponseEntity.ok(stationService.getById(seatId));
     }
 

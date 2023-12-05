@@ -4,9 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import uz.pdp.eticket.DTO.request.RoadsCreateDto;
 import uz.pdp.eticket.DTO.response.RoadsResponseDto;
 import uz.pdp.eticket.DTO.response.StationResponseDto;
+import uz.pdp.eticket.DTO.response.StationRoadsResponseDto;
 import uz.pdp.eticket.entity.RoadsEntity;
 import uz.pdp.eticket.entity.StationRoadsEntity;
 import uz.pdp.eticket.exception.DataAlreadyExistsException;
@@ -18,7 +20,11 @@ import uz.pdp.eticket.service.stationRoadsService.StationRoadsService;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
+/**
+ * @author 'Sodiqova Dildora' on 27.11.2023
+ * @project RailwayUZ
+ * @contact @dildora1_04
+ */
 @Service
 @RequiredArgsConstructor
 public class RoadsServiceImpl implements RoadsService {
@@ -27,17 +33,25 @@ public class RoadsServiceImpl implements RoadsService {
     private final StationRoadsService stationRoadsService;
     private final StationRoadsRepository sr;
 
+    @Transactional
     @Override
     public RoadsResponseDto create(RoadsCreateDto roadsCreateDto) {
-        RoadsEntity parse = parse(roadsCreateDto);
-        if (roadsRepository.existsByDirection(parse.getDirection())) {
+        if (roadsRepository.existsByDirection(roadsCreateDto.getDirection())) {
             throw new DataAlreadyExistsException("This Road name already exists . Please can you create other name ?");
         }
-        RoadsEntity save = roadsRepository.save(parse);
-        if (roadsCreateDto.getStations() != null && !roadsCreateDto.getStations().isEmpty()) {
-            stationRoadsService.save(save.getId(), roadsCreateDto.getStations());
+        RoadsEntity road = new RoadsEntity(roadsCreateDto.getDirection());
+        roadsRepository.save(road);
+        StationRoadsResponseDto save = stationRoadsService.save(road.getId(), roadsCreateDto.getStations());
+        List<StationRoadsResponseDto> stationOfRoad = stationRoadsService.getStationOfRoad(save.getRoadId());
+        List<StationResponseDto> dtoList = parseToStation(stationOfRoad);
+        return new RoadsResponseDto(road.getId(), road.getDirection(), dtoList);
+    }
+    private List<StationResponseDto> parseToStation(List<StationRoadsResponseDto> stationOfRoad){
+        List<StationResponseDto> list = new ArrayList<>();
+        for (StationRoadsResponseDto s : stationOfRoad) {
+            list.add(new StationResponseDto(s.getId(), s.getRoadName(), s.getCreatedDate()));
         }
-        return new RoadsResponseDto(save.getId(), save.getDirection());
+        return list;
     }
 
     @Override
@@ -58,31 +72,16 @@ public class RoadsServiceImpl implements RoadsService {
 
     private List<StationResponseDto> parse(List<StationRoadsEntity> stations) {
         List<StationResponseDto> list = new ArrayList<>();
-
         for (int i = 1; i < stations.size()-1; i++) {
             StationRoadsEntity s = stations.get(i);
             list.add(new StationResponseDto(
-                    s.getStation().getId(),
-                    s.getStation().getName(),
-                    s.getStation().getLocation(),
-                    new RoadsResponseDto(s.getRoad().getId(), s.getRoad().getDirection()),
-                    null,
-                    null,
-                    s.getCreatedDate()
-                    ));
+                    s.getId(),
+                    s.getRoad().getDirection(),
+                     s.getCreatedDate()));
         }
         return list;
     }
 
-
-    /**
-     * hullas bu method 2 ta stansiya qaysi yonalishda uchrasa shu yonalishni nameini qaytaradi
-     * @return
-     */
-//  @Override
-////    public String getDirectionByStation(String fromStation, String toStation) {
-////        return roadsRepository.findAllDirectionByStations(fromStation, toStation);
-////    }
     @Override
     public RoadsResponseDto parse(RoadsEntity roadsEntity) {
         RoadsResponseDto responseDto = new RoadsResponseDto(roadsEntity.getId(), roadsEntity.getDirection());
@@ -111,7 +110,7 @@ public class RoadsServiceImpl implements RoadsService {
     }
 
     @Override
-    public RoadsResponseDto deActive(UUID roadsId) {
+    public RoadsResponseDto disActive(UUID roadsId) {
         RoadsEntity road = roadsRepository.findById(roadsId).orElseThrow(() -> new DataNotFoundException("Roads not found"));
         road.setIsActive(false);
         roadsRepository.save(road);
