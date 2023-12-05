@@ -27,24 +27,14 @@ public class StationRoadsServiceImpl implements StationRoadsService {
     private final StationsRepository stationsRepository;
 
     @Transactional
-    public void save(UUID roadId, List<StationRoadCreateDto> stations) {
-
+    public StationRoadsResponseDto save(UUID roadId, List<StationRoadCreateDto> stations) {
+        StationRoadsEntity save = null;
         RoadsEntity roadsEntity = roadsRepository.findById(roadId)
-            .orElseThrow(() -> new DataNotFoundException("Road not found with id: " + roadId));
-
-        for (StationRoadCreateDto station : stations) {
-
-            StationEntity stationEntity = stationsRepository.findById(station.getStationId())
-                    .orElseThrow(() -> new DataNotFoundException("Station not found with id: " + station.getStationId()));
-
-            Optional<StationRoadsEntity> stationRoadsEntity = stationRoadsRepository.findByRoadIdAndStationIdAndOrderNumber(roadId, station.getStationId(), station.getOrderNumber());
-
-            if(stationRoadsEntity.isPresent()) {
-                throw new DataAlreadyExistsException("This station already exists on this road");
-            }
-
-            StationRoadsEntity entity = new StationRoadsEntity(stationEntity, roadsEntity, station.getOrderNumber());
-            stationRoadsRepository.save(entity);
+                .orElseThrow(() -> new DataNotFoundException("Road not found with id: " + roadId));
+        for (StationRoadCreateDto stationCreate : stations) {
+            StationEntity station = stationsRepository.findById(stationCreate.getStationId())
+                    .orElseThrow(() -> new DataNotFoundException("Station not found with id: " + stationCreate.getStationId()));
+            save = stationRoadsRepository.save(new StationRoadsEntity(station, roadsEntity, stationCreate.getOrderNumber()));
         }
     }
 

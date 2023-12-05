@@ -13,6 +13,7 @@ import uz.pdp.eticket.DTO.response.SeatsResponseDto;
 import uz.pdp.eticket.DTO.response.VagonResponseDto;
 import uz.pdp.eticket.entity.LocomotiveEntity;
 import uz.pdp.eticket.entity.VagonEntity;
+import uz.pdp.eticket.entity.enums.VagonType;
 import uz.pdp.eticket.exception.DataAlreadyExistsException;
 import uz.pdp.eticket.exception.DataNotFoundException;
 import uz.pdp.eticket.repository.VagonRepository;
@@ -71,10 +72,10 @@ public class VagonServiceImpl implements VagonService{
     }
 
     private void updateVagonNumberOnTheTrain(List<VagonEntity> all, Integer numberOnTheTrain) {
-        for (int i = numberOnTheTrain; i < all.size(); i++) {
-            all.get(i + 1).setNumberOnTheTrain(i);
-            vagonRepository.save(all.get(i+1));
+        for (VagonEntity vagonEntity : all) {
+            vagonEntity.setNumberOnTheTrain(vagonEntity.getNumberOnTheTrain() + 1);
         }
+        vagonRepository.saveAll(all);
     }
 
 
@@ -115,15 +116,24 @@ public class VagonServiceImpl implements VagonService{
 
     @Override
     public VagonEntity parse(VagonCreateDto dto) {
-       return modelMapper.map(dto, VagonEntity.class);
+        if (dto.getLocomotiveId() == null){
+            return new VagonEntity(dto.getNumber(),null,  VagonType.valueOf(dto.getVagonTypes()), null);
+        }else {
+            LocomotiveEntity byId = locomotiveService.findById(dto.getLocomotiveId());
+            List<VagonEntity> all = vagonRepository.findAllByLocomotiveId(byId.getId());
+            updateVagonNumberOnTheTrain(all, dto.getNumberOnTheTrain());
+            return new VagonEntity(dto.getNumber(), byId, VagonType.valueOf(dto.getVagonTypes()), dto.getNumberOnTheTrain());
+        }
     }
+
+
 
     private List<VagonResponseDto> parse(List<VagonEntity> entities){
         List<VagonResponseDto> list = new ArrayList<>();
         for (VagonEntity vagon : entities) {
             VagonResponseDto map = modelMapper.map(vagon, VagonResponseDto.class);
-            map.setLocomotiveId(vagon.getLocomotive().getId());
-            list.add(map);
+            map.setVagonId(vagon.getId());
+            map.setCratedDate(vagon.getCreatedDate()); list.add(map);
         }
         return list;
     }

@@ -22,8 +22,9 @@ public class VagonCreateDto {
     private String number;
 
     private UUID locomotiveId;
+    private Integer numberOnTheTrain;
 
     @NotNull(message = "Vagon type cannot be empty or blank")
-    private VagonType vagonTypes;
+    private String vagonTypes;
 
 }
