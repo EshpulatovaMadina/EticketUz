@@ -7,13 +7,10 @@ import uz.pdp.eticket.entity.VagonEntity;
 
 import java.util.List;
 import java.util.UUID;
-/**
- * @author 'Sodiqova Dildora' on 27.11.2023
- * @project RailwayUZ
- * @contact @dildora1_04
- */
+
+
 public interface VagonService {
-    VagonResponseDto create(List<VagonCreateDto> dto, Double seatPrice);
+    List<VagonResponseDto> create(List<VagonCreateDto> dto, Double seatPrice);
     List<VagonResponseDto> setLocomotive(List<UUID> vagonsId, UUID locomotiveId);
     String disActive(UUID vagonId);
     VagonResponseDto isActive(UUID vagonId);

@@ -46,7 +46,6 @@ public class StationRoadsServiceImpl implements StationRoadsService {
             StationRoadsEntity entity = new StationRoadsEntity(stationEntity, roadsEntity, station.getOrderNumber());
             stationRoadsRepository.save(entity);
         }
-        return new StationRoadsResponseDto(save.getId(), save.getStation().getId(),save.getStation().getName(), save.getRoad().getId(), save.getRoad().getDirection(), save.getOrderNumber() , save.getCreatedDate());
     }
 
     @Override
