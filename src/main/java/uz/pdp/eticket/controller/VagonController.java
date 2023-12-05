@@ -26,7 +26,7 @@ public class VagonController {
     )
     @PreAuthorize(value = "hasAuthority('ADMIN') or hasAuthority('SUPER_ADMIN')")
     @PostMapping("/create")
-    public ResponseEntity<VagonResponseDto> create(@RequestBody List<VagonCreateDto> vagonCreateDtos, @RequestParam Double seatPrice){////buyerga price kirib kelsin deganim bitta vagon ichoda seatlar default yaratiladi shuning un narhi vagon typega bog'liq bolganligi un pri vagon typelar bn birga admin bersin dedim
+    public ResponseEntity<List<VagonResponseDto>> create(@RequestBody List<VagonCreateDto> vagonCreateDtos, @RequestParam Double seatPrice){////buyerga price kirib kelsin deganim bitta vagon ichoda seatlar default yaratiladi shuning un narhi vagon typega bog'liq bolganligi un pri vagon typelar bn birga admin bersin dedim
         return ResponseEntity.ok(vagonService.create(vagonCreateDtos, seatPrice));
     }
 

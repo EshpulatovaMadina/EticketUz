@@ -13,7 +13,7 @@ import java.util.UUID;
  * @contact @dildora1_04
  */
 public interface VagonService {
-    VagonResponseDto create(List<VagonCreateDto> dto, Double seatPrice);
+    List<VagonResponseDto> create(List<VagonCreateDto> dto, Double seatPrice);
     List<VagonResponseDto> setLocomotive(List<UUID> vagonsId, UUID locomotiveId);
     String disActive(UUID vagonId);
     VagonResponseDto isActive(UUID vagonId);
