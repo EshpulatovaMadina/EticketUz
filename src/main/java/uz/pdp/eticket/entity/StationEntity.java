@@ -14,12 +14,6 @@ import lombok.Setter;
 public class StationEntity extends BaseEntity {
     private String name;
     private String location;
-
-    @OneToOne(cascade = CascadeType.ALL)
-    private StationEntity nextStation;
-
-    @OneToOne(cascade = CascadeType.ALL)
-    private StationEntity prevStation;
 }
 
 

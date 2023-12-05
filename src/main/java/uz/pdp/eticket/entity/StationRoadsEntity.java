@@ -12,19 +12,19 @@ import java.util.UUID;
 @NoArgsConstructor
 @Getter
 @Setter
-@Entity(name = "stationRoads")
+@Entity(name = "station_roads")
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = {"station_id","road_id","order_number"}))
 public class StationRoadsEntity extends BaseEntity {
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "station_id", insertable = false, updatable = false)
+    @ManyToOne
+    @JoinColumn(name = "station_id")
     private StationEntity station;
 
     @ManyToOne()
-    @JoinColumn(name = "road_id", insertable = false, updatable = false)
+    @JoinColumn(name = "road_id")
     private RoadsEntity road;
 
-    @Column(name = "order_number", insertable = false, updatable = false)
+    @Column(name = "order_number")
     private Integer orderNumber; //buuu stationnning roadda qaysi orinda turgani
 
 }

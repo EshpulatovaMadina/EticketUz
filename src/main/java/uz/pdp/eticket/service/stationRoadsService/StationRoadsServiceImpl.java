@@ -6,18 +6,16 @@ import uz.pdp.eticket.DTO.request.StationRoadCreateDto;
 import uz.pdp.eticket.entity.RoadsEntity;
 import uz.pdp.eticket.entity.StationEntity;
 import uz.pdp.eticket.entity.StationRoadsEntity;
+import uz.pdp.eticket.exception.DataAlreadyExistsException;
 import uz.pdp.eticket.exception.DataNotFoundException;
 import uz.pdp.eticket.repository.RoadsRepository;
 import uz.pdp.eticket.repository.StationRoadsRepository;
 import uz.pdp.eticket.repository.StationsRepository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
-/**
- * @author 'Sodiqova Dildora' on 27.11.2023
- * @project RailwayUZ
- * @contact @dildora1_04
- */
+
 @RequiredArgsConstructor
 @Service
 public class StationRoadsServiceImpl implements StationRoadsService {
@@ -26,13 +24,23 @@ public class StationRoadsServiceImpl implements StationRoadsService {
     private final StationsRepository stationsRepository;
 
     public void save(UUID roadId, List<StationRoadCreateDto> stations) {
+
+        RoadsEntity roadsEntity = roadsRepository.findById(roadId)
+            .orElseThrow(() -> new DataNotFoundException("Road not found with id: " + roadId));
+
         for (StationRoadCreateDto station : stations) {
 
             StationEntity stationEntity = stationsRepository.findById(station.getStationId())
                     .orElseThrow(() -> new DataNotFoundException("Station not found with id: " + station.getStationId()));
-            RoadsEntity roadsEntity = roadsRepository.findById(roadId)
-                    .orElseThrow(() -> new DataNotFoundException("Road not found with id: " + roadId));
-            stationRoadsRepository.save(new StationRoadsEntity(stationEntity, roadsEntity, station.getOrderNumber()));
+
+            Optional<StationRoadsEntity> stationRoadsEntity = stationRoadsRepository.findByRoadIdAndStationIdAndOrderNumber(roadId, station.getStationId(), station.getOrderNumber());
+
+            if(stationRoadsEntity.isPresent()) {
+                throw new DataAlreadyExistsException("This station already exists on this road");
+            }
+
+            StationRoadsEntity entity = new StationRoadsEntity(stationEntity, roadsEntity, station.getOrderNumber());
+            stationRoadsRepository.save(entity);
         }
     }
 

@@ -2,6 +2,7 @@ package uz.pdp.eticket.service.roadsService;
 
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import uz.pdp.eticket.DTO.request.RoadsCreateDto;
 import uz.pdp.eticket.DTO.response.RoadsResponseDto;
@@ -88,6 +89,12 @@ public class RoadsServiceImpl implements RoadsService {
         responseDto.setId(roadsEntity.getId());
         return responseDto;
     }
+
+//    @Override
+//    public ResponseEntity<List<RoadsResponseDto>> getAll() {
+//        return roadsRepository.findAll().stream().map(item-> parse(item));
+//        return null;
+//    }
 
     @Override
     public RoadsResponseDto getById(UUID roadsId) {

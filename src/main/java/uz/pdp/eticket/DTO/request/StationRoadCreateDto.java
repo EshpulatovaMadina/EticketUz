@@ -13,6 +13,5 @@ import java.util.UUID;
 @Setter
 public class StationRoadCreateDto {
     private UUID stationId;
-//    private UUID roadId;
     private Integer orderNumber;
 }
