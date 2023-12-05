@@ -24,11 +24,6 @@ import uz.pdp.eticket.service.seatsService.SeatsService;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-/**
- * @author 'Sodiqova Dildora' on 27.11.2023
- * @project RailwayUZ
- * @contact @dildora1_04
- */
 @RequiredArgsConstructor
 @Service
 public class VagonServiceImpl implements VagonService{
@@ -45,35 +40,50 @@ public class VagonServiceImpl implements VagonService{
                 throw new DataAlreadyExistsException("Such a digital wagon already exists ...  Please give another number for this vagon.");
             }
             VagonEntity vagon = parse(dto);
-            seatsService.create(vagon.getId(), seatPrice);
             save.add(vagonRepository.save(vagon));
+            seatsService.create(vagon.getId(), seatPrice);
         }
         return save.stream().map(this::parse).toList();
     }
 
-    @Override
+
+        @Override
     public List<VagonResponseDto> setLocomotive(List<UUID> vagonsId, UUID locomotiveId) {
         LocomotiveEntity locomotive = locomotiveService.findById(locomotiveId);
         Integer counted = vagonRepository.countAllByLocomotiveId(locomotiveId);
         List<VagonEntity> list = new ArrayList<>();
+        int i = 1;
         for (UUID vagonId : vagonsId) {
             VagonEntity vagon = vagonRepository.findById(vagonId).orElseThrow(() -> new DataNotFoundException("Vagon not found"));
+            vagon.setNumberOnTheTrain(counted + i++);
+            vagon.setLocomotive(locomotive);
+            vagonRepository.save(vagon);
+
             if (vagon.getLocomotive() != null){
                 List<VagonEntity> all = vagonRepository.findAllByLocomotiveIdOrderByNumberOnTheTrain(vagon.getLocomotive().getId());
-                updateVagonNumberOnTheTrain(all, vagon.getNumberOnTheTrain());
+                updateVagonNumberWhenLocomotiveChange(all, vagon.getNumberOnTheTrain());
             // buyerda muoomo bordek anu osha vagon hali trainda haliyam boladiku shu qolib ketmaydimi yana. unikini ham o'zgartirib qo'ymaymizmi
             }
-            vagon.setLocomotive(locomotive);
-            vagon.setNumberOnTheTrain(counted+1);
-            vagonRepository.save(vagon);
             list.add(vagon);
         }
        return parse(list);
     }
 
+    private void updateVagonNumberWhenLocomotiveChange(List<VagonEntity> all, Integer numberOnTheTrain) {
+        List<VagonEntity> updated = new ArrayList<>();
+        for (VagonEntity vagonEntity : all) {
+            if(vagonEntity.getNumberOnTheTrain() >= numberOnTheTrain){
+                vagonEntity.setNumberOnTheTrain(vagonEntity.getNumberOnTheTrain() - 1);
+                updated.add(vagonEntity);
+            }
+        }
+        vagonRepository.saveAll(updated);
+    }
     private void updateVagonNumberOnTheTrain(List<VagonEntity> all, Integer numberOnTheTrain) {
         for (VagonEntity vagonEntity : all) {
-            vagonEntity.setNumberOnTheTrain(vagonEntity.getNumberOnTheTrain() + 1);
+            if(vagonEntity.getNumberOnTheTrain() >= numberOnTheTrain){
+                vagonEntity.setNumberOnTheTrain(vagonEntity.getNumberOnTheTrain() + 1);
+            }
         }
         vagonRepository.saveAll(all);
     }
