@@ -39,19 +39,16 @@ public class VagonServiceImpl implements VagonService{
     private final BookingsService bookingsService;
     @Override
     public List<VagonResponseDto> create(List<VagonCreateDto> dtos, Double seatPrice) {
-        List<VagonEntity> list = new ArrayList<>();
-        VagonEntity save = null;
-        for (int i = 0; i < dtos.size(); i++) {
-            if (vagonRepository.existsByNumber(dtos.get(i).getNumber())){
-                throw new DataAlreadyExistsException("Such a digital wagon already exists ... . . Please give another number for this wagon.");
+        List<VagonEntity> save = new ArrayList<>();
+        for (VagonCreateDto dto : dtos) {
+            if (vagonRepository.existsByNumber(dto.getNumber())) {
+                throw new DataAlreadyExistsException("Such a digital wagon already exists ...  Please give another number for this vagon.");
             }
-            VagonEntity vagon = parse(dtos.get(i));
-            save = vagonRepository.save(vagon);
+            VagonEntity vagon = parse(dto);
             seatsService.create(vagon.getId(), seatPrice);
-            list.add(save);
+            save.add(vagonRepository.save(vagon));
         }
-        assert save != null;
-        return parse(list);
+        return save.stream().map(this::parse).toList();
     }
 
     @Override

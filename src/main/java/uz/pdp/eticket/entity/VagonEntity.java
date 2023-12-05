@@ -5,16 +5,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import uz.pdp.eticket.entity.enums.VagonType;
-/**
- * @author 'Sodiqova Dildora' on 27.11.2023
- * @project RailwayUZ
- * @contact @dildora1_04
- */
+
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter
 @Getter
 @Entity(name = "vagon")
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"locomotive_id", "numberOnTheTrain"}))
 public class VagonEntity extends BaseEntity {
 
     @Column(unique = true)

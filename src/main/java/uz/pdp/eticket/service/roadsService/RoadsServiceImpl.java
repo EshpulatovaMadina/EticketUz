@@ -41,8 +41,8 @@ public class RoadsServiceImpl implements RoadsService {
         }
         RoadsEntity road = new RoadsEntity(roadsCreateDto.getDirection());
         roadsRepository.save(road);
-        StationRoadsResponseDto save = stationRoadsService.save(road.getId(), roadsCreateDto.getStations());
-        List<StationRoadsResponseDto> stationOfRoad = stationRoadsService.getStationOfRoad(save.getRoadId());
+        stationRoadsService.save(road.getId(),roadsCreateDto.getStations());
+        List<StationRoadsResponseDto> stationOfRoad = stationRoadsService.getStationOfRoad(road.getId());
         List<StationResponseDto> dtoList = parseToStation(stationOfRoad);
         return new RoadsResponseDto(road.getId(), road.getDirection(), dtoList);
     }

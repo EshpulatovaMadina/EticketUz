@@ -36,7 +36,6 @@ public class StationRoadsServiceImpl implements StationRoadsService {
                     .orElseThrow(() -> new DataNotFoundException("Station not found with id: " + stationCreate.getStationId()));
             save = stationRoadsRepository.save(new StationRoadsEntity(station, roadsEntity, stationCreate.getOrderNumber()));
         }
-        return new StationRoadsResponseDto(save.getId(), save.getStation().getId(),save.getStation().getName(), save.getRoad().getId(), save.getRoad().getDirection(), save.getOrderNumber() , save.getCreatedDate());
     }
 
     @Override
