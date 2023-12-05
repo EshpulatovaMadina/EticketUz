@@ -12,11 +12,7 @@ import uz.pdp.eticket.repository.LocomotiveRepository;
 
 import java.util.Optional;
 import java.util.UUID;
-/**
- * @author 'Sodiqova Dildora' on 27.11.2023
- * @project RailwayUZ
- * @contact @dildora1_04
- */
+
 @RequiredArgsConstructor
 @Service
 public class LocomotiveServiceImpl implements LocomotiveService {

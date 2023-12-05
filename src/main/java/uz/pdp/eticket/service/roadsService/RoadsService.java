@@ -1,15 +1,13 @@
 package uz.pdp.eticket.service.roadsService;
 
+import org.springframework.http.ResponseEntity;
 import uz.pdp.eticket.DTO.request.RoadsCreateDto;
 import uz.pdp.eticket.DTO.response.RoadsResponseDto;
 import uz.pdp.eticket.entity.RoadsEntity;
 
+import java.util.List;
 import java.util.UUID;
-/**
- * @author 'Sodiqova Dildora' on 27.11.2023
- * @project RailwayUZ
- * @contact @dildora1_04
- */
+
 public interface RoadsService {
     RoadsResponseDto getById(UUID roadsId);
 
@@ -23,4 +21,6 @@ public interface RoadsService {
     RoadsResponseDto getByDirection(String direction);
 
     RoadsResponseDto parse(RoadsEntity roadsEntity);
+
+//    ResponseEntity<List<RoadsResponseDto>> getAll();
 }

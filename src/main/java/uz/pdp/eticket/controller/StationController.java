@@ -28,7 +28,7 @@ public class StationController {
     )
     @PreAuthorize(value = "hasAuthority('ADMIN') or hasAuthority('SUPER_ADMIN')")
     @PostMapping("/create")
-    public ResponseEntity<StationResponseDto> create(@RequestBody StationsCreateDto stationsCreateDto){
+    public ResponseEntity<StationResponseDto> create(@RequestBody StationsCreateDto stationsCreateDto) {
         return ResponseEntity.ok(stationService.create(stationsCreateDto));
     }
 
@@ -52,7 +52,7 @@ public class StationController {
     )
     @PreAuthorize(value = "hasAuthority('ADMIN') or hasAuthority('SUPER_ADMIN')")
     @PutMapping("/update")
-    public ResponseEntity<StationResponseDto> update(@RequestParam UUID stationId, @RequestBody StationsCreateDto dto){
+    public ResponseEntity<StationResponseDto> update(@RequestParam UUID stationId, @RequestBody StationsCreateDto dto) {
         return ResponseEntity.ok(stationService.update(stationId, dto));
     }
 
@@ -64,7 +64,7 @@ public class StationController {
     )
     @PreAuthorize(value = "hasAuthority('ADMIN') or hasAuthority('SUPER_ADMIN')")
     @PutMapping("/is-active")
-    public ResponseEntity<StationResponseDto> isActive(@RequestParam UUID stationId){
+    public ResponseEntity<StationResponseDto> isActive(@RequestParam UUID stationId) {
         return ResponseEntity.ok(stationService.isActive(stationId));
     }
 
@@ -75,8 +75,8 @@ public class StationController {
     )
     @PreAuthorize(value = "hasAuthority('ADMIN') or hasAuthority('SUPER_ADMIN')")
     @GetMapping("/get-by-id")
-    public ResponseEntity<StationResponseDto> getbyId(@RequestParam UUID stationId){
-        return ResponseEntity.ok(stationService.getById(stationId));
+    public ResponseEntity<StationResponseDto> getbyId(@RequestParam UUID stationId) {
+        return ResponseEntity.ok(stationService.getById(seatId));
     }
 
     @PreAuthorize(value = "hasAuthority('ADMIN')")

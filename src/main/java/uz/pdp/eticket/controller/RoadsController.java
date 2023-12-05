@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.*;
 import uz.pdp.eticket.DTO.request.RoadsCreateDto;
 import uz.pdp.eticket.DTO.response.RoadsResponseDto;
 import uz.pdp.eticket.service.roadsService.RoadsService;
+
+import java.util.List;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -85,5 +87,9 @@ public class RoadsController {
     public ResponseEntity<RoadsResponseDto> getbyId(@RequestParam UUID roadsId){
         return ResponseEntity.ok(roadsService.getById(roadsId));
     }
+//    @GetMapping("/get-all")
+//    public ResponseEntity<List<RoadsResponseDto>> getAll() {
+//        return roadsService.getAll();
+//    }
 
 }

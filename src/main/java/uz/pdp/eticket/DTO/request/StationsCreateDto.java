@@ -21,7 +21,4 @@ public class StationsCreateDto {
 
     private Integer number;
 
-    private UUID nextStation;
-    private UUID prevStation;
-
 }
