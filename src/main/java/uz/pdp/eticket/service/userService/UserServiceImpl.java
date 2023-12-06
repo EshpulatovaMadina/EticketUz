@@ -1,4 +1,4 @@
-package uz.pdp.eticket.service;
+package uz.pdp.eticket.service.userService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jws;
@@ -20,6 +20,7 @@ import uz.pdp.eticket.exception.DataAlreadyExistsException;
 import uz.pdp.eticket.exception.DataNotFoundException;
 import uz.pdp.eticket.repository.PasswordRepository;
 import uz.pdp.eticket.repository.UserRepository;
+import uz.pdp.eticket.service.MailService;
 import uz.pdp.eticket.service.jwt.AuthenticationService;
 import uz.pdp.eticket.service.jwt.JwtService;
 
@@ -31,7 +32,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class UserService {
+public class UserServiceImpl implements UserService{
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
     private final PasswordRepository passwordRepository;
@@ -40,6 +41,7 @@ public class UserService {
     private final AuthenticationService authenticationService;
     private final MailService mailService;
 
+    @Override
     public void emailSend(UserEntity userEntity) {
         if(!userEntity.getIsActive()) {
             throw new AuthenticationCredentialsNotFoundException("User is not active");
@@ -52,6 +54,7 @@ public class UserService {
     }
 
     @Transactional
+    @Override
     public UserResponseDto signUp(SignUpDto dto) {
         Optional<UserEntity> optionalUser = userRepository.findByEmail(dto.getEmail());
         if(optionalUser.isPresent()) {
@@ -65,6 +68,7 @@ public class UserService {
         return modelMapper.map(user, UserResponseDto.class);
     }
 
+    @Override
     public JwtResponse signIn(String email, String password) {
         UserEntity userEntity = userRepository.findByEmail(email)
                 .orElseThrow(() -> new DataNotFoundException("User not found with email: " + email));
@@ -77,6 +81,7 @@ public class UserService {
         throw new AuthenticationCredentialsNotFoundException("Not verified");
     }
 
+    @Override
     public String getVerificationCode(String email) {
         UserEntity user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new DataNotFoundException("User not found with email: " + email));
@@ -84,6 +89,7 @@ public class UserService {
         return "Verify code sent";
     }
 
+    @Override
     public UserResponseDto verify(String email, String code) {
         UserEntity userEntity = userRepository.findByEmail(email)
                 .orElseThrow(() -> new DataNotFoundException("User not found with email: " + email));
@@ -100,6 +106,7 @@ public class UserService {
         }
         throw new AuthenticationCredentialsNotFoundException("Password is expired");
     }
+    @Override
     public SubjectDto verifyToken(String token) {
         try{
             Jws<Claims> claimsJws = jwtService.extractToken(token);
@@ -113,23 +120,32 @@ public class UserService {
 
     }
 
+    @Override
     public UserResponseDto getById(UUID userId) {
         UserEntity userEntity = userRepository.findByIdAndIsActiveTrue(userId)
                 .orElseThrow(() -> new DataNotFoundException("User not found with id: " + userId));
         return modelMapper.map(userEntity, UserResponseDto.class);
     }
 
+    @Override
     public List<UserResponseDto> getAll(String role) {
         List<UserEntity> users = userRepository.findAllByRoleAndIsActiveTrue(role);
         return users.stream().map(userEntity -> modelMapper.map(userEntity, UserResponseDto.class))
                 .toList();
     }
 
+    @Override
     public String deleteUser(UUID userId) {
         UserEntity userEntity = userRepository.findById(userId)
                 .orElseThrow(() -> new DataNotFoundException("User not found with id: " + userId));
         userEntity.setIsActive(false);
         userRepository.save(userEntity);
         return "User deleted";
+    }
+
+    @Override
+    public UserEntity findById(UUID userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(()-> new DataNotFoundException("User not found with id: "+userId));
     }
 }

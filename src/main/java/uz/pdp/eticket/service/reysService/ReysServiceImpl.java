@@ -44,11 +44,13 @@ public class ReysServiceImpl implements ReysService{
 
     @Override
     public List<ReysResponseDto> getReysByLocation(String fromStation, String toStation, LocalDateTime fromDate, LocalDateTime toDate) {
+
         List<String> directions = stationRoadsService.findAllDirectionByStations(fromStation, toStation);
         List<ReysResponseDto> parse = new ArrayList<>();
         for (String direction : directions) {
-            List<ReysEntity> all = reysRepository.findAllByDirectionAndStartDate(direction, fromDate);
-            parse.addAll(parse(all));
+                List<ReysEntity> all = reysRepository.findAllByDirectionAndStartDate(direction, fromDate);
+                parse.addAll(parse(all));
+
         }
         return parse;
     }
@@ -76,6 +78,12 @@ public class ReysServiceImpl implements ReysService{
     @Override
     public List<ReysResponseDto> getAll() {
         return reysRepository.findAll().stream().map(this::parse).toList();
+    }
+
+    @Override
+    public ReysEntity findById(UUID reysId) {
+        return reysRepository.findById(reysId)
+                .orElseThrow(()-> new DataNotFoundException("Reys not found with id: "+reysId));
     }
 
     private ReysResponseDto parse(ReysEntity entity) {

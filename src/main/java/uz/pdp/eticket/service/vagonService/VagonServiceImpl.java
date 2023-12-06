@@ -2,11 +2,7 @@ package uz.pdp.eticket.service.vagonService;
 
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 import uz.pdp.eticket.DTO.request.VagonCreateDto;
 import uz.pdp.eticket.DTO.response.FreeVagonResponseDto;
 import uz.pdp.eticket.DTO.response.SeatsResponseDto;
@@ -19,7 +15,7 @@ import uz.pdp.eticket.exception.DataNotFoundException;
 import uz.pdp.eticket.repository.VagonRepository;
 import uz.pdp.eticket.service.bookingService.BookingsService;
 import uz.pdp.eticket.service.locomotiveService.LocomotiveService;
-import uz.pdp.eticket.service.seatsService.SeatsService;
+import uz.pdp.eticket.service.seatsService.SeatService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +26,7 @@ public class VagonServiceImpl implements VagonService{
     private final LocomotiveService locomotiveService;
     private final VagonRepository vagonRepository;
     private final ModelMapper modelMapper;
-    private final SeatsService seatsService;
+    private final SeatService seatService;
     private final BookingsService bookingsService;
     @Override
     public List<VagonResponseDto> create(List<VagonCreateDto> dtos, Double seatPrice) {
@@ -41,7 +37,7 @@ public class VagonServiceImpl implements VagonService{
             }
             VagonEntity vagon = parse(dto);
             save.add(vagonRepository.save(vagon));
-            seatsService.create(vagon.getId(), seatPrice);
+            seatService.create(vagon.getId(), seatPrice);
         }
         return save.stream().map(this::parse).toList();
     }
@@ -172,7 +168,7 @@ public class VagonServiceImpl implements VagonService{
         List<VagonEntity> all = vagonRepository.findAllByLocomotiveId(locomotiveId);
         Double price = 0D;
         for (int i = 0; i < all.size(); i++) {
-            List<SeatsResponseDto> seatsOfVagon = seatsService.getSeatsOfVagon(all.get(i).getId());
+            List<SeatsResponseDto> seatsOfVagon = seatService.getSeatsOfVagon(all.get(i).getId());
             for (SeatsResponseDto seatsResponseDto : seatsOfVagon) {
                 Boolean aBoolean = bookingsService.ticketIsSoldOrNot(seatsResponseDto.getSeatsId(), reysId);
                     if (!aBoolean) {

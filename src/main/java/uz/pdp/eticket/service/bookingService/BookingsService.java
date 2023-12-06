@@ -12,7 +12,7 @@ import java.util.UUID;
 
 @Service
 public interface BookingsService {
-    BookingsResponseDto create(BookingCreateDto dto);
+    BookingsResponseDto create(BookingCreateDto dto,UUID userId);
 
     BookingsResponseDto getById(UUID bookingId);
 

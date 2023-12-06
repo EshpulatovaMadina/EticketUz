@@ -25,7 +25,7 @@ import java.util.UUID;
 @SecurityRequirement(name = "Bearer Authentication")
 @RequestMapping("/api/transaction")
 public class TransactionController {
-    private TransactionService transactionService;
+    private final TransactionService transactionService;
     @Operation(
             description = "This method pays for the ticket from one card.",
             method = "POST method is supported",
