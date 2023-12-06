@@ -66,7 +66,8 @@ public class SeatsServiceImpl implements SeatsService{
 
     @Override
     public List<SeatsResponseDto> getSeatsOfVagon(UUID vagonId) {
-        return parse(seatsRepository.findAllByVagonId(vagonId));
+        List<SeatEntity> vagonId1 = seatsRepository.findAllByVagonId(vagonId);
+        return parse(vagonId1);
     }
 
     private List<SeatsResponseDto> parse(List<SeatEntity> seats){

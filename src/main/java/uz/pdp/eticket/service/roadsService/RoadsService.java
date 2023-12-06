@@ -10,6 +10,7 @@ import java.util.UUID;
 
 public interface RoadsService {
     RoadsResponseDto getById(UUID roadsId);
+    RoadsEntity findById(UUID roadsId);
 
     RoadsResponseDto isActive(UUID roadsId);
 
@@ -21,6 +22,8 @@ public interface RoadsService {
     RoadsResponseDto getByDirection(String direction);
 
     RoadsResponseDto parse(RoadsEntity roadsEntity);
+
+    RoadsResponseDto setStation(UUID roadId, List<UUID> stations);
 
 //    ResponseEntity<List<RoadsResponseDto>> getAll();
 }

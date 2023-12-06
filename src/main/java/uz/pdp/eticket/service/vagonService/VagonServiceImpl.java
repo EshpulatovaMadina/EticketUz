@@ -55,14 +55,16 @@ public class VagonServiceImpl implements VagonService{
         int i = 1;
         for (UUID vagonId : vagonsId) {
             VagonEntity vagon = vagonRepository.findById(vagonId).orElseThrow(() -> new DataNotFoundException("Vagon not found"));
+            LocomotiveEntity oldLocomotive = vagon.getLocomotive();
+            Integer oldNumberOnTheTrain = vagon.getNumberOnTheTrain();
             vagon.setNumberOnTheTrain(counted + i++);
             vagon.setLocomotive(locomotive);
             vagonRepository.save(vagon);
 
-            if (vagon.getLocomotive() != null){
-                List<VagonEntity> all = vagonRepository.findAllByLocomotiveIdOrderByNumberOnTheTrain(vagon.getLocomotive().getId());
-                updateVagonNumberWhenLocomotiveChange(all, vagon.getNumberOnTheTrain());
-            // buyerda muoomo bordek anu osha vagon hali trainda haliyam boladiku shu qolib ketmaydimi yana. unikini ham o'zgartirib qo'ymaymizmi
+            if (oldLocomotive != null){
+                List<VagonEntity> all = vagonRepository.findAllByLocomotiveIdOrderByNumberOnTheTrain(oldLocomotive.getId());
+                updateVagonNumberWhenLocomotiveChange(all, oldNumberOnTheTrain);
+            // now no problem 😁
             }
             list.add(vagon);
         }
