@@ -5,12 +5,8 @@ import uz.pdp.eticket.entity.SeatEntity;
 
 import java.util.List;
 import java.util.UUID;
-/**
- * @author 'Sodiqova Dildora' on 27.11.2023
- * @project RailwayUZ
- * @contact @dildora1_04
- */
-public interface SeatsService {
+
+public interface SeatService {
     List<SeatsResponseDto> create(UUID vagonId, Double seatPrice);
     SeatsResponseDto isActive(UUID seatId);
     String deActive(UUID seatId);
@@ -18,4 +14,6 @@ public interface SeatsService {
     SeatsResponseDto getById(UUID seatId);
     List<SeatsResponseDto> getSeatsOfVagon(UUID vagonId);
     SeatsResponseDto parse(SeatEntity seatEntity);
+
+    SeatEntity findById(UUID seatId);
 }

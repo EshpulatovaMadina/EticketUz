@@ -11,5 +11,6 @@ import java.util.UUID;
 public interface ReysRepository extends JpaRepository<ReysEntity, UUID> {
 
      List<ReysEntity> findAllByDirectionAndStartDate(String direction, LocalDateTime fromDate);
+     List<ReysEntity> findAllByDirection(String direction);
 
 }

@@ -11,15 +11,16 @@ import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import uz.pdp.eticket.DTO.request.BookingCreateDto;
 import uz.pdp.eticket.DTO.response.BookingsResponseDto;
-import uz.pdp.eticket.entity.BookingEntity;
-import uz.pdp.eticket.entity.ReysEntity;
+import uz.pdp.eticket.entity.*;
 import uz.pdp.eticket.exception.DataNotFoundException;
 import uz.pdp.eticket.repository.BookingsRepository;
 import uz.pdp.eticket.repository.ReysRepository;
-import uz.pdp.eticket.repository.UserRepository;
-
+import uz.pdp.eticket.repository.VagonRepository;
+import uz.pdp.eticket.service.seatsService.SeatService;
+import uz.pdp.eticket.service.userService.UserService;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -27,7 +28,6 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -37,14 +37,15 @@ import java.util.UUID;
 public class BookingsServiceImpl implements BookingsService{
 
     private final BookingsRepository bookingsRepository;
-    private final ReysRepository reysRepository;
+    private final ReysRepository reysService;
     private final ModelMapper modelMapper;
+    private final UserService userService;
+    private final SeatService seatService;
+    private final VagonRepository vagonService;
 
     @Override
-    public BookingsResponseDto create(BookingCreateDto dto) {
-        ReysEntity reys = reysRepository.findById(dto.getReysId()).orElseThrow(() -> new DataNotFoundException("Reys not found"));
-        BookingEntity booking = modelMapper.map(dto, BookingEntity.class);
-        booking.setReys(reys);
+    public BookingsResponseDto create(BookingCreateDto dto, UUID userId) {
+        BookingEntity booking = parse(dto,userId);
         bookingsRepository.save(booking);
         return parse(booking);
     }
@@ -61,9 +62,10 @@ public class BookingsServiceImpl implements BookingsService{
     }
 
     @Override
+    @Transactional
     public String checkExcpiryDate() {
-         bookingsRepository.deleteAllByCreatedDateBefore(LocalDateTime.now().minusMinutes(10));
-         return "Delete booking";
+         bookingsRepository.deleteBookingEntitiesByCreatedDateBefore(LocalDateTime.now().minusMinutes(10));
+         return "Deleted bookings";
     }
 
     @Override
@@ -74,7 +76,7 @@ public class BookingsServiceImpl implements BookingsService{
     @Override
     public List<BookingsResponseDto> getBookingOfUser(UUID userId) {
         List<BookingEntity> bookingOfUser = bookingsRepository.findAllByUserId(userId);
-        return parse(bookingOfUser);
+        return bookingOfUser.stream().map(this::parse).toList();
     }
 
 
@@ -103,12 +105,8 @@ public class BookingsServiceImpl implements BookingsService{
 
             // Create InputStreamResource from byte array
             ByteArrayInputStream inputStream = new ByteArrayInputStream(imageBytes);
-            InputStreamResource resource = new InputStreamResource(inputStream);
 
-            // Set headers
-
-            // Return the ResponseEntity with headers, status, and resource
-            return resource;
+            return new InputStreamResource(inputStream);
         } catch (WriterException e) {
             e.printStackTrace();
             throw new RuntimeException("Failed to generate and save QR code", e);
@@ -133,6 +131,26 @@ public class BookingsServiceImpl implements BookingsService{
     }
 
 
+    private BookingEntity parse(BookingCreateDto dto,UUID userId) {
+        UserEntity userEntity = userService.findById(userId);
+        SeatEntity seatEntity = seatService.findById(dto.getSeatId());
+        ReysEntity reysEntity = reysService.findById(dto.getReysId()).orElseThrow(()-> new DataNotFoundException("Reys not found"));
+        VagonEntity vagonEntity = vagonService.findById(dto.getVagonId()).orElseThrow(()-> new DataNotFoundException("Vagon not found"));
+
+        return new BookingEntity(
+                userEntity,
+                userEntity.getName(),
+                userEntity.getSurname(),
+                dto.getIdentity(),
+                userEntity.getBirthday(),
+                seatEntity,
+                dto.getPrice(),
+                reysEntity,
+                vagonEntity,
+                dto.getDate()
+        );
+    }
+
     private BookingsResponseDto parse(BookingEntity booking){
         BookingsResponseDto map = modelMapper.map(booking, BookingsResponseDto.class);
         map.setBookingId(booking.getId());
@@ -140,14 +158,4 @@ public class BookingsServiceImpl implements BookingsService{
         return map;
     }
 
-    private List<BookingsResponseDto> parse(List<BookingEntity> allByUserId){
-        List<BookingsResponseDto> list = new ArrayList<>();
-        for (BookingEntity bookings : allByUserId) {
-            BookingsResponseDto map = modelMapper.map(bookings, BookingsResponseDto.class);
-            map.setBookingId(bookings.getId());
-            map.setCreatedDate(bookings.getCreatedDate());
-            list.add(map);
-        }
-        return list;
-    }
 }

@@ -2,6 +2,7 @@ package uz.pdp.eticket.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -10,6 +11,7 @@ import uz.pdp.eticket.DTO.response.ReysResponseDto;
 import uz.pdp.eticket.service.reysService.ReysService;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -53,10 +55,16 @@ public class ReysController {
     public ResponseEntity<List<ReysResponseDto>> getReysByLocation(
             @RequestParam String fromStation,
             @RequestParam String toStation,
-            @RequestParam LocalDate fromDate,
-            @RequestParam LocalDate toDate ){
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
+            @RequestParam(required = false, defaultValue = "2100-12-31") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate) {
 
-       return ResponseEntity.ok(reysService.getReysByLocation(fromStation, toStation, fromDate.atStartOfDay(), toDate.atStartOfDay()));
+        // Check if fromDate is null, and provide a default value if needed
+        LocalDateTime fromDateTime = (fromDate != null) ? fromDate.atStartOfDay() : LocalDateTime.MIN;
+
+        // Check if toDate is null, and provide a default value if needed
+        LocalDateTime toDateTime = (toDate != null) ? toDate.atStartOfDay() : LocalDateTime.MAX;
+
+        return ResponseEntity.ok(reysService.getReysByLocation(fromStation, toStation, fromDateTime, toDateTime));
     }
 
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('SUPER_ADMIN')")

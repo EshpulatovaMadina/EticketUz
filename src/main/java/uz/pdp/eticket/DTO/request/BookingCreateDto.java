@@ -9,18 +9,14 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
-/**
- * @author 'Sodiqova Dildora' on 27.11.2023
- * @project RailwayUZ
- * @contact @dildora1_04
- */
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 public class BookingCreateDto {
-    @NotNull(message = "")
-    private UUID userId;
+    // userId princpalda kirib keladi
+//    @NotNull(message = "")
+//    private UUID userId;
 
     @NotBlank(message = "")
     private String identity;

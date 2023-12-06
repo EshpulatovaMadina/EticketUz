@@ -3,7 +3,6 @@ package uz.pdp.eticket.service.seatsService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
-import uz.pdp.eticket.DTO.request.SeatsCreateDto;
 import uz.pdp.eticket.DTO.response.SeatsResponseDto;
 import uz.pdp.eticket.entity.SeatEntity;
 import uz.pdp.eticket.entity.VagonEntity;
@@ -15,14 +14,10 @@ import uz.pdp.eticket.repository.VagonRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-/**
- * @author 'Sodiqova Dildora' on 27.11.2023
- * @project RailwayUZ
- * @contact @dildora1_04
- */
+
 @RequiredArgsConstructor
 @Service
-public class SeatsServiceImpl implements SeatsService{
+public class SeatServiceImpl implements SeatService {
     private final SeatsRepository seatsRepository;
     private final ModelMapper modelMapper;
     private final VagonRepository vagonRepository;
@@ -85,6 +80,12 @@ public class SeatsServiceImpl implements SeatsService{
         SeatsResponseDto map = modelMapper.map(seat, SeatsResponseDto.class);
         map.setVagonId(seat.getVagonId().getId());
         return map;
+    }
+
+    @Override
+    public SeatEntity findById(UUID seatId) {
+        return seatsRepository.findById(seatId)
+                .orElseThrow(() -> new DataNotFoundException("Seat not found with id: "+ seatId));
     }
 
 }
