@@ -64,16 +64,18 @@ public class RoadsServiceImpl implements RoadsService {
         List<StationRoadsEntity> all = sr.findAllByRoadIdOrderByOrderNumber(road.getId());
         List<StationResponseDto> parse = parse(all);
         return new RoadsResponseDto(road.getId(), road.getDirection(), parse);
+        /**
+         * shuyerda responseda stansiyalari bormadi
+         */
     }
 
     private List<StationResponseDto> parse(List<StationRoadsEntity> stations) {
         List<StationResponseDto> list = new ArrayList<>();
-        for (int i = 1; i < stations.size()-1; i++) {
-            StationRoadsEntity s = stations.get(i);
+        for (StationRoadsEntity station : stations) {
             list.add(new StationResponseDto(
-                    s.getId(),
-                    s.getRoad().getDirection(),
-                     s.getCreatedDate()));
+                    station.getId(),
+                    station.getRoad().getDirection(),
+                     station.getCreatedDate()));
         }
         return list;
     }
