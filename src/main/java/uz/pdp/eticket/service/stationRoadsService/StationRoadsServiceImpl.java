@@ -27,7 +27,7 @@ public class StationRoadsServiceImpl implements StationRoadsService {
     private final StationsRepository stationsRepository;
 
     @Transactional
-    public StationRoadsResponseDto save(UUID roadId, List<StationRoadCreateDto> stations) {
+    public void save(UUID roadId, List<StationRoadCreateDto> stations) {
         StationRoadsEntity save = null;
         RoadsEntity roadsEntity = roadsRepository.findById(roadId)
                 .orElseThrow(() -> new DataNotFoundException("Road not found with id: " + roadId));
@@ -36,7 +36,6 @@ public class StationRoadsServiceImpl implements StationRoadsService {
                     .orElseThrow(() -> new DataNotFoundException("Station not found with id: " + stationCreate.getStationId()));
             save = stationRoadsRepository.save(new StationRoadsEntity(station, roadsEntity, stationCreate.getOrderNumber()));
         }
-        return new StationRoadsResponseDto(save.getId(), save.getStation().getId(),save.getStation().getName(), save.getRoad().getId(), save.getRoad().getDirection(), save.getOrderNumber() , save.getCreatedDate());
     }
 
     @Override

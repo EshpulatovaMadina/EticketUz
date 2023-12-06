@@ -23,14 +23,14 @@ public class ScheduledNotification {
 
     @Scheduled(fixedRate = 60000)
     public void scheduleTaskUsingCronExpression() {
-        bookingsService.checkExcpiryDate();
+        log.warn(bookingsService.checkExcpiryDate());
     }
 
     @Scheduled(fixedRate = 50000)
     public void warnAllUsers() {
-        List<UserEntity> userEntities = userRepository.findAllByStartDate(LocalDateTime.now().minusDays(1));
+        List<UserEntity> userEntities = userRepository.findAllByStartDate(LocalDateTime.now().plusDays(1));
         userEntities.forEach(item -> {
-            MailDto mailDto = new MailDto("the flight for which you bought a ticket will depart in 1 day", item.getEmail());
+            MailDto mailDto = new MailDto("The flight for which you bought a ticket will depart in 1 day", item.getEmail());
             mailService.sendMail(mailDto);
         });
     }

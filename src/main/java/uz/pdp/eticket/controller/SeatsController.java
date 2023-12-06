@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import uz.pdp.eticket.DTO.response.SeatsResponseDto;
-import uz.pdp.eticket.service.seatsService.SeatsService;
+import uz.pdp.eticket.service.seatsService.SeatService;
 
 import java.util.List;
 import java.util.UUID;
@@ -16,7 +16,7 @@ import java.util.UUID;
 @SecurityRequirement(name = "Bearer Authentication")
 @RequestMapping("/api/v1/seat")
 public class SeatsController {
-    private final SeatsService seatsService;
+    private final SeatService seatService;
     @Operation(
             description = "This method is used to add a seat",
             method = "POST method is supported",
@@ -25,7 +25,7 @@ public class SeatsController {
     @PreAuthorize(value = "hasAuthority('ADMIN') or hasAuthority('SUPER_ADMIN')")
     @PostMapping("/create")
     public ResponseEntity<List<SeatsResponseDto>> create(@RequestBody UUID vagonId, @RequestParam Double seatPrice){
-        return ResponseEntity.ok(seatsService.create(vagonId,seatPrice ));
+        return ResponseEntity.ok(seatService.create(vagonId,seatPrice ));
     }
 
 
@@ -37,7 +37,7 @@ public class SeatsController {
     @PreAuthorize(value = "hasAuthority('ADMIN') or hasAuthority('SUPER_ADMIN')")
     @DeleteMapping("/dis-active")
     public ResponseEntity<String> disActive(@RequestParam UUID seatId){
-        return ResponseEntity.ok(seatsService.deActive(seatId));
+        return ResponseEntity.ok(seatService.deActive(seatId));
     }
 
     @Operation(
@@ -48,7 +48,7 @@ public class SeatsController {
     @PreAuthorize(value = "hasAuthority('ADMIN') or hasAuthority('SUPER_ADMIN')")
     @PutMapping("/is-active")
     public ResponseEntity<SeatsResponseDto> isActive(@RequestParam UUID seatId){
-        return ResponseEntity.ok(seatsService.isActive(seatId));
+        return ResponseEntity.ok(seatService.isActive(seatId));
     }
 
     @Operation(
@@ -59,7 +59,7 @@ public class SeatsController {
     @PreAuthorize(value = "hasAuthority('ADMIN') or hasAuthority('USER')")
     @GetMapping("/get-by-id")
     public ResponseEntity<SeatsResponseDto> getbyId(@RequestParam UUID seatId){
-        return ResponseEntity.ok(seatsService.getById(seatId));
+        return ResponseEntity.ok(seatService.getById(seatId));
     }
 
 
@@ -71,7 +71,7 @@ public class SeatsController {
     @PreAuthorize(value = "hasAuthority('ADMIN') or hasAuthority('USER')")
     @GetMapping("/get-seats-of-vagon")
     public ResponseEntity<List<SeatsResponseDto>> getSeatsOfVagon(@RequestParam UUID vagonId ){
-        return ResponseEntity.ok(seatsService.getSeatsOfVagon(vagonId));
+        return ResponseEntity.ok(seatService.getSeatsOfVagon(vagonId));
     }
 
 

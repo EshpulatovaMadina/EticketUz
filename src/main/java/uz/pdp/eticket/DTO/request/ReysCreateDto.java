@@ -9,11 +9,7 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
-/**
- * @author 'Sodiqova Dildora' on 27.11.2023
- * @project RailwayUZ
- * @contact @dildora1_04
- */
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -23,7 +19,7 @@ public class ReysCreateDto {
     private UUID roadsId;
 
     @NotBlank(message = "")
-    private UUID direction;
+    private String direction;
 
     @NotNull(message = "")
     private UUID fromStation;

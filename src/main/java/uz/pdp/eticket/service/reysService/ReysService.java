@@ -6,6 +6,7 @@ import uz.pdp.eticket.entity.ReysEntity;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface ReysService {
@@ -16,4 +17,7 @@ public interface ReysService {
     String disActive(UUID reysId);
 
 
+    List<ReysResponseDto> getAll();
+
+    ReysEntity findById(UUID reysId);
 }

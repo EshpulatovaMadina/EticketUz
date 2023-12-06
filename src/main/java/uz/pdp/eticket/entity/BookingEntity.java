@@ -1,5 +1,10 @@
 package uz.pdp.eticket.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -8,6 +13,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -28,7 +35,10 @@ public class BookingEntity extends BaseEntity {
     private String firstName;
     private String lastName;
     private String identity;
-    private String birthday;
+    @JsonSerialize(using = LocalDateSerializer.class)
+    @JsonDeserialize(using = LocalDateDeserializer.class)
+    @JsonFormat(pattern = "yyyy-mm-dd")
+    private LocalDate birthday;
 
     @ManyToOne(cascade = CascadeType.ALL)
     private SeatEntity seat;
@@ -49,7 +59,8 @@ public class BookingEntity extends BaseEntity {
 
         return "--Ticket--\n" +
                " user: " + user.getName() + "\n" +
-               " identity: '" + identity + "\n" +
+               " identity: " + identity + "\n" +
+               " vagon: "+vagon.getNumberOnTheTrain() + '\n'+
                " seat: " + seat.getNumber() + "\n" +
                " price: " + price + "\n" +
                " date: " + date.format(formatter);

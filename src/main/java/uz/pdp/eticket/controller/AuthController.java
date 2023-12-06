@@ -10,7 +10,7 @@ import uz.pdp.eticket.DTO.request.SignUpDto;
 import uz.pdp.eticket.DTO.response.JwtResponse;
 import uz.pdp.eticket.DTO.response.SubjectDto;
 import uz.pdp.eticket.DTO.response.UserResponseDto;
-import uz.pdp.eticket.service.UserService;
+import uz.pdp.eticket.service.userService.UserServiceImpl;
 
 @RestController
 @RequestMapping("/user")
@@ -18,12 +18,12 @@ import uz.pdp.eticket.service.UserService;
 @Tag(name = "Auth Management")
 @SecurityRequirement(name = "Bearer Authentication")
 public class AuthController {
-    private final UserService userService;
+    private final UserServiceImpl userServiceImpl;
 
     @PermitAll
     @PostMapping("/sign-up")
     public UserResponseDto signUp(@RequestBody SignUpDto dto) {
-        return userService.signUp(dto);
+        return userServiceImpl.signUp(dto);
     }
 
 
@@ -33,14 +33,14 @@ public class AuthController {
             @RequestParam String email,
             @RequestParam String password
             ) {
-        return userService.signIn(email, password);
+        return userServiceImpl.signIn(email, password);
     }
 
 
     @PermitAll
     @GetMapping("/get-verification-code")
     public String sendVerifyCode(@RequestParam String email) {
-        return userService.getVerificationCode(email);
+        return userServiceImpl.getVerificationCode(email);
     }
 
 
@@ -54,7 +54,7 @@ public class AuthController {
     @PermitAll
     @GetMapping("/verify")
     public UserResponseDto verify(@RequestParam String email, @RequestParam String code) {
-        UserResponseDto verify = userService.verify(email, code);
+        UserResponseDto verify = userServiceImpl.verify(email, code);
         return verify;
     }
 
@@ -62,7 +62,7 @@ public class AuthController {
     @PermitAll
     @GetMapping("/verify-token")
     public SubjectDto verifyToken (@RequestParam String token) {
-        return userService.verifyToken(token);
+        return userServiceImpl.verifyToken(token);
     }
 
 }

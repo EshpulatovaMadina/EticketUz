@@ -21,11 +21,7 @@ import uz.pdp.eticket.service.bookingService.BookingsService;
 import java.security.Principal;
 import java.util.List;
 import java.util.UUID;
-/**
- * @author 'Sodiqova Dildora' on 27.11.2023
- * @project RailwayUZ
- * @contact @dildora1_04
- */
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/booking")
@@ -44,8 +40,8 @@ public class BookingsController {
     )
     @PreAuthorize(value = "hasAuthority('USER')") /// shuyerini sorash kk user boooking create qiladimi  ozi
     @PostMapping("/create")
-    public ResponseEntity<BookingsResponseDto> create(@Valid @RequestBody BookingCreateDto dto){
-        return ResponseEntity.ok(bookingsService.create(dto));
+    public ResponseEntity<BookingsResponseDto> create(@Valid @RequestBody BookingCreateDto dto, Principal principal){
+        return ResponseEntity.ok(bookingsService.create(dto,UUID.fromString(principal.getName())));
     }
 
     @Operation(
@@ -85,13 +81,13 @@ public class BookingsController {
 
     @PermitAll
     @GetMapping("/qr-code")
-    public ResponseEntity<InputStreamResource> getQRCode() {
+    public ResponseEntity<InputStreamResource> getQRCode(@RequestParam UUID ticketId) {
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.CONTENT_DISPOSITION, "inline;filename=qr-code.png");
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .headers(headers)
                 .contentType(MediaType.IMAGE_PNG)
-                .body(bookingsService.getQRCode(UUID.randomUUID()));
+                .body(bookingsService.getQRCode(ticketId));
     }
 }

@@ -59,7 +59,7 @@ public class VagonController {
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
     @PreAuthorize(value = "hasAuthority('ADMIN') or hasAuthority('SUPER_ADMIN')")
-    @GetMapping("/getVagonsOfLocomotive")
+    @GetMapping("/get-vagons-of-locomotive")
     public ResponseEntity<List<VagonResponseDto>> getVagonsOfLocomotive(@RequestParam UUID locomotiveId){
         return ResponseEntity.ok(vagonService.getVagonsOfLocomotive(locomotiveId));
     }
