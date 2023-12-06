@@ -18,7 +18,7 @@ import java.util.UUID;
 @SecurityRequirement(name = "Bearer Authentication")
 @RequestMapping("/api/v1/reys")
 public class ReysController {
-    private ReysService reysService;
+    private final ReysService reysService;
 
     @Operation(
             description = "This method is used to add reys",
@@ -57,6 +57,12 @@ public class ReysController {
             @RequestParam LocalDate toDate ){
 
        return ResponseEntity.ok(reysService.getReysByLocation(fromStation, toStation, fromDate.atStartOfDay(), toDate.atStartOfDay()));
+    }
+
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('SUPER_ADMIN')")
+    @GetMapping("/get-all")
+    public ResponseEntity<List<ReysResponseDto>> getAll() {
+        return ResponseEntity.ok(reysService.getAll());
     }
 
 }

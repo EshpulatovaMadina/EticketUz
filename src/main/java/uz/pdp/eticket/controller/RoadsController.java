@@ -30,6 +30,10 @@ public class RoadsController {
         return ResponseEntity.ok(roadsService.create(roadsCreateDto));
     }
 
+    @PutMapping("/set-station")
+    public ResponseEntity<RoadsResponseDto> setStation(@RequestParam UUID roadId, @RequestParam List<UUID> stations) {
+        return ResponseEntity.ok(roadsService.setStation(roadId,stations));
+    }
 
     @Operation(
             description = "this API makes the road inactive",

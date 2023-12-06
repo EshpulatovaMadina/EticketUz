@@ -20,11 +20,7 @@ import uz.pdp.eticket.service.stationRoadsService.StationRoadsService;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-/**
- * @author 'Sodiqova Dildora' on 27.11.2023
- * @project RailwayUZ
- * @contact @dildora1_04
- */
+
 @Service
 @RequiredArgsConstructor
 public class RoadsServiceImpl implements RoadsService {
@@ -37,7 +33,7 @@ public class RoadsServiceImpl implements RoadsService {
     @Override
     public RoadsResponseDto create(RoadsCreateDto roadsCreateDto) {
         if (roadsRepository.existsByDirection(roadsCreateDto.getDirection())) {
-            throw new DataAlreadyExistsException("This Road name already exists . Please can you create other name ?");
+            throw new DataAlreadyExistsException("This Road name already exists . Please can you create other name?");
         }
         RoadsEntity road = new RoadsEntity(roadsCreateDto.getDirection());
         roadsRepository.save(road);
@@ -89,6 +85,18 @@ public class RoadsServiceImpl implements RoadsService {
         return responseDto;
     }
 
+    @Override
+    public RoadsResponseDto setStation(UUID roadId, List<UUID> stations) {
+        List<StationRoadsResponseDto> stationOfRoad = stationRoadsService.getStationOfRoad(roadId);
+        for (UUID station : stations) {
+            for (StationRoadsResponseDto stationRoadsResponseDto : stationOfRoad) {
+
+            }
+        }
+
+        return null;
+    }
+
 //    @Override
 //    public ResponseEntity<List<RoadsResponseDto>> getAll() {
 //        return roadsRepository.findAll().stream().map(item-> parse(item));
@@ -99,6 +107,12 @@ public class RoadsServiceImpl implements RoadsService {
     public RoadsResponseDto getById(UUID roadsId) {
         RoadsEntity road = roadsRepository.findById(roadsId).orElseThrow(() -> new DataNotFoundException("Roads not found"));
         return modelMapper.map(road, RoadsResponseDto.class);
+    }
+
+    @Override
+    public RoadsEntity findById(UUID roadsId) {
+        return roadsRepository.findById(roadsId)
+                .orElseThrow(()-> new DataNotFoundException("Road not found with id: "+roadsId));
     }
 
     @Override

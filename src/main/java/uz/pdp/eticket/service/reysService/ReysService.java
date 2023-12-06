@@ -16,4 +16,5 @@ public interface ReysService {
     String disActive(UUID reysId);
 
 
+    List<ReysResponseDto> getAll();
 }
