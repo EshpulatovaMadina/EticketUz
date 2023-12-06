@@ -57,7 +57,9 @@ public class LocomotiveServiceImpl implements LocomotiveService {
 
     @Override
     public LocomotiveResponseDto parse(LocomotiveEntity dto) {
-        return modelMapper.map(dto, LocomotiveResponseDto.class);
+        LocomotiveResponseDto map = modelMapper.map(dto, LocomotiveResponseDto.class);
+        map.setCratedDate(dto.getCreatedDate());
+        return map;
     }
 
     @Override

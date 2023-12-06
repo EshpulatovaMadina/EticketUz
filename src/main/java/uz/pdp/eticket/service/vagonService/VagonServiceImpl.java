@@ -16,7 +16,7 @@ import uz.pdp.eticket.exception.ExceededLimitException;
 import uz.pdp.eticket.repository.VagonRepository;
 import uz.pdp.eticket.service.bookingService.BookingsService;
 import uz.pdp.eticket.service.locomotiveService.LocomotiveService;
-import uz.pdp.eticket.service.seatsService.SeatsService;
+import uz.pdp.eticket.service.seatsService.SeatService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +33,7 @@ public class VagonServiceImpl implements VagonService{
     private final LocomotiveService locomotiveService;
     private final VagonRepository vagonRepository;
     private final ModelMapper modelMapper;
-    private final SeatsService seatsService;
+    private final SeatService seatService;
     private final BookingsService bookingsService;
     @Override
     public List<VagonResponseDto> create(List<VagonCreateDto> dtos, Double seatPrice) {
@@ -176,7 +176,7 @@ public class VagonServiceImpl implements VagonService{
         List<VagonEntity> all = vagonRepository.findAllByLocomotiveId(locomotiveId);
         Double price = 0D;
         for (int i = 0; i < all.size(); i++) {
-            List<SeatsResponseDto> seatsOfVagon = seatsService.getSeatsOfVagon(all.get(i).getId());
+            List<SeatsResponseDto> seatsOfVagon = seatService.getSeatsOfVagon(all.get(i).getId());
             for (SeatsResponseDto seatsResponseDto : seatsOfVagon) {
                 Boolean aBoolean = bookingsService.ticketIsSoldOrNot(seatsResponseDto.getSeatsId(), reysId);
                     if (!aBoolean) {

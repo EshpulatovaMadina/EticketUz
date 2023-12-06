@@ -12,7 +12,7 @@ import uz.pdp.eticket.entity.enums.VagonType;
 @Setter
 @Getter
 @Entity(name = "vagon")
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"locomotive_id", "numberOnTheTrain"}))
+//@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"locomotive_id", "numberOnTheTrain"}))
 public class VagonEntity extends BaseEntity {
 
     @Column(unique = true)
