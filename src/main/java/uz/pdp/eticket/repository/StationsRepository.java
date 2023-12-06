@@ -10,4 +10,5 @@ import java.util.UUID;
 @Repository
 public interface StationsRepository extends JpaRepository<StationEntity, UUID> {
     List<StationEntity> findAllByLocation(String location);
+    Boolean existsAllByName(String name);
 }

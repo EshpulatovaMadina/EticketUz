@@ -29,7 +29,7 @@ public class ReysCreateDto {
     private UUID fromStation;
 
     @NotNull(message = "")
-    private String toStation;
+    private UUID toStation;
 
     @NotNull(message = "")
     private UUID locomotiveId;

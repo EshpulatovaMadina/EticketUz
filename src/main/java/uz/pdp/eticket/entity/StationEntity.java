@@ -12,6 +12,7 @@ import lombok.Setter;
 @Setter
 @Entity(name = "station")
 public class StationEntity extends BaseEntity {
+    @Column(unique = true)
     private String name;
     private String location;
 }

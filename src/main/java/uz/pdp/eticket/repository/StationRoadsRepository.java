@@ -13,6 +13,7 @@ import java.util.UUID;
 public interface StationRoadsRepository extends JpaRepository<StationRoadsEntity, UUID> {
     List<StationRoadsEntity> findAllByRoadId(UUID roadId);
     List<StationRoadsEntity> findAllByRoadIdOrderByOrderNumber(UUID roadId);
+    Integer countAllByRoadId(UUID roadId);
 
     @Query("SELECT r.road.direction FROM station_roads r  WHERE r.station.name = :fromStation " +
             "  AND r.orderNumber < (SELECT r2.orderNumber FROM station_roads r2 WHERE r2.station.name = :toStation AND r2.road = r.road)")

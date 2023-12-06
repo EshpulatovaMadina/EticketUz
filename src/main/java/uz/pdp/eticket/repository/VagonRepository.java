@@ -16,7 +16,7 @@ import java.util.UUID;
 public interface VagonRepository extends JpaRepository<VagonEntity, UUID> {
     Boolean findAllByLocomotiveIdAndNumber(UUID locomotive_id, String number);
     Boolean existsByNumber(String number);
-    Integer countAllByLocomotiveId(@Param("locomotiveId") UUID locomotive_id);
+    Integer countAllByLocomotiveId( UUID locomotive_id);
     List<VagonEntity> findAllByLocomotiveIdOrderByNumberOnTheTrain(UUID locomotive_id);
     List<VagonEntity> findAllByLocomotiveId(UUID locomotive_id);
 }

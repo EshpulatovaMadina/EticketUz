@@ -75,6 +75,11 @@ public class StationRoadsServiceImpl implements StationRoadsService {
         return parse(all);
     }
 
+    @Override
+    public Integer countAllByRoadId(UUID roadId) {
+        return stationRoadsRepository.countAllByRoadId(roadId);
+    }
+
     private List<StationRoadsResponseDto> parse(List<StationRoadsEntity> stations){
         List<StationRoadsResponseDto> list = new ArrayList<>();
         for (StationRoadsEntity station : stations) {
