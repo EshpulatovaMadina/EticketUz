@@ -1,6 +1,5 @@
 package uz.pdp.eticket.service.roadsService;
 
-import org.springframework.http.ResponseEntity;
 import uz.pdp.eticket.DTO.request.RoadsCreateDto;
 import uz.pdp.eticket.DTO.request.StationRoadCreateDto;
 import uz.pdp.eticket.DTO.response.RoadsResponseDto;
@@ -26,5 +25,6 @@ public interface RoadsService {
 
     RoadsResponseDto setStation(UUID roadId, List<StationRoadCreateDto> stations);
 
-//    ResponseEntity<List<RoadsResponseDto>> getAll();
+    List<RoadsResponseDto> getAll(int page, int size);
+
 }

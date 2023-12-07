@@ -1,9 +1,11 @@
 package uz.pdp.eticket.service.locomotiveService;
 
+import org.springframework.data.domain.Page;
 import uz.pdp.eticket.DTO.request.LocomotiveCreateDto;
 import uz.pdp.eticket.DTO.response.LocomotiveResponseDto;
 import uz.pdp.eticket.entity.LocomotiveEntity;
 
+import java.util.List;
 import java.util.UUID;
 /**
  * @author 'Sodiqova Dildora' on 27.11.2023
@@ -19,4 +21,7 @@ public interface LocomotiveService {
      LocomotiveEntity findById(UUID locomotiveId);
 
      LocomotiveResponseDto isActive(UUID locoId);
+
+    List<LocomotiveResponseDto> getAll(int page, int size);
+
 }

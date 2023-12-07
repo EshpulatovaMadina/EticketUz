@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import uz.pdp.eticket.DTO.request.RoadsCreateDto;
 import uz.pdp.eticket.DTO.request.StationRoadCreateDto;
 import uz.pdp.eticket.DTO.response.RoadsResponseDto;
+import uz.pdp.eticket.DTO.response.StationResponseDto;
 import uz.pdp.eticket.service.roadsService.RoadsService;
 
 import java.util.List;
@@ -92,9 +93,21 @@ public class RoadsController {
     public ResponseEntity<RoadsResponseDto> getbyId(@RequestParam UUID roadsId){
         return ResponseEntity.ok(roadsService.getById(roadsId));
     }
-//    @GetMapping("/get-all")
-//    public ResponseEntity<List<RoadsResponseDto>> getAll() {
-//        return roadsService.getAll();
-//    }
+
+
+    @Operation(
+            description = "This method return all roads",
+            method = "GET method is supported",
+            security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
+    )
+    @PreAuthorize(value = "hasAuthority('ADMIN')")
+    @GetMapping("/get-all")
+    public ResponseEntity<List<RoadsResponseDto>> getAll(@RequestParam(value = "page", defaultValue = "0")
+                                                           int page,
+                                                           @RequestParam(value = "size", defaultValue = "5")
+                                                           int size) {
+        return ResponseEntity.ok(roadsService.getAll(page, size));
+    }
+
 
 }

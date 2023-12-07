@@ -2,6 +2,8 @@ package uz.pdp.eticket.service.vagonService;
 
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import uz.pdp.eticket.DTO.request.VagonCreateDto;
 import uz.pdp.eticket.DTO.response.FreeVagonResponseDto;
@@ -20,7 +22,6 @@ import uz.pdp.eticket.service.seatsService.SeatService;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 /**
  * @author 'Sodiqova Dildora' on 27.11.2023
@@ -193,5 +194,13 @@ public class VagonServiceImpl implements VagonService{
             price = 0D;
         }
         return list;
+    }
+
+    @Override
+    public List<VagonResponseDto> getAll(int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        Page<VagonEntity> allByIsActiveTrue = vagonRepository.findAllByIsActiveTrue(pageRequest);
+        List<VagonEntity> content = allByIsActiveTrue.getContent();
+        return parse(content);
     }
 }

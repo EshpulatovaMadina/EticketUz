@@ -1,14 +1,14 @@
 package uz.pdp.eticket.controller;
 
-import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 import uz.pdp.eticket.DTO.request.StationsCreateDto;
 import uz.pdp.eticket.DTO.response.StationResponseDto;
-import uz.pdp.eticket.entity.StationEntity;
+import uz.pdp.eticket.DTO.response.VagonResponseDto;
 import uz.pdp.eticket.service.stationsService.StationService;
 
 import java.util.List;
@@ -21,6 +21,7 @@ import java.util.UUID;
 @RequestMapping("/api/v1/station")
 public class StationController {
     private final StationService stationService;
+
     @Operation(
             description = "This method is used to add station",
             method = "POST method is supported",
@@ -40,7 +41,7 @@ public class StationController {
     )
     @PreAuthorize(value = "hasAuthority('ADMIN') or hasAuthority('SUPER_ADMIN')")
     @DeleteMapping("/dis-active")
-    public ResponseEntity<StationResponseDto> disActive(@RequestParam UUID stationId){
+    public ResponseEntity<StationResponseDto> disActive(@RequestParam UUID stationId) {
         return ResponseEntity.ok(stationService.disActive(stationId));
     }
 
@@ -79,9 +80,24 @@ public class StationController {
         return ResponseEntity.ok(stationService.getById(stationId));
     }
 
+//    @PreAuthorize(value = "hasAuthority('ADMIN')")
+//    @GetMapping("/get-all")
+//    public ResponseEntity<List<StationResponseDto>> getAll(@RequestParam(defaultValue = "") String location) {
+//        return ResponseEntity.ok(stationService.getAll(location));
+//    }
+
+    @Operation(
+            description = "This method return all stations",
+            method = "GET method is supported",
+            security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
+    )
     @PreAuthorize(value = "hasAuthority('ADMIN')")
     @GetMapping("/get-all")
-    public ResponseEntity<List<StationResponseDto>> getAll(@RequestParam(defaultValue = "") String location ) {
-        return ResponseEntity.ok(stationService.getAll(location));
+    public ResponseEntity<List<StationResponseDto>> getAll(@RequestParam(value = "page", defaultValue = "0")
+                                                         int page,
+                                                         @RequestParam(value = "size", defaultValue = "5")
+                                                         int size,
+                                                         @RequestParam(defaultValue = "") String location) {
+        return ResponseEntity.ok(stationService.getAll(page, size, location));
     }
 }

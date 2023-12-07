@@ -17,5 +17,7 @@ public interface StationService {
 
     StationResponseDto getById(UUID stationId);
 
-    List<StationResponseDto> getAll(String location);
+    List<StationResponseDto> getAll(int page, int size, String location);
+
+
 }

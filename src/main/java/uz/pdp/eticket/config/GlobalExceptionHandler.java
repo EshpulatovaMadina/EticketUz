@@ -37,5 +37,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> badRequest(BadRequestException e){
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
+    @ExceptionHandler(value = ExceededLimitException.class)
+    public ResponseEntity<String> badRequest(ExceededLimitException e){
+        return ResponseEntity.status(HttpStatus.BANDWIDTH_LIMIT_EXCEEDED).body(e.getMessage());
+    }
 
 }

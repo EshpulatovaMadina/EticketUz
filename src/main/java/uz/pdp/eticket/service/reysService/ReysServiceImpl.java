@@ -2,6 +2,8 @@ package uz.pdp.eticket.service.reysService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -75,15 +77,20 @@ public class ReysServiceImpl implements ReysService{
         return "Successfully";
     }
 
-    @Override
-    public List<ReysResponseDto> getAll() {
-        return reysRepository.findAll().stream().map(this::parse).toList();
-    }
+
 
     @Override
     public ReysEntity findById(UUID reysId) {
         return reysRepository.findById(reysId)
                 .orElseThrow(()-> new DataNotFoundException("Reys not found with id: "+reysId));
+    }
+
+    @Override
+    public List<ReysResponseDto> getAll(int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        Page<ReysEntity> roadPage = reysRepository.findAllByIsActiveTrue(pageRequest);
+        List<ReysEntity> content = roadPage.getContent();
+        return parse(content);
     }
 
     private ReysResponseDto parse(ReysEntity entity) {

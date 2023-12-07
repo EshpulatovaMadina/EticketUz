@@ -2,7 +2,8 @@ package uz.pdp.eticket.service.roadsService;
 
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.http.ResponseEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uz.pdp.eticket.DTO.request.RoadsCreateDto;
@@ -13,17 +14,16 @@ import uz.pdp.eticket.DTO.response.StationRoadsResponseDto;
 import uz.pdp.eticket.entity.RoadsEntity;
 import uz.pdp.eticket.entity.StationEntity;
 import uz.pdp.eticket.entity.StationRoadsEntity;
+import uz.pdp.eticket.entity.VagonEntity;
 import uz.pdp.eticket.exception.DataAlreadyExistsException;
 import uz.pdp.eticket.exception.DataNotFoundException;
 import uz.pdp.eticket.repository.RoadsRepository;
 import uz.pdp.eticket.repository.StationRoadsRepository;
 import uz.pdp.eticket.repository.StationsRepository;
 import uz.pdp.eticket.service.stationRoadsService.StationRoadsService;
-import uz.pdp.eticket.service.stationsService.StationService;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 import static java.util.stream.Collectors.toList;
@@ -77,23 +77,7 @@ public class RoadsServiceImpl implements RoadsService {
          */
     }
 
-    private List<StationResponseDto> parse(List<StationRoadsEntity> stations) {
-        List<StationResponseDto> list = new ArrayList<>();
-        for (StationRoadsEntity station : stations) {
-            list.add(new StationResponseDto(
-                    station.getId(),
-                    station.getRoad().getDirection(),
-                     station.getCreatedDate()));
-        }
-        return list;
-    }
 
-    @Override
-    public RoadsResponseDto parse(RoadsEntity roadsEntity) {
-        RoadsResponseDto responseDto = new RoadsResponseDto(roadsEntity.getId(), roadsEntity.getDirection());
-        responseDto.setId(roadsEntity.getId());
-        return responseDto;
-    }
 
     @Override
     public RoadsResponseDto setStation(UUID roadId, List<StationRoadCreateDto> stations) {
@@ -117,12 +101,15 @@ public class RoadsServiceImpl implements RoadsService {
         return null;
     }
 
+    @Override
+    public List<RoadsResponseDto> getAll(int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        Page<RoadsEntity> roadPage = roadsRepository.findAllByIsActiveTrue(pageRequest);
+        List<RoadsEntity> content = roadPage.getContent();
+        return parse1(content);
+    }
 
-//    @Override
-//    public ResponseEntity<List<RoadsResponseDto>> getAll() {
-//        return roadsRepository.findAll().stream().map(item-> parse(item));
-//        return null;
-//    }
+
 
     @Override
     public RoadsResponseDto getById(UUID roadsId) {
@@ -152,8 +139,36 @@ public class RoadsServiceImpl implements RoadsService {
         return modelMapper.map(road, RoadsResponseDto.class);
     }
 
-    private RoadsEntity parse(RoadsCreateDto dto) {
-        return modelMapper.map(dto, RoadsEntity.class);
+
+
+    @Override
+    public RoadsResponseDto parse(RoadsEntity roadsEntity) {
+        RoadsResponseDto responseDto = new RoadsResponseDto(roadsEntity.getId(), roadsEntity.getDirection());
+        responseDto.setId(roadsEntity.getId());
+        return responseDto;
+    }
+
+
+    public List<RoadsResponseDto> parse1(List<RoadsEntity> roadsEntity) {
+        List<RoadsResponseDto> list =  new ArrayList<>();
+        for (RoadsEntity entity : roadsEntity) {
+            RoadsResponseDto responseDto = new RoadsResponseDto(entity.getId(), entity.getDirection());
+            responseDto.setId(entity.getId());
+            list.add(responseDto);
+        }
+
+        return list;
+    }
+
+    private List<StationResponseDto> parse(List<StationRoadsEntity> stations) {
+        List<StationResponseDto> list = new ArrayList<>();
+        for (StationRoadsEntity station : stations) {
+            list.add(new StationResponseDto(
+                    station.getId(),
+                    station.getRoad().getDirection(),
+                    station.getCreatedDate()));
+        }
+        return list;
     }
 
 

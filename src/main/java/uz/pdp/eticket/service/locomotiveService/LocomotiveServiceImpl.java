@@ -2,6 +2,8 @@ package uz.pdp.eticket.service.locomotiveService;
 
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import uz.pdp.eticket.DTO.request.LocomotiveCreateDto;
 import uz.pdp.eticket.DTO.response.LocomotiveResponseDto;
@@ -10,6 +12,8 @@ import uz.pdp.eticket.exception.DataAlreadyExistsException;
 import uz.pdp.eticket.exception.DataNotFoundException;
 import uz.pdp.eticket.repository.LocomotiveRepository;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -50,17 +54,7 @@ public class LocomotiveServiceImpl implements LocomotiveService {
         return parse(locomotiveEntity);
     }
 
-    private LocomotiveEntity parse(LocomotiveCreateDto dto){
-        return new LocomotiveEntity(dto.getName(), dto.getMaxSpeed(), dto.getMaxVagons());
-    }
 
-
-    @Override
-    public LocomotiveResponseDto parse(LocomotiveEntity dto) {
-        LocomotiveResponseDto map = modelMapper.map(dto, LocomotiveResponseDto.class);
-        map.setCratedDate(dto.getCreatedDate());
-        return map;
-    }
 
     @Override
     public LocomotiveEntity findById(UUID locomotiveId) {
@@ -73,5 +67,36 @@ public class LocomotiveServiceImpl implements LocomotiveService {
             locomotive.setIsActive(true);
         return parse(locomotive);
     }
+
+    @Override
+    public List<LocomotiveResponseDto> getAll(int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        Page<LocomotiveEntity> locomotivePage = locomotiveRepository.findAllByIsActiveTrue(pageRequest);
+        List<LocomotiveEntity> content = locomotivePage.getContent();
+        return parse(content);
+    }
+
+    private LocomotiveEntity parse(LocomotiveCreateDto dto){
+        return new LocomotiveEntity(dto.getName(), dto.getMaxSpeed(), dto.getMaxVagons());
+    }
+
+
+    @Override
+    public LocomotiveResponseDto parse(LocomotiveEntity dto) {
+        LocomotiveResponseDto map = modelMapper.map(dto, LocomotiveResponseDto.class);
+        map.setCratedDate(dto.getCreatedDate());
+        return map;
+    }
+
+    public List<LocomotiveResponseDto> parse(List<LocomotiveEntity> dto) {
+        List<LocomotiveResponseDto>  list = new ArrayList<>();
+        for (LocomotiveEntity locomotiveEntity : dto) {
+            LocomotiveResponseDto map = modelMapper.map(locomotiveEntity, LocomotiveResponseDto.class);
+            map.setCratedDate(locomotiveEntity.getCreatedDate());
+            list.add(map);
+        }
+        return list;
+    }
+
 }
 

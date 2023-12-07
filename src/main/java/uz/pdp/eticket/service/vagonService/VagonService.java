@@ -23,6 +23,5 @@ public interface VagonService {
     List<FreeVagonResponseDto> getFreeVagon(UUID locomotiveId, UUID reysId);
 
 
-
-
+    List<VagonResponseDto> getAll(int page, int size);
 }

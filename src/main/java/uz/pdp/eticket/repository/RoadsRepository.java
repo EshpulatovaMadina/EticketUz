@@ -1,5 +1,7 @@
 package uz.pdp.eticket.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -16,6 +18,7 @@ import java.util.UUID;
 @Repository
 public interface RoadsRepository extends JpaRepository<RoadsEntity, UUID> {
     Optional<RoadsEntity> findAllByDirection(String direction);
+    Page<RoadsEntity> findAllByIsActiveTrue(PageRequest pageRequest);
     Boolean existsByDirection(String direction);
 
   }

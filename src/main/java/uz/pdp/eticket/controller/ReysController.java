@@ -8,6 +8,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import uz.pdp.eticket.DTO.request.ReysCreateDto;
 import uz.pdp.eticket.DTO.response.ReysResponseDto;
+import uz.pdp.eticket.DTO.response.RoadsResponseDto;
 import uz.pdp.eticket.service.reysService.ReysService;
 
 import java.time.LocalDate;
@@ -32,6 +33,22 @@ public class ReysController {
     public ResponseEntity<ReysResponseDto> create(@RequestBody ReysCreateDto dto){
         return ResponseEntity.ok(reysService.create(dto));
     }
+
+
+    @Operation(
+            description = "This method return all reys",
+            method = "GET method is supported",
+            security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
+    )
+    @PreAuthorize(value = "hasAuthority('ADMIN')")
+    @GetMapping("/get-all")
+    public ResponseEntity<List<ReysResponseDto>> getAll(@RequestParam(value = "page", defaultValue = "0")
+                                                         int page,
+                                                         @RequestParam(value = "size", defaultValue = "5")
+                                                         int size) {
+        return ResponseEntity.ok(reysService.getAll(page, size));
+    }
+
 
     @Operation(
             description = "This method disables the reys",
@@ -67,10 +84,5 @@ public class ReysController {
         return ResponseEntity.ok(reysService.getReysByLocation(fromStation, toStation, fromDateTime, toDateTime));
     }
 
-    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('SUPER_ADMIN')")
-    @GetMapping("/get-all")
-    public ResponseEntity<List<ReysResponseDto>> getAll() {
-        return ResponseEntity.ok(reysService.getAll());
-    }
 
 }

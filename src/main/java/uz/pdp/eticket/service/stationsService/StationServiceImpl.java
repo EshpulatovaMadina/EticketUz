@@ -2,6 +2,8 @@ package uz.pdp.eticket.service.stationsService;
 
 import org.modelmapper.ModelMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import uz.pdp.eticket.DTO.request.StationRoadCreateDto;
 import uz.pdp.eticket.DTO.request.StationsCreateDto;
@@ -96,15 +98,29 @@ public class StationServiceImpl implements StationService {
     }
 
     @Override
-    public List<StationResponseDto> getAll(String location) {
-        if (location.isEmpty())
-            return stationsRepository.findAll().stream().map(this::parse).toList();
-        else return stationsRepository.findAllByLocation(location).stream().map(this::parse).toList();
+    public List<StationResponseDto> getAll(int page, int size, String location) {
+        if (location.isEmpty()) {
+            PageRequest pageRequest = PageRequest.of(page, size);
+            Page<StationEntity> stationPage = stationsRepository.findAllByIsActiveTrue(pageRequest);
+            List<StationEntity> content = stationPage.getContent();
+            return parse(content);
+        }
+        else return stationsRepository.findAllByLocationAndIsActiveTrue(location).stream().map(this::parse).toList();
     }
 
     
     private StationResponseDto parse(StationEntity stationEntity) {
         return modelMapper.map(stationEntity, StationResponseDto.class);
     }
+
+    private List<StationResponseDto> parse(List<StationEntity> stations) {
+        List<StationResponseDto> list = new ArrayList<>();
+        for (StationEntity station : stations) {
+           list.add( modelMapper.map(station, StationResponseDto.class));
+        }
+        return list;
+    }
+
+
 
 }
