@@ -6,20 +6,27 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uz.pdp.eticket.DTO.request.RoadsCreateDto;
+import uz.pdp.eticket.DTO.request.StationRoadCreateDto;
 import uz.pdp.eticket.DTO.response.RoadsResponseDto;
 import uz.pdp.eticket.DTO.response.StationResponseDto;
 import uz.pdp.eticket.DTO.response.StationRoadsResponseDto;
 import uz.pdp.eticket.entity.RoadsEntity;
+import uz.pdp.eticket.entity.StationEntity;
 import uz.pdp.eticket.entity.StationRoadsEntity;
 import uz.pdp.eticket.exception.DataAlreadyExistsException;
 import uz.pdp.eticket.exception.DataNotFoundException;
 import uz.pdp.eticket.repository.RoadsRepository;
 import uz.pdp.eticket.repository.StationRoadsRepository;
+import uz.pdp.eticket.repository.StationsRepository;
 import uz.pdp.eticket.service.stationRoadsService.StationRoadsService;
+import uz.pdp.eticket.service.stationsService.StationService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
+
+import static java.util.stream.Collectors.toList;
 
 @Service
 @RequiredArgsConstructor
@@ -28,6 +35,7 @@ public class RoadsServiceImpl implements RoadsService {
     private final ModelMapper modelMapper;
     private final StationRoadsService stationRoadsService;
     private final StationRoadsRepository sr;
+    private final StationsRepository stationsRepository;
 
     @Transactional
     @Override
@@ -88,16 +96,27 @@ public class RoadsServiceImpl implements RoadsService {
     }
 
     @Override
-    public RoadsResponseDto setStation(UUID roadId, List<UUID> stations) {
-        List<StationRoadsResponseDto> stationOfRoad = stationRoadsService.getStationOfRoad(roadId);
-        for (UUID station : stations) {
-            for (StationRoadsResponseDto stationRoadsResponseDto : stationOfRoad) {
+    public RoadsResponseDto setStation(UUID roadId, List<StationRoadCreateDto> stations) {
+        RoadsEntity road = roadsRepository.findById(roadId).orElseThrow(() -> new DataNotFoundException("Road not found !!!"));
 
-            }
-        }
+        List<StationRoadsEntity> all = sr.findAllByRoadId(roadId);
 
+        List<UUID> newIdList = stations.stream().map(StationRoadCreateDto::getStationId).collect(toList());
+
+        List<UUID> oldIdList = all.stream().map(item->item.getStation().getId()).toList();
+
+        List<StationRoadsEntity> saveList = stations.stream().filter(item->!oldIdList.contains(item.getStationId())).map(item->{
+            StationEntity entity1 = stationsRepository.findById(item.getStationId()).orElseThrow(() -> new DataNotFoundException(" station not found"));
+            return new StationRoadsEntity(entity1,road, item.getOrderNumber());
+        }).toList();
+
+        List<StationRoadsEntity> deleteAll = all.stream().filter(item->newIdList.contains(item.getStation().getId())).toList();
+
+        sr.deleteAll(deleteAll);
+        sr.saveAll(saveList);
         return null;
     }
+
 
 //    @Override
 //    public ResponseEntity<List<RoadsResponseDto>> getAll() {

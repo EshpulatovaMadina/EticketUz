@@ -64,7 +64,7 @@ public class BookingsServiceImpl implements BookingsService{
     @Override
     @Transactional
     public String checkExcpiryDate() {
-         bookingsRepository.deleteBookingEntitiesByCreatedDateBefore(LocalDateTime.now().minusMinutes(10));
+         bookingsRepository.updateBookingStatusByCreatedDateBefore(LocalDateTime.now().minusMinutes(10));
          return "Deleted bookings";
     }
 

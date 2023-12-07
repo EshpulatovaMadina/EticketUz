@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import uz.pdp.eticket.DTO.request.RoadsCreateDto;
+import uz.pdp.eticket.DTO.request.StationRoadCreateDto;
 import uz.pdp.eticket.DTO.response.RoadsResponseDto;
 import uz.pdp.eticket.service.roadsService.RoadsService;
 
@@ -31,7 +32,7 @@ public class RoadsController {
     }
 
     @PutMapping("/set-station")
-    public ResponseEntity<RoadsResponseDto> setStation(@RequestParam UUID roadId, @RequestParam List<UUID> stations) {
+    public ResponseEntity<RoadsResponseDto> setStation(@RequestParam UUID roadId, @RequestBody List<StationRoadCreateDto> stations) {
         return ResponseEntity.ok(roadsService.setStation(roadId,stations));
     }
 

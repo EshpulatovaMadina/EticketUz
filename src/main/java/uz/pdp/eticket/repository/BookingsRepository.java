@@ -2,6 +2,7 @@ package uz.pdp.eticket.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import uz.pdp.eticket.entity.BookingEntity;
 
 import java.time.LocalDateTime;
@@ -14,6 +15,7 @@ public interface BookingsRepository extends JpaRepository<BookingEntity, UUID> {
     List<BookingEntity> findAllByUserId(UUID userId);
 
     @Modifying
-    @Query("DELETE FROM booking b WHERE b.createdDate < :createdDate")
-    void deleteBookingEntitiesByCreatedDateBefore(LocalDateTime createdDate);
+    @Query("UPDATE booking b SET b.isActive = false WHERE b.createdDate < :createdDate")
+    void updateBookingStatusByCreatedDateBefore(LocalDateTime createdDate);
+
 }
