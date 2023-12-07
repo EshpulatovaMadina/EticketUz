@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableScheduling
 public class EticketUzApplication {
 	public static void main(String[] args) {
+System.out.println("tdfsdfsdfsdfsdf");
 		SpringApplication.run(EticketUzApplication.class, args);
 	}
 
