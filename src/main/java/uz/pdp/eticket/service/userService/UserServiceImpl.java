@@ -58,7 +58,10 @@ public class UserServiceImpl implements UserService{
     public UserResponseDto signUp(SignUpDto dto) {
         Optional<UserEntity> optionalUser = userRepository.findByEmail(dto.getEmail());
         if(optionalUser.isPresent()) {
-            throw new DataAlreadyExistsException("User already exists with email: " + dto.getEmail());
+            if(optionalUser.get().getIsAuthenticated().equals(false)){
+                throw new AuthenticationCredentialsNotFoundException("User already exists but not verified");
+            }
+            else throw new DataAlreadyExistsException("User already exists with email: " + dto.getEmail());
         }
 
         UserEntity user = modelMapper.map(dto, UserEntity.class);

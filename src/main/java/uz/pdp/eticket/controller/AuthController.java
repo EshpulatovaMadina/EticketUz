@@ -28,7 +28,7 @@ public class AuthController {
 
 
     @PermitAll
-    @GetMapping("/sign-in")
+    @PostMapping("/sign-in")
     public JwtResponse signIn(
             @RequestParam String email,
             @RequestParam String password
@@ -52,10 +52,9 @@ public class AuthController {
 
 
     @PermitAll
-    @GetMapping("/verify")
+    @PostMapping("/verify")
     public UserResponseDto verify(@RequestParam String email, @RequestParam String code) {
-        UserResponseDto verify = userServiceImpl.verify(email, code);
-        return verify;
+        return userServiceImpl.verify(email, code);
     }
 
 
