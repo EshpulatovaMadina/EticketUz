@@ -17,18 +17,25 @@ import uz.pdp.eticket.service.jwt.AuthenticationService;
 import uz.pdp.eticket.service.jwt.JwtFilter;
 import uz.pdp.eticket.service.jwt.JwtService;
 
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.Arrays;
+
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
-@EnableMethodSecurity
+@EnableMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
     private final JwtService jwtService;
     private final AuthenticationService authenticationService;
     private final HandlerExceptionResolver handlerExceptionResolver;
+    
 
     @Bean
     public SecurityFilterChain configure (HttpSecurity http) throws Exception {
-        return http
+
+         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .addFilterBefore(new JwtFilter(jwtService,authenticationService,handlerExceptionResolver),
                         UsernamePasswordAuthenticationFilter.class
@@ -36,11 +43,23 @@ public class SecurityConfig {
                 .sessionManagement(sessionManagement -> {
                     sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
                 })
-                .build();
+.cors(httpSecurityCorsConfigurer -> {
+            CorsConfiguration configuration = new CorsConfiguration();
+            configuration.setAllowedOrigins(Arrays.asList("*"));
+            configuration.setAllowedMethods(Arrays.asList("*"));
+            configuration.setAllowedHeaders(Arrays.asList("*"));
+
+            UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+            source.registerCorsConfiguration("/**", configuration);
+            httpSecurityCorsConfigurer.configurationSource(source);
+        })
+.build();
     }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
+
 }
