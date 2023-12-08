@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 @AllArgsConstructor
@@ -15,11 +16,18 @@ import java.util.UUID;
 @Setter
 public class BookingCreateDto {
     // userId princpalda kirib keladi
-//    @NotNull(message = "")
-//    private UUID userId;
+    @NotBlank(message = "")
+    private String firstName;
 
     @NotBlank(message = "")
-    private String identity;
+    private String lastName;
+
+    @NotBlank(message = "")
+    private String passportNumberAndSeries;
+
+    private UUID seatId;
+
+    private LocalDate birthday;
 
     @NotNull(message = "")
     private UUID reysId;
@@ -27,9 +35,4 @@ public class BookingCreateDto {
     @NotNull(message = "")
     private UUID vagonId;
 
-    private UUID seatId;
-    private Double price;
-
-    @NotNull(message = "")
-    private LocalDateTime date;
 }

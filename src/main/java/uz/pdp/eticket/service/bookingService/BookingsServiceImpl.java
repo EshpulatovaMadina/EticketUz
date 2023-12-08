@@ -141,21 +141,23 @@ public class BookingsServiceImpl implements BookingsService{
                 userEntity,
                 userEntity.getName(),
                 userEntity.getSurname(),
-                dto.getIdentity(),
+                dto.getPassportNumberAndSeries(),
                 userEntity.getBirthday(),
                 seatEntity,
-                dto.getPrice(),
                 reysEntity,
-                vagonEntity,
-                dto.getDate()
+                vagonEntity
         );
     }
 
     private BookingsResponseDto parse(BookingEntity booking){
-        BookingsResponseDto map = modelMapper.map(booking, BookingsResponseDto.class);
-        map.setBookingId(booking.getId());
-        map.setCreatedDate(booking.getCreatedDate());
-        return map;
+      return     new BookingsResponseDto(booking.getId(),
+                booking.getUser().getId(),
+                booking.getPassportNumberAndSeries(),
+                booking.getReys().getId(),
+                booking.getVagon().getNumberOnTheTrain(),
+                booking.getReys().getStartDate(),
+                booking.getCreatedDate());
+
     }
 
 }
