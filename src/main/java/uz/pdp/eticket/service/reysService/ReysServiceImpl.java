@@ -86,6 +86,14 @@ public class ReysServiceImpl implements ReysService{
     }
 
     @Override
+    public ReysResponseDto getById(UUID reysId) {
+        ReysEntity reysEntity = reysRepository.findById(reysId)
+                .orElseThrow(() -> new DataNotFoundException("Reys not found with id: " + reysId));
+
+        return new ReysResponseDto(reysEntity.getId(), reysEntity.getRoadsId().getId(), reysEntity.getDirection(),  reysEntity.getFromStation(), reysEntity.getToStation(), reysEntity.getLocomotiveId().getId(), reysEntity.getStartDate(), reysEntity.getCreatedDate());
+    }
+
+    @Override
     public List<ReysResponseDto> getAll(int page, int size) {
         PageRequest pageRequest = PageRequest.of(page, size);
         Page<ReysEntity> roadPage = reysRepository.findAllByIsActiveTrue(pageRequest);
@@ -97,7 +105,7 @@ public class ReysServiceImpl implements ReysService{
         return new ReysResponseDto(
                 entity.getId(),
                 entity.getRoadsId().getId(),
-                Direction.valueOf(entity.getDirection()),
+                entity.getDirection(),
                 entity.getFromStation(),
                 entity.getToStation(),
                 entity.getLocomotiveId().getId(),

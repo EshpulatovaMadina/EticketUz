@@ -15,6 +15,7 @@ public interface ReysService {
     String disActive(UUID reysId);
 
     ReysEntity findById(UUID reysId);
+    ReysResponseDto getById(UUID reysId);
 
     List<ReysResponseDto> getAll(int page, int size);
 

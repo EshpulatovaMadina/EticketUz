@@ -61,6 +61,17 @@ public class ReysController {
         return ResponseEntity.ok(reysService.disActive(reysId));
     }
 
+    @Operation(
+            description = "This method returns a single roads",
+            method = "GET method is supported",
+            security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
+    )
+    @PreAuthorize(value = "hasAuthority('ADMIN') or hasAuthority('SUPER_ADMIN')")
+    @GetMapping("/get-by-id")
+    public ResponseEntity<ReysResponseDto> getbyId(@RequestParam UUID reysId){
+        return ResponseEntity.ok(reysService.getById(reysId));
+    }
+
 
     @Operation(
             description = "This method get reys by Location", /// 1 chi user kirib locatsiya tanlashdagi korinish uchun bu

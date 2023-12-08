@@ -21,7 +21,7 @@ public class ReysResponseDto {
     private UUID reysId;
     private UUID roadsId;
     ///direction ne kk
-    private Direction direction;
+    private String direction;
     private UUID fromStation;
     private UUID toStation;
     private UUID locomotiveId;
