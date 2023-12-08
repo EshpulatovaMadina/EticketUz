@@ -62,7 +62,7 @@ public class ReysController {
     }
 
     @Operation(
-            description = "This method returns a single roads",
+            description = "This method returns a single reys",
             method = "GET method is supported",
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
