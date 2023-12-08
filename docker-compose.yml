@@ -8,12 +8,14 @@ services:
       - "8080:8080"
     environment:
       DB_IP: db
-      DB_NAME: postgres
+      DB_NAME: eticket_db
       DB_PASSWORD: 2006
     depends_on:
       - db
   db:
     image: postgres
+    ports:
+      - "5433:5432"
     environment:
       POSTGRES_PASSWORD: 2006
       POSTGRES_USERNAME: postgres
