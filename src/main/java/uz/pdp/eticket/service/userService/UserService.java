@@ -1,5 +1,4 @@
 package uz.pdp.eticket.service.userService;
-import org.springframework.transaction.annotation.Transactional;
 import uz.pdp.eticket.DTO.request.SignUpDto;
 import uz.pdp.eticket.DTO.response.JwtResponse;
 import uz.pdp.eticket.DTO.response.SubjectDto;
@@ -28,4 +27,8 @@ public interface UserService {
     String deleteUser(UUID userId);
 
     UserEntity findById(UUID userId);
+
+    JwtResponse getAccessToken(String refreshToken, UUID userId);
+
+    String forgetPassword(String email, String newPassword);
 }

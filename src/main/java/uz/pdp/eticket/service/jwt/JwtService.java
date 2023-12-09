@@ -16,21 +16,37 @@ import java.util.Map;
 
 @Service
 public class JwtService {
-    @Value("${jwt.expiry}")
-    private Integer expiry;
+    @Value("${jwt.access_expiry}")
+    private Integer accessExpiry;
+
+    @Value("${jwt.refresh_expiry}")
+    private Integer refreshExpiry;
 
     @Value("${jwt.secret}")
     private String secret;
 
-    public String generateToken (UserEntity user) {
+    public String generateAccessToken (UserEntity user) {
         if(user.isEnabled()) {
             Date iat = new Date();
 
             return Jwts.builder()
                     .setSubject(user.getId().toString())
                     .setIssuedAt(iat)
-                    .setExpiration(new Date(iat.getTime() + expiry))
+                    .setExpiration(new Date(iat.getTime() + accessExpiry))
                     .addClaims(getAuthorities(user))
+                    .signWith(Keys.hmacShaKeyFor(secret.getBytes()))
+                    .compact();
+        }
+        throw new AuthenticationCredentialsNotFoundException("User is not active");
+    } public String generateRefreshToken (UserEntity user) {
+        if(user.isEnabled()) {
+            Date iat = new Date();
+
+            return Jwts.builder()
+                    .setSubject(user.getId().toString())
+                    .setIssuedAt(iat)
+                    .setExpiration(new Date(iat.getTime() + refreshExpiry))
+//                    .addClaims(getAuthorities(user))
                     .signWith(Keys.hmacShaKeyFor(secret.getBytes()))
                     .compact();
         }
