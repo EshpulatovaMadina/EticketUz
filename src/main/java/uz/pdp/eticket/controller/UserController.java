@@ -16,7 +16,7 @@ import java.util.UUID;
 @RequestMapping("/user")
 public class UserController {
     private final UserServiceImpl userServiceImpl;
-    @PreAuthorize("hasAuthority('SUPER_ADMIN') or hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('SUPER_ADMIN') or hasAuthority('ADMIN') or hasAuthority('USER')")
     @GetMapping("/me")
     public UserResponseDto getById(Principal principal) {
         return userServiceImpl.getById(UUID.fromString(principal.getName()));
