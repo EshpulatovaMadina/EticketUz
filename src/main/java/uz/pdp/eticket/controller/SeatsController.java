@@ -23,7 +23,7 @@ public class SeatsController {
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
     @PreAuthorize(value = "hasAuthority('ADMIN') or hasAuthority('SUPER_ADMIN')")
-    @PostMapping("/create")
+    @PostMapping()
     public ResponseEntity<List<SeatsResponseDto>> create(@RequestBody UUID vagonId, @RequestParam Double seatPrice){
         return ResponseEntity.ok(seatService.create(vagonId,seatPrice ));
     }
@@ -57,7 +57,7 @@ public class SeatsController {
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
     @PreAuthorize(value = "hasAuthority('ADMIN') or hasAuthority('USER')")
-    @GetMapping("/get-by-id")
+    @GetMapping("/by-id")
     public ResponseEntity<SeatsResponseDto> getbyId(@RequestParam UUID seatId){
         return ResponseEntity.ok(seatService.getById(seatId));
     }
@@ -69,7 +69,7 @@ public class SeatsController {
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
     @PreAuthorize(value = "hasAuthority('ADMIN') or hasAuthority('USER')")
-    @GetMapping("/get-seats-of-vagon")
+    @GetMapping("/seats-of-vagon")
     public ResponseEntity<List<SeatsResponseDto>> getSeatsOfVagon(@RequestParam UUID vagonId ){
         return ResponseEntity.ok(seatService.getSeatsOfVagon(vagonId));
     }

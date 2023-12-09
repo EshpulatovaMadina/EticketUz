@@ -28,7 +28,7 @@ public class StationController {
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
     @PreAuthorize(value = "hasAuthority('ADMIN') or hasAuthority('SUPER_ADMIN')")
-    @PostMapping("/create")
+    @PostMapping()
     public ResponseEntity<StationResponseDto> create(@RequestBody StationsCreateDto stationsCreateDto) {
         return ResponseEntity.ok(stationService.create(stationsCreateDto));
     }
@@ -75,16 +75,10 @@ public class StationController {
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
     @PreAuthorize(value = "hasAuthority('ADMIN') or hasAuthority('SUPER_ADMIN')")
-    @GetMapping("/get-by-id")
+    @GetMapping("/by-id")
     public ResponseEntity<StationResponseDto> getbyId(@RequestParam UUID stationId) {
         return ResponseEntity.ok(stationService.getById(stationId));
     }
-
-//    @PreAuthorize(value = "hasAuthority('ADMIN')")
-//    @GetMapping("/get-all")
-//    public ResponseEntity<List<StationResponseDto>> getAll(@RequestParam(defaultValue = "") String location) {
-//        return ResponseEntity.ok(stationService.getAll(location));
-//    }
 
     @Operation(
             description = "This method return all stations",
@@ -92,7 +86,7 @@ public class StationController {
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
     @PreAuthorize(value = "hasAuthority('ADMIN')")
-    @GetMapping("/get-all")
+    @GetMapping("/all")
     public ResponseEntity<List<StationResponseDto>> getAll(@RequestParam(value = "page", defaultValue = "0")
                                                          int page,
                                                          @RequestParam(value = "size", defaultValue = "5")

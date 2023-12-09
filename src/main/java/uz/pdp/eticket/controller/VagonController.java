@@ -27,7 +27,7 @@ public class VagonController {
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
     @PreAuthorize(value = "hasAuthority('ADMIN') or hasAuthority('SUPER_ADMIN')")
-    @PostMapping("/create")
+    @PostMapping()
     public ResponseEntity<List<VagonResponseDto>> create(@RequestBody List<VagonCreateDto> vagonCreateDtos, @RequestParam Double seatPrice) {////buyerga price kirib kelsin deganim bitta vagon ichoda seatlar default yaratiladi shuning un narhi vagon typega bog'liq bolganligi un pri vagon typelar bn birga admin bersin dedim
         return ResponseEntity.ok(vagonService.create(vagonCreateDtos, seatPrice));
     }
@@ -39,7 +39,7 @@ public class VagonController {
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
     @PreAuthorize(value = "hasAuthority('ADMIN') or hasAuthority('SUPER_ADMIN')")
-    @GetMapping("/getAll")
+    @GetMapping("/all")
     public ResponseEntity<List<VagonResponseDto>> getAll(@RequestParam(value = "page", defaultValue = "0")
                                                              int page,
                                                          @RequestParam(value = "size", defaultValue = "5")
@@ -76,7 +76,7 @@ public class VagonController {
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
     @PreAuthorize(value = "hasAuthority('ADMIN') or hasAuthority('SUPER_ADMIN')")
-    @GetMapping("/get-vagons-of-locomotive")
+    @GetMapping("/vagons-of-locomotive")
     public ResponseEntity<List<VagonResponseDto>> getVagonsOfLocomotive(@RequestParam UUID locomotiveId) {
         return ResponseEntity.ok(vagonService.getVagonsOfLocomotive(locomotiveId));
     }
@@ -88,7 +88,7 @@ public class VagonController {
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
     @PreAuthorize(value = "hasAuthority('ADMIN') or hasAuthority('SUPER_ADMIN')")
-    @GetMapping("/getById")
+    @GetMapping("/byId")
     public ResponseEntity<VagonResponseDto> getbyId(@RequestParam UUID vagonId) {
         return ResponseEntity.ok(vagonService.getById(vagonId));
     }
@@ -99,7 +99,7 @@ public class VagonController {
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
     @PreAuthorize(value = "hasAuthority('ADMIN') or hasAuthority('USER')")
-    @GetMapping("/getFreeVagon")
+    @GetMapping("/freeVagons")
     public ResponseEntity<List<FreeVagonResponseDto>> getFreeVagons(@RequestParam UUID locomotiveId, @RequestParam UUID reysId) {
         return ResponseEntity.ok(vagonService.getFreeVagon(locomotiveId, reysId));
     }
