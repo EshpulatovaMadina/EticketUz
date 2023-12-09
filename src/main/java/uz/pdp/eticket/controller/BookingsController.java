@@ -67,7 +67,6 @@ public class BookingsController {
     }
 
 
-
     @Operation(
             description = "This method returns whether the ticket has been sold or not",
             method = "GET method is supported",
