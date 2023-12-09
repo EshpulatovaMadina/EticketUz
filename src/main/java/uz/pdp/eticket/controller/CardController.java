@@ -14,7 +14,7 @@ import java.security.Principal;
 import java.util.List;
 import java.util.UUID;
 
-@RequestMapping("/api/card")
+@RequestMapping("/api/v1/card")
 @RestController
 @RequiredArgsConstructor
 @SecurityRequirement(name = "Bearer Authentication")

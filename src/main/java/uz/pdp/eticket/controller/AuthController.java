@@ -17,7 +17,7 @@ import java.security.Principal;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/api/v1/user")
 @RequiredArgsConstructor
 @Tag(name = "Auth Management")
 @SecurityRequirement(name = "Bearer Authentication")
