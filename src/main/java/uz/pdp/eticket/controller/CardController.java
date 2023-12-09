@@ -52,8 +52,8 @@ public class CardController {
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
     @PreAuthorize(value = "hasAuthority('USER')")
-    @DeleteMapping("/delete")
-    public ResponseEntity<Boolean> delete(@RequestParam UUID cardId){
+    @DeleteMapping("/delete/{cardId}")
+    public ResponseEntity<Boolean> delete(@PathVariable UUID cardId){
         return ResponseEntity.ok(cardService.delete(cardId));
     }
 }

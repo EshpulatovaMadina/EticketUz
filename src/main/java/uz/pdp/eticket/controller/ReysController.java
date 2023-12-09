@@ -29,7 +29,7 @@ public class ReysController {
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
     @PreAuthorize(value = "hasAuthority('ADMIN') or hasAuthority('SUPER_ADMIN')")
-    @PostMapping("/create")
+    @PostMapping()
     public ResponseEntity<ReysResponseDto> create(@RequestBody ReysCreateDto dto){
         return ResponseEntity.ok(reysService.create(dto));
     }
@@ -56,8 +56,8 @@ public class ReysController {
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
     @PreAuthorize(value = "hasAuthority('ADMIN') or hasAuthority('SUPER_ADMIN')")
-    @DeleteMapping("/dis-active")
-    public ResponseEntity<String> disActive(@RequestParam UUID reysId){
+    @DeleteMapping("/dis-active/{reysId}")
+    public ResponseEntity<String> disActive(@PathVariable UUID reysId){
         return ResponseEntity.ok(reysService.disActive(reysId));
     }
 
@@ -67,8 +67,8 @@ public class ReysController {
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
     @PreAuthorize(value = "hasAuthority('ADMIN') or hasAuthority('SUPER_ADMIN')")
-    @GetMapping("/by-id")
-    public ResponseEntity<ReysResponseDto> getbyId(@RequestParam UUID reysId){
+    @GetMapping("/by-id/{reysId}")
+    public ResponseEntity<ReysResponseDto> getbyId(@PathVariable UUID reysId){
         return ResponseEntity.ok(reysService.getById(reysId));
     }
 
