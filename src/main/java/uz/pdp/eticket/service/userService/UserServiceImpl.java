@@ -16,6 +16,7 @@ import uz.pdp.eticket.DTO.response.SubjectDto;
 import uz.pdp.eticket.DTO.response.UserResponseDto;
 import uz.pdp.eticket.entity.UserEntity;
 import uz.pdp.eticket.entity.UserPassword;
+import uz.pdp.eticket.entity.enums.UserRole;
 import uz.pdp.eticket.exception.DataAlreadyExistsException;
 import uz.pdp.eticket.exception.DataNotFoundException;
 import uz.pdp.eticket.repository.PasswordRepository;
@@ -133,10 +134,10 @@ public class UserServiceImpl implements UserService{
     @Override
     public List<UserResponseDto> getAll(String role) {
         if(role.isEmpty()) {
-            return userRepository.findAllByIsActive().stream().map(this::parse).toList();
+            return userRepository.findAllByIsActiveTrue().stream().map(this::parse).toList();
         }
 
-        List<UserEntity> users = userRepository.findAllByRoleAndIsActiveTrue(role);
+        List<UserEntity> users = userRepository.findAllByRoleAndIsActiveTrue(UserRole.valueOf(role));
         return users.stream().map(this::parse)
                 .toList();
     }
