@@ -38,7 +38,6 @@ public class BookingsServiceImpl implements BookingsService{
 
     private final BookingsRepository bookingsRepository;
     private final ReysRepository reysService;
-    private final ModelMapper modelMapper;
     private final UserService userService;
     private final SeatService seatService;
     private final VagonRepository vagonService;
@@ -136,26 +135,26 @@ public class BookingsServiceImpl implements BookingsService{
         SeatEntity seatEntity = seatService.findById(dto.getSeatId());
         ReysEntity reysEntity = reysService.findById(dto.getReysId()).orElseThrow(()-> new DataNotFoundException("Reys not found"));
         VagonEntity vagonEntity = vagonService.findById(dto.getVagonId()).orElseThrow(()-> new DataNotFoundException("Vagon not found"));
-
         return new BookingEntity(
                 userEntity,
                 userEntity.getName(),
                 userEntity.getSurname(),
-                dto.getIdentity(),
+                dto.getPassportNumberAndSeries(),
                 userEntity.getBirthday(),
                 seatEntity,
-                dto.getPrice(),
                 reysEntity,
-                vagonEntity,
-                dto.getDate()
+                vagonEntity
         );
     }
 
     private BookingsResponseDto parse(BookingEntity booking){
-        BookingsResponseDto map = modelMapper.map(booking, BookingsResponseDto.class);
-        map.setBookingId(booking.getId());
-        map.setCreatedDate(booking.getCreatedDate());
-        return map;
+      return new BookingsResponseDto(booking.getId(),
+                booking.getUser().getId(),
+                booking.getPassportNumberAndSeries(),
+                booking.getReys().getId(),
+                booking.getVagon().getNumberOnTheTrain(),
+                booking.getReys().getStartDate(),
+                booking.getCreatedDate());
     }
 
 }

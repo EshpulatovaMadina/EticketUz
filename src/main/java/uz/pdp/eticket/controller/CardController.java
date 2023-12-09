@@ -27,7 +27,7 @@ public class CardController {
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
     @PreAuthorize(value = "hasAuthority('USER')")
-    @PostMapping("/create")
+    @PostMapping()
     public ResponseEntity<CardResponseDTO> add(@RequestBody CardCreateDTO dto, Principal principal){
         return ResponseEntity.ok(cardService.add(dto, UUID.fromString(principal.getName())));
     }
@@ -40,7 +40,7 @@ public class CardController {
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
     @PreAuthorize(value = "hasAuthority('USER')")
-    @GetMapping("/get-cards-of-user")
+    @GetMapping("/cards-of-user")
     public ResponseEntity<List<CardResponseDTO>> getCardsOfUser(Principal principal){
         return ResponseEntity.ok(cardService.getCardsOfUser(UUID.fromString(principal.getName())));
     }

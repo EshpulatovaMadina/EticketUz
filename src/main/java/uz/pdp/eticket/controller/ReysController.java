@@ -41,7 +41,7 @@ public class ReysController {
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
     @PreAuthorize(value = "hasAuthority('ADMIN')")
-    @GetMapping("/get-all")
+    @GetMapping("/all")
     public ResponseEntity<List<ReysResponseDto>> getAll(@RequestParam(value = "page", defaultValue = "0")
                                                          int page,
                                                          @RequestParam(value = "size", defaultValue = "5")
@@ -67,7 +67,7 @@ public class ReysController {
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
     @PreAuthorize(value = "hasAuthority('ADMIN') or hasAuthority('SUPER_ADMIN')")
-    @GetMapping("/get-by-id")
+    @GetMapping("/by-id")
     public ResponseEntity<ReysResponseDto> getbyId(@RequestParam UUID reysId){
         return ResponseEntity.ok(reysService.getById(reysId));
     }
@@ -79,7 +79,7 @@ public class ReysController {
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
     @PreAuthorize(value = "hasAuthority('USER') or hasAuthority('ADMIN')")
-    @GetMapping("/get-reys-by-location")
+    @GetMapping("/reys-by-location")
     public ResponseEntity<List<ReysResponseDto>> getReysByLocation(
             @RequestParam String fromStation,
             @RequestParam String toStation,

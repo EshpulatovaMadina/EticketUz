@@ -30,11 +30,12 @@ import java.time.format.DateTimeFormatter;
 @Entity(name = "booking")
 public class BookingEntity extends BaseEntity {
     @ManyToOne(cascade = CascadeType.ALL)
-    private UserEntity user;
+    private UserEntity user; /// kim sotib olgani
 
     private String firstName;
     private String lastName;
-    private String identity;
+    private String passportNumberAndSeries;
+
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonFormat(pattern = "yyyy-mm-dd")
@@ -42,7 +43,6 @@ public class BookingEntity extends BaseEntity {
 
     @ManyToOne(cascade = CascadeType.ALL)
     private SeatEntity seat;
-    private Double price;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private ReysEntity reys;
@@ -50,7 +50,6 @@ public class BookingEntity extends BaseEntity {
     @ManyToOne(cascade = CascadeType.ALL)
     private VagonEntity vagon;
 
-    private LocalDateTime date;
 
     @Override
     public String toString() {
@@ -59,10 +58,8 @@ public class BookingEntity extends BaseEntity {
 
         return "--Ticket--\n" +
                " user: " + user.getName() + "\n" +
-               " identity: " + identity + "\n" +
+               " identity: " + passportNumberAndSeries + "\n" +
                " vagon: "+vagon.getNumberOnTheTrain() + '\n'+
-               " seat: " + seat.getNumber() + "\n" +
-               " price: " + price + "\n" +
-               " date: " + date.format(formatter);
+               " seat: " + seat.getNumber();
     }
 }
