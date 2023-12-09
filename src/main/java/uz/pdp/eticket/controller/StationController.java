@@ -40,8 +40,8 @@ public class StationController {
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
     @PreAuthorize(value = "hasAuthority('ADMIN') or hasAuthority('SUPER_ADMIN')")
-    @DeleteMapping("/dis-active")
-    public ResponseEntity<StationResponseDto> disActive(@RequestParam UUID stationId) {
+    @DeleteMapping("/dis-active/{stationId}")
+    public ResponseEntity<StationResponseDto> disActive(@PathVariable UUID stationId) {
         return ResponseEntity.ok(stationService.disActive(stationId));
     }
 
@@ -52,8 +52,8 @@ public class StationController {
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
     @PreAuthorize(value = "hasAuthority('ADMIN') or hasAuthority('SUPER_ADMIN')")
-    @PutMapping("/update")
-    public ResponseEntity<StationResponseDto> update(@RequestParam UUID stationId, @RequestBody StationsCreateDto dto) {
+    @PutMapping("/update/{stationId}")
+    public ResponseEntity<StationResponseDto> update(@PathVariable UUID stationId, @RequestBody StationsCreateDto dto) {
         return ResponseEntity.ok(stationService.update(stationId, dto));
     }
 
@@ -64,8 +64,8 @@ public class StationController {
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
     @PreAuthorize(value = "hasAuthority('ADMIN') or hasAuthority('SUPER_ADMIN')")
-    @PutMapping("/is-active")
-    public ResponseEntity<StationResponseDto> isActive(@RequestParam UUID stationId) {
+    @PutMapping("/is-active/{stationId}")
+    public ResponseEntity<StationResponseDto> isActive(@PathVariable UUID stationId) {
         return ResponseEntity.ok(stationService.isActive(stationId));
     }
 
@@ -75,8 +75,8 @@ public class StationController {
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
     @PreAuthorize(value = "hasAuthority('ADMIN') or hasAuthority('SUPER_ADMIN')")
-    @GetMapping("/by-id")
-    public ResponseEntity<StationResponseDto> getbyId(@RequestParam UUID stationId) {
+    @GetMapping("/by-id/{stationId}")
+    public ResponseEntity<StationResponseDto> getbyId(@PathVariable UUID stationId) {
         return ResponseEntity.ok(stationService.getById(stationId));
     }
 

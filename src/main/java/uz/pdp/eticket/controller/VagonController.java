@@ -53,8 +53,8 @@ public class VagonController {
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
     @PreAuthorize(value = "hasAuthority('ADMIN') or hasAuthority('SUPER_ADMIN')")
-    @DeleteMapping("/delete")
-    public ResponseEntity<String> delete(@RequestParam UUID vagonId) {
+    @DeleteMapping("/delete/{vagonId}")
+    public ResponseEntity<String> delete(@PathVariable UUID vagonId) {
         return ResponseEntity.ok(vagonService.disActive(vagonId));
     }
 
@@ -65,7 +65,7 @@ public class VagonController {
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
     @PreAuthorize(value = "hasAuthority('ADMIN') or hasAuthority('SUPER_ADMIN')")
-    @PutMapping("/isActiveUpdate")
+    @PutMapping("/isActiveUpdate/{vagonId}")
     public ResponseEntity<VagonResponseDto> isActiveUpdate(@RequestParam UUID vagonId) {
         return ResponseEntity.ok(vagonService.isActive(vagonId));
     }
@@ -76,8 +76,8 @@ public class VagonController {
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
     @PreAuthorize(value = "hasAuthority('ADMIN') or hasAuthority('SUPER_ADMIN')")
-    @GetMapping("/vagons-of-locomotive")
-    public ResponseEntity<List<VagonResponseDto>> getVagonsOfLocomotive(@RequestParam UUID locomotiveId) {
+    @GetMapping("/vagons-of-locomotive/{locomotiveId}")
+    public ResponseEntity<List<VagonResponseDto>> getVagonsOfLocomotive(@PathVariable UUID locomotiveId) {
         return ResponseEntity.ok(vagonService.getVagonsOfLocomotive(locomotiveId));
     }
 
@@ -88,8 +88,8 @@ public class VagonController {
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
     @PreAuthorize(value = "hasAuthority('ADMIN') or hasAuthority('SUPER_ADMIN')")
-    @GetMapping("/byId")
-    public ResponseEntity<VagonResponseDto> getbyId(@RequestParam UUID vagonId) {
+    @GetMapping("/byId/{vagonId}")
+    public ResponseEntity<VagonResponseDto> getbyId(@PathVariable UUID vagonId) {
         return ResponseEntity.ok(vagonService.getById(vagonId));
     }
 

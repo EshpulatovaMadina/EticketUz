@@ -35,7 +35,7 @@ public class SeatsController {
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
     @PreAuthorize(value = "hasAuthority('ADMIN') or hasAuthority('SUPER_ADMIN')")
-    @DeleteMapping("/dis-active")
+    @DeleteMapping("/dis-active/{seatId}")
     public ResponseEntity<String> disActive(@RequestParam UUID seatId){
         return ResponseEntity.ok(seatService.deActive(seatId));
     }
@@ -46,8 +46,8 @@ public class SeatsController {
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
     @PreAuthorize(value = "hasAuthority('ADMIN') or hasAuthority('SUPER_ADMIN')")
-    @PutMapping("/is-active")
-    public ResponseEntity<SeatsResponseDto> isActive(@RequestParam UUID seatId){
+    @PutMapping("/is-active/{seatId}")
+    public ResponseEntity<SeatsResponseDto> isActive(@PathVariable UUID seatId){
         return ResponseEntity.ok(seatService.isActive(seatId));
     }
 
@@ -57,8 +57,8 @@ public class SeatsController {
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
     @PreAuthorize(value = "hasAuthority('ADMIN') or hasAuthority('USER')")
-    @GetMapping("/by-id")
-    public ResponseEntity<SeatsResponseDto> getbyId(@RequestParam UUID seatId){
+    @GetMapping("/by-id/{seatId}")
+    public ResponseEntity<SeatsResponseDto> getbyId(@PathVariable UUID seatId){
         return ResponseEntity.ok(seatService.getById(seatId));
     }
 
@@ -69,8 +69,8 @@ public class SeatsController {
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
     @PreAuthorize(value = "hasAuthority('ADMIN') or hasAuthority('USER')")
-    @GetMapping("/seats-of-vagon")
-    public ResponseEntity<List<SeatsResponseDto>> getSeatsOfVagon(@RequestParam UUID vagonId ){
+    @GetMapping("/seats-of-vagon/{vagonId}")
+    public ResponseEntity<List<SeatsResponseDto>> getSeatsOfVagon(@PathVariable UUID vagonId ){
         return ResponseEntity.ok(seatService.getSeatsOfVagon(vagonId));
     }
 

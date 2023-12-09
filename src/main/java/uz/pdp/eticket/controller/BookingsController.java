@@ -50,8 +50,8 @@ public class BookingsController {
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
     @PreAuthorize(value = "hasAuthority('ADMIN') or hasAuthority('USER')")
-    @GetMapping("/by-id")
-    public ResponseEntity<BookingsResponseDto> getById(@RequestParam UUID bookingId){
+    @GetMapping("/by-id/{bookingId}")
+    public ResponseEntity<BookingsResponseDto> getById(@PathVariable UUID bookingId){
         return ResponseEntity.ok(bookingsService.getById(bookingId));
     }
 
@@ -61,7 +61,7 @@ public class BookingsController {
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
     @PreAuthorize(value = "hasAuthority('USER')")
-    @PutMapping("/booking-of-user")
+    @GetMapping("/booking-of-user")
     public ResponseEntity<List<BookingsResponseDto>> getBookingOfUser(Principal principal){
         return ResponseEntity.ok(bookingsService.getBookingOfUser(UUID.fromString(principal.getName())));
     }
@@ -80,8 +80,8 @@ public class BookingsController {
     }
 
     @PermitAll
-    @GetMapping("/qr-code")
-    public ResponseEntity<InputStreamResource> getQRCode(@RequestParam UUID ticketId) {
+    @GetMapping("/qr-code/{ticketId}")
+    public ResponseEntity<InputStreamResource> getQRCode(@PathVariable UUID ticketId) {
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.CONTENT_DISPOSITION, "inline;filename=qr-code.png");
         return ResponseEntity

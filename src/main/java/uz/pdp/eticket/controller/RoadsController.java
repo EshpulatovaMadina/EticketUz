@@ -32,8 +32,8 @@ public class RoadsController {
         return ResponseEntity.ok(roadsService.create(roadsCreateDto));
     }
 
-    @PutMapping("/set-station")
-    public ResponseEntity<RoadsResponseDto> setStation(@RequestParam UUID roadId, @RequestBody List<StationRoadCreateDto> stations) {
+    @PutMapping("/set-station/{roadId}")
+    public ResponseEntity<RoadsResponseDto> setStation(@PathVariable UUID roadId, @RequestBody List<StationRoadCreateDto> stations) {
         return ResponseEntity.ok(roadsService.setStation(roadId,stations));
     }
 
@@ -43,8 +43,8 @@ public class RoadsController {
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
     @PreAuthorize(value = "hasAuthority('ADMIN') or hasAuthority('SUPER_ADMIN')")
-    @DeleteMapping("/dis-active")
-    public ResponseEntity<RoadsResponseDto> disActive(@RequestParam UUID roadsId){
+    @DeleteMapping("/dis-active/{roadsId}")
+    public ResponseEntity<RoadsResponseDto> disActive(@PathVariable UUID roadsId){
         return ResponseEntity.ok(roadsService.disActive(roadsId));
     }
 
@@ -66,8 +66,8 @@ public class RoadsController {
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
     @PreAuthorize(value = "hasAuthority('ADMIN') or hasAuthority('SUPER_ADMIN')")
-    @PutMapping("/update")
-    public ResponseEntity<RoadsResponseDto> update(@RequestParam UUID roadsId, @RequestBody RoadsCreateDto dto){
+    @PutMapping("/update/{roadsId}")
+    public ResponseEntity<RoadsResponseDto> update(@PathVariable UUID roadsId, @RequestBody RoadsCreateDto dto){
         return ResponseEntity.ok(roadsService.update(roadsId, dto));
     }
 
@@ -78,8 +78,8 @@ public class RoadsController {
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
     @PreAuthorize(value = "hasAuthority('ADMIN') or hasAuthority('SUPER_ADMIN')")
-    @PutMapping("/is-active")
-    public ResponseEntity<RoadsResponseDto> isActive(@RequestParam UUID roadsId){
+    @PutMapping("/is-active/{roadsId}")
+    public ResponseEntity<RoadsResponseDto> isActive(@PathVariable UUID roadsId){
         return ResponseEntity.ok(roadsService.isActive(roadsId));
     }
 
@@ -89,8 +89,8 @@ public class RoadsController {
             security = @SecurityRequirement(name = "pre authorize", scopes = {"ADMIN"})
     )
     @PreAuthorize(value = "hasAuthority('ADMIN') or hasAuthority('SUPER_ADMIN')")
-    @GetMapping("/by-id")
-    public ResponseEntity<RoadsResponseDto> getbyId(@RequestParam UUID roadsId){
+    @GetMapping("/by-id/{roadsId}")
+    public ResponseEntity<RoadsResponseDto> getbyId(@PathVariable UUID roadsId){
         return ResponseEntity.ok(roadsService.getById(roadsId));
     }
 

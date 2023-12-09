@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import uz.pdp.eticket.DTO.request.BookingCreateDto;
 import uz.pdp.eticket.DTO.response.BookingsResponseDto;
 import uz.pdp.eticket.entity.*;
+import uz.pdp.eticket.exception.BadRequestException;
 import uz.pdp.eticket.exception.DataNotFoundException;
 import uz.pdp.eticket.repository.BookingsRepository;
 import uz.pdp.eticket.repository.ReysRepository;
@@ -27,8 +28,10 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -37,13 +40,20 @@ import java.util.UUID;
 public class BookingsServiceImpl implements BookingsService{
 
     private final BookingsRepository bookingsRepository;
-    private final ReysRepository reysService;
+    private final ReysRepository reysRepository;
     private final UserService userService;
     private final SeatService seatService;
     private final VagonRepository vagonService;
 
     @Override
     public BookingsResponseDto create(BookingCreateDto dto, UUID userId) {
+        ReysEntity byId = reysRepository.findById(dto.getReysId()).orElseThrow(()-> new DataNotFoundException("Reys not found !!!"));
+        if (byId.getStartDate().isBefore(LocalDateTime.now())){
+            throw new BadRequestException("This flight has passed");
+        }
+        if (dto.getBirthday().isAfter(LocalDate.now())){
+            throw new BadRequestException("You cannot get a ticket for a person who does not exist yet");
+        }
         BookingEntity booking = parse(dto,userId);
         bookingsRepository.save(booking);
         return parse(booking);
@@ -133,7 +143,7 @@ public class BookingsServiceImpl implements BookingsService{
     private BookingEntity parse(BookingCreateDto dto,UUID userId) {
         UserEntity userEntity = userService.findById(userId);
         SeatEntity seatEntity = seatService.findById(dto.getSeatId());
-        ReysEntity reysEntity = reysService.findById(dto.getReysId()).orElseThrow(()-> new DataNotFoundException("Reys not found"));
+        ReysEntity reysEntity = reysRepository.findById(dto.getReysId()).orElseThrow(()-> new DataNotFoundException("Reys not found"));
         VagonEntity vagonEntity = vagonService.findById(dto.getVagonId()).orElseThrow(()-> new DataNotFoundException("Vagon not found"));
         return new BookingEntity(
                 userEntity,
