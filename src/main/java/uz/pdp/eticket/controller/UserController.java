@@ -24,7 +24,7 @@ public class UserController {
 
     @PreAuthorize("hasAuthority('SUPER_ADMIN') or hasAuthority('ADMIN')")
     @GetMapping("/get-all")
-    public List<UserResponseDto> getAll(@RequestParam String role) {
+    public List<UserResponseDto> getAll(@RequestParam(defaultValue = "") String role) {
         return userServiceImpl.getAll(role);
     }
 

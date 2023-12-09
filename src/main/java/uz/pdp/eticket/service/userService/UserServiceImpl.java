@@ -68,7 +68,7 @@ public class UserServiceImpl implements UserService{
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
         emailSend(user);
-        return modelMapper.map(user, UserResponseDto.class);
+        return parse(user);
     }
 
     @Override
@@ -77,7 +77,7 @@ public class UserServiceImpl implements UserService{
                 .orElseThrow(() -> new DataNotFoundException("User not found with email: " + email));
         if(userEntity.getIsAuthenticated() && userEntity.getIsActive()) {
             if(passwordEncoder.matches(password, userEntity.getPassword())) {
-                return new JwtResponse(jwtService.generateToken(userEntity));
+                return new JwtResponse(jwtService.generateAccessToken(userEntity), jwtService.generateRefreshToken(userEntity));
             }
             throw new AuthenticationCredentialsNotFoundException("Password didn't match");
         }
@@ -105,7 +105,7 @@ public class UserServiceImpl implements UserService{
         if(minutes <= passwords.getExpiry()) {
             userEntity.setIsAuthenticated(true);
             userRepository.save(userEntity);
-            return modelMapper.map(userEntity,UserResponseDto.class);
+            return parse(userEntity);
         }
         throw new AuthenticationCredentialsNotFoundException("Password is expired");
     }
@@ -127,14 +127,24 @@ public class UserServiceImpl implements UserService{
     public UserResponseDto getById(UUID userId) {
         UserEntity userEntity = userRepository.findByIdAndIsActiveTrue(userId)
                 .orElseThrow(() -> new DataNotFoundException("User not found with id: " + userId));
-        return modelMapper.map(userEntity, UserResponseDto.class);
+        return parse(userEntity);
     }
 
     @Override
     public List<UserResponseDto> getAll(String role) {
+        if(role.isEmpty()) {
+            return userRepository.findAllByIsActive().stream().map(this::parse).toList();
+        }
+
         List<UserEntity> users = userRepository.findAllByRoleAndIsActiveTrue(role);
-        return users.stream().map(userEntity -> modelMapper.map(userEntity, UserResponseDto.class))
+        return users.stream().map(this::parse)
                 .toList();
+    }
+
+    private UserResponseDto parse(UserEntity userEntity) {
+        UserResponseDto map = modelMapper.map(userEntity, UserResponseDto.class);
+        map.setUserId(userEntity.getId());
+        return map;
     }
 
     @Override
@@ -150,5 +160,31 @@ public class UserServiceImpl implements UserService{
     public UserEntity findById(UUID userId) {
         return userRepository.findById(userId)
                 .orElseThrow(()-> new DataNotFoundException("User not found with id: "+userId));
+    }
+
+    @Override
+    public JwtResponse getAccessToken(String refreshToken, UUID userId) {
+        try{
+
+            Jws<Claims> claimsJws = jwtService.extractToken(refreshToken);
+            Claims claims = claimsJws.getBody();
+            String subject = claims.getSubject();
+
+            UserEntity userEntity = userRepository.findById(UUID.fromString(subject))
+                    .orElseThrow(() -> new DataNotFoundException("User not found with id: " + userId));
+            return new JwtResponse(jwtService.generateAccessToken(userEntity),null);
+
+        }catch (ExpiredJwtException e){
+            throw new AuthenticationCredentialsNotFoundException("Token expired");
+        }
+    }
+
+    @Override
+    public String forgetPassword(String email, String newPassword) {
+        UserEntity userEntity = userRepository.findByEmail(email)
+                .orElseThrow(() -> new DataNotFoundException("User not found with email: "));
+        userEntity.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(userEntity);
+        return "Password successfully updated";
     }
 }

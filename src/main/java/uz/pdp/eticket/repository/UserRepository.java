@@ -16,6 +16,7 @@ public interface UserRepository extends JpaRepository<UserEntity, UUID> {
     Optional<UserEntity> findByEmail(String email);
     List<UserEntity> findAllByRoleAndIsActiveTrue(String role);
     Optional<UserEntity> findByIdAndIsActiveTrue(UUID userId);
+    List<UserEntity> findAllByIsActive();
 
     @Query(nativeQuery = false, value = """
         SELECT u

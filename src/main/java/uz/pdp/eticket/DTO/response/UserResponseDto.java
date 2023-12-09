@@ -6,12 +6,14 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 public class UserResponseDto {
+    private UUID userId;
     private String name;
     private String surname;
     private String email;

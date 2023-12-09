@@ -4,24 +4,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
-import uz.pdp.eticket.DTO.request.MailDto;
 import uz.pdp.eticket.DTO.request.ReysCreateDto;
 import uz.pdp.eticket.DTO.response.ReysResponseDto;
 import uz.pdp.eticket.entity.LocomotiveEntity;
 import uz.pdp.eticket.entity.ReysEntity;
 import uz.pdp.eticket.entity.RoadsEntity;
-import uz.pdp.eticket.entity.UserEntity;
-import uz.pdp.eticket.entity.enums.Direction;
 import uz.pdp.eticket.exception.CannotBeChangedException;
 import uz.pdp.eticket.exception.DataNotFoundException;
 import uz.pdp.eticket.repository.ReysRepository;
-import uz.pdp.eticket.repository.StationRoadsRepository;
-import uz.pdp.eticket.repository.UserRepository;
-import uz.pdp.eticket.service.MailService;
 import uz.pdp.eticket.service.bookingService.BookingsService;
 import uz.pdp.eticket.service.locomotiveService.LocomotiveService;
 import uz.pdp.eticket.service.roadsService.RoadsService;
@@ -90,7 +81,7 @@ public class ReysServiceImpl implements ReysService{
         ReysEntity reysEntity = reysRepository.findById(reysId)
                 .orElseThrow(() -> new DataNotFoundException("Reys not found with id: " + reysId));
 
-        return new ReysResponseDto(reysEntity.getId(), reysEntity.getRoadsId().getId(), reysEntity.getDirection(),  reysEntity.getFromStation(), reysEntity.getToStation(), reysEntity.getLocomotiveId().getId(), reysEntity.getStartDate(), reysEntity.getCreatedDate());
+        return new ReysResponseDto(reysEntity.getId(), reysEntity.getRoadsId().getId(), reysEntity.getDirection(),  reysEntity.getFromStation(), reysEntity.getToStation(), reysEntity.getLocomotive().getId(), reysEntity.getStartDate(), reysEntity.getCreatedDate());
     }
 
     @Override
@@ -108,7 +99,7 @@ public class ReysServiceImpl implements ReysService{
                 entity.getDirection(),
                 entity.getFromStation(),
                 entity.getToStation(),
-                entity.getLocomotiveId().getId(),
+                entity.getLocomotive().getId(),
                 entity.getStartDate(),
                 entity.getCreatedDate()
         );

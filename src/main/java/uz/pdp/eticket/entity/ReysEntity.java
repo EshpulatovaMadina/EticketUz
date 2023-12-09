@@ -32,7 +32,7 @@ public class ReysEntity extends BaseEntity {
     private UUID toStation;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    private LocomotiveEntity locomotiveId;
+    private LocomotiveEntity locomotive;
 
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
