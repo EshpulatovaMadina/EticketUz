@@ -19,8 +19,8 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/v1/user")
 @RequiredArgsConstructor
-@Tag(name = "Auth Management")
-@SecurityRequirement(name = "Bearer Authentication")
+@Tag( name = "Auth Management")
+@SecurityRequirement( name = "Bearer Authentication")
 public class AuthController {
     private final UserServiceImpl userService;
 
@@ -50,12 +50,12 @@ public class AuthController {
             ) {
         return userService.signIn(email, password);
     }
+
     @PermitAll
     @GetMapping("/get-verification-code")
     public String sendVerifyCode(@RequestParam String email) {
         return userService.getVerificationCode(email);
     }
-
 
     @Operation(
             description = "This API is used for verifying",
@@ -63,11 +63,10 @@ public class AuthController {
             security = @SecurityRequirement(name = "pre authorize", scopes = {"USER"})
     )
     @PermitAll
-    @PostMapping("/verify")
-    public UserResponseDto verify(@RequestParam String email, @RequestParam String code) {
+    @PostMapping("/verify/{email}/{code}")
+    public UserResponseDto verify(@PathVariable String email, @PathVariable String code) {
         return userService.verify(email, code);
     }
-
 
     @PermitAll
     @GetMapping("/verify-token")
