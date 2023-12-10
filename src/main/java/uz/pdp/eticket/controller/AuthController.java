@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import uz.pdp.eticket.DTO.request.SignUpDto;
+import uz.pdp.eticket.DTO.request.VerifyDto;
+import uz.pdp.eticket.DTO.request.VerifyDtoP;
 import uz.pdp.eticket.DTO.response.JwtResponse;
 import uz.pdp.eticket.DTO.response.SubjectDto;
 import uz.pdp.eticket.DTO.response.UserResponseDto;
@@ -27,13 +29,13 @@ public class AuthController {
 
     // api to get new access token with refresh token
     @GetMapping("/access-token")
-    public JwtResponse getAccessToken(@RequestParam String refreshToken, Principal principal) {
+    public JwtResponse getAccessToken(@RequestBody String refreshToken, Principal principal) {
         return userService.getAccessToken(refreshToken, UUID.fromString(principal.getName()));
     }
 
     @PostMapping("/forget-password")
-    public ResponseEntity<String> forgetPassword(@RequestParam String email, @RequestParam String newPassword) {
-        return ResponseEntity.ok(userService.forgetPassword(email,newPassword));
+    public ResponseEntity<String> forgetPassword(@RequestBody VerifyDtoP verifyDtoP) {
+        return ResponseEntity.ok(userService.forgetPassword(verifyDtoP));
     }
 
     @PermitAll
@@ -44,16 +46,13 @@ public class AuthController {
 
     @PermitAll
     @PostMapping("/sign-in")
-    public JwtResponse signIn(
-            @RequestParam String email,
-            @RequestParam String password
-            ) {
-        return userService.signIn(email, password);
+    public JwtResponse signIn(@RequestBody VerifyDtoP verifyDtoP) {
+        return userService.signIn(verifyDtoP);
     }
 
     @PermitAll
     @GetMapping("/get-verification-code")
-    public String sendVerifyCode(@RequestParam String email) {
+    public String sendVerifyCode(@RequestBody String email) {
         return userService.getVerificationCode(email);
     }
 
@@ -63,14 +62,14 @@ public class AuthController {
             security = @SecurityRequirement(name = "pre authorize", scopes = {"USER"})
     )
     @PermitAll
-    @PostMapping("/verify/{email}/{code}")
-    public UserResponseDto verify(@PathVariable String email, @PathVariable String code) {
-        return userService.verify(email, code);
+    @PostMapping("/verify")
+    public UserResponseDto verify(@RequestBody VerifyDto verifyDto) {
+        return userService.verify(verifyDto);
     }
 
     @PermitAll
     @GetMapping("/verify-token")
-    public SubjectDto verifyToken (@RequestParam String token) {
+    public SubjectDto verifyToken (@RequestBody String token) {
         return userService.verifyToken(token);
     }
 

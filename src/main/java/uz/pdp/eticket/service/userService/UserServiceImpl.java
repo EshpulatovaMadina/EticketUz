@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uz.pdp.eticket.DTO.request.MailDto;
 import uz.pdp.eticket.DTO.request.SignUpDto;
+import uz.pdp.eticket.DTO.request.VerifyDto;
+import uz.pdp.eticket.DTO.request.VerifyDtoP;
 import uz.pdp.eticket.DTO.response.JwtResponse;
 import uz.pdp.eticket.DTO.response.SubjectDto;
 import uz.pdp.eticket.DTO.response.UserResponseDto;
@@ -73,11 +75,11 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public JwtResponse signIn(String email, String password) {
-        UserEntity userEntity = userRepository.findByEmail(email)
-                .orElseThrow(() -> new DataNotFoundException("User not found with email: " + email));
+    public JwtResponse signIn(VerifyDtoP verifyDtoP) {
+        UserEntity userEntity = userRepository.findByEmail(verifyDtoP.getEmail())
+                .orElseThrow(() -> new DataNotFoundException("User not found with email: " + verifyDtoP.getEmail()));
         if(userEntity.getIsAuthenticated() && userEntity.getIsActive()) {
-            if(passwordEncoder.matches(password, userEntity.getPassword())) {
+            if(passwordEncoder.matches(verifyDtoP.getPassword(), userEntity.getPassword())) {
                 return new JwtResponse(jwtService.generateAccessToken(userEntity), jwtService.generateRefreshToken(userEntity));
             }
             throw new AuthenticationCredentialsNotFoundException("Password didn't match");
@@ -94,10 +96,10 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public UserResponseDto verify(String email, String code) {
-        UserEntity userEntity = userRepository.findByEmail(email)
-                .orElseThrow(() -> new DataNotFoundException("User not found with email: " + email));
-        UserPassword passwords = passwordRepository.getUserPasswordById(userEntity.getId(),code)
+    public UserResponseDto verify(VerifyDto verifyDto) {
+        UserEntity userEntity = userRepository.findByEmail(verifyDto.getEmail())
+                .orElseThrow(() -> new DataNotFoundException("User not found with email: " + verifyDto.getEmail()));
+        UserPassword passwords = passwordRepository.getUserPasswordById(userEntity.getId(),verifyDto.getCode())
                 .orElseThrow(()-> new DataNotFoundException("Password is not found"));
         LocalDateTime currentTime = LocalDateTime.now();
         LocalDateTime sentDate = passwords.getSentDate();
@@ -181,10 +183,10 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public String forgetPassword(String email, String newPassword) {
-        UserEntity userEntity = userRepository.findByEmail(email)
+    public String forgetPassword(VerifyDtoP verifyDtoP) {
+        UserEntity userEntity = userRepository.findByEmail(verifyDtoP.getEmail())
                 .orElseThrow(() -> new DataNotFoundException("User not found with email: "));
-        userEntity.setPassword(passwordEncoder.encode(newPassword));
+        userEntity.setPassword(passwordEncoder.encode(verifyDtoP.getPassword()));
         userRepository.save(userEntity);
         return "Password successfully updated";
     }
