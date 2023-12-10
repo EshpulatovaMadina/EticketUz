@@ -1,5 +1,7 @@
 package uz.pdp.eticket.service.userService;
 import uz.pdp.eticket.DTO.request.SignUpDto;
+import uz.pdp.eticket.DTO.request.VerifyDto;
+import uz.pdp.eticket.DTO.request.VerifyDtoP;
 import uz.pdp.eticket.DTO.response.JwtResponse;
 import uz.pdp.eticket.DTO.response.SubjectDto;
 import uz.pdp.eticket.DTO.response.UserResponseDto;
@@ -13,11 +15,11 @@ public interface UserService {
     void emailSend(UserEntity userEntity);
 
     UserResponseDto signUp(SignUpDto dto);
-    JwtResponse signIn(String email, String password);
+    JwtResponse signIn(VerifyDtoP verifyDtoP);
 
     String getVerificationCode(String email);
 
-    UserResponseDto verify(String email, String code);
+    UserResponseDto verify(VerifyDto verifyDto);
     SubjectDto verifyToken(String token);
 
     UserResponseDto getById(UUID userId);
@@ -30,5 +32,5 @@ public interface UserService {
 
     JwtResponse getAccessToken(String refreshToken, UUID userId);
 
-    String forgetPassword(String email, String newPassword);
+    String forgetPassword(VerifyDtoP verifyDtoP);
 }
