@@ -53,7 +53,7 @@ public class CardController {
     )
     @PreAuthorize(value = "hasAuthority('USER')")
     @DeleteMapping("/delete/{cardId}")
-    public ResponseEntity<Boolean> delete(@PathVariable UUID cardId){
+    public ResponseEntity<Boolean> delete(@PathVariable UUID cardId) {
         return ResponseEntity.ok(cardService.delete(cardId));
     }
 }
