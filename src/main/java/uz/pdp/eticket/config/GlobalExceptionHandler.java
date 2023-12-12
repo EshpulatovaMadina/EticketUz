@@ -3,6 +3,7 @@ package uz.pdp.eticket.config;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
+import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import uz.pdp.eticket.exception.*;
@@ -33,10 +34,17 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(e.getMessage());
     }
 
-    @ExceptionHandler(value = BadRequestException.class)
-    public ResponseEntity<String> badRequest(BadRequestException e){
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+
+    @ExceptionHandler(BindException.class)
+    public ResponseEntity<String> qovunAuthExceptionHandler(BindException e) {
+        StringBuilder errors = new StringBuilder();
+        e.getAllErrors().forEach(error -> {
+            errors.append(error.getDefaultMessage()).append("\n");
+        });
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors.toString());
     }
+
     @ExceptionHandler(value = ExceededLimitException.class)
     public ResponseEntity<String> badRequest(ExceededLimitException e){
         return ResponseEntity.status(HttpStatus.BANDWIDTH_LIMIT_EXCEEDED).body(e.getMessage());

@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.security.PermitAll;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -41,7 +42,7 @@ public class AuthController {
 
     @PermitAll
     @PostMapping("/sign-up")
-    public UserResponseDto signUp(@RequestBody SignUpDto dto) {
+    public UserResponseDto signUp(@Valid @RequestBody SignUpDto dto) {
         return userService.signUp(dto);
     }
 
