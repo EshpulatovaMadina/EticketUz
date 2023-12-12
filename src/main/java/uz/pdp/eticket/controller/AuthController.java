@@ -53,8 +53,8 @@ public class AuthController {
     }
 
     @PermitAll
-    @GetMapping("/get-verification-code")
-    public String sendVerifyCode(@RequestParam String email) {
+    @PostMapping("/get-verification-code")
+    public String sendVerifyCode(@RequestBody String email) {
         return userService.getVerificationCode(email);
     }
 

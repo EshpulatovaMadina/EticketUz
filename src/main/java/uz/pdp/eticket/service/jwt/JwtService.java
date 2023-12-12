@@ -38,7 +38,8 @@ public class JwtService {
                     .compact();
         }
         throw new AuthenticationCredentialsNotFoundException("User is not active");
-    } public String generateRefreshToken (UserEntity user) {
+    }
+    public String generateRefreshToken (UserEntity user) {
         if(user.isEnabled()) {
             Date iat = new Date();
 
@@ -46,7 +47,7 @@ public class JwtService {
                     .setSubject(user.getId().toString())
                     .setIssuedAt(iat)
                     .setExpiration(new Date(iat.getTime() + refreshExpiry))
-//                    .addClaims(getAuthorities(user))
+                    .addClaims(getAuthorities(user))
                     .signWith(Keys.hmacShaKeyFor(secret.getBytes()))
                     .compact();
         }
