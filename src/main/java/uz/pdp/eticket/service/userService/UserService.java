@@ -1,4 +1,5 @@
 package uz.pdp.eticket.service.userService;
+import uz.pdp.eticket.DTO.request.ForgetDto;
 import uz.pdp.eticket.DTO.request.SignUpDto;
 import uz.pdp.eticket.DTO.request.VerifyDto;
 import uz.pdp.eticket.DTO.request.VerifyDtoP;
@@ -32,5 +33,7 @@ public interface UserService {
 
     JwtResponse getAccessToken(String refreshToken, UUID userId);
 
-    String forgetPassword(VerifyDtoP verifyDtoP);
+    String forgetPassword(ForgetDto forgetDto);
+
+
 }

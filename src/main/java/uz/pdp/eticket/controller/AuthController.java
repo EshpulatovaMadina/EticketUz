@@ -7,6 +7,7 @@ import jakarta.annotation.security.PermitAll;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import uz.pdp.eticket.DTO.request.ForgetDto;
 import uz.pdp.eticket.DTO.request.SignUpDto;
 import uz.pdp.eticket.DTO.request.VerifyDto;
 import uz.pdp.eticket.DTO.request.VerifyDtoP;
@@ -34,8 +35,8 @@ public class AuthController {
     }
 
     @PostMapping("/forget-password")
-    public ResponseEntity<String> forgetPassword(@RequestBody VerifyDtoP verifyDtoP) {
-        return ResponseEntity.ok(userService.forgetPassword(verifyDtoP));
+    public ResponseEntity<String> forgetPassword(@RequestBody ForgetDto forgetDto) {
+        return ResponseEntity.ok(userService.forgetPassword(forgetDto));
     }
 
     @PermitAll

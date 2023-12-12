@@ -9,10 +9,7 @@ import org.springframework.security.authentication.AuthenticationCredentialsNotF
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import uz.pdp.eticket.DTO.request.MailDto;
-import uz.pdp.eticket.DTO.request.SignUpDto;
-import uz.pdp.eticket.DTO.request.VerifyDto;
-import uz.pdp.eticket.DTO.request.VerifyDtoP;
+import uz.pdp.eticket.DTO.request.*;
 import uz.pdp.eticket.DTO.response.JwtResponse;
 import uz.pdp.eticket.DTO.response.SubjectDto;
 import uz.pdp.eticket.DTO.response.UserResponseDto;
@@ -100,7 +97,7 @@ public class UserServiceImpl implements UserService{
         UserEntity userEntity = userRepository.findByEmail(verifyDto.getEmail())
                 .orElseThrow(() -> new DataNotFoundException("User not found with email: " + verifyDto.getEmail()));
         UserPassword passwords = passwordRepository.getUserPasswordById(userEntity.getId(),verifyDto.getCode())
-                .orElseThrow(()-> new DataNotFoundException("Password is not found"));
+                .orElseThrow(()-> new DataNotFoundException("Code is not found"));
         LocalDateTime currentTime = LocalDateTime.now();
         LocalDateTime sentDate = passwords.getSentDate();
         Duration duration = Duration.between(sentDate, currentTime);
@@ -110,7 +107,7 @@ public class UserServiceImpl implements UserService{
             userRepository.save(userEntity);
             return parse(userEntity);
         }
-        throw new AuthenticationCredentialsNotFoundException("Password is expired");
+        throw new AuthenticationCredentialsNotFoundException("Code is expired");
     }
     @Override
     public SubjectDto verifyToken(String token) {
@@ -183,11 +180,22 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public String forgetPassword(VerifyDtoP verifyDtoP) {
-        UserEntity userEntity = userRepository.findByEmail(verifyDtoP.getEmail())
+    public String forgetPassword(ForgetDto forgetDto) {
+        UserEntity userEntity = userRepository.findByEmail(forgetDto.getEmail())
                 .orElseThrow(() -> new DataNotFoundException("User not found with email: "));
-        userEntity.setPassword(passwordEncoder.encode(verifyDtoP.getPassword()));
-        userRepository.save(userEntity);
-        return "Password successfully updated";
+
+        UserPassword passwords = passwordRepository.getUserPasswordById(userEntity.getId(),forgetDto.getActivationCode())
+                .orElseThrow(()-> new DataNotFoundException("Code is not found"));
+
+        LocalDateTime currentTime = LocalDateTime.now();
+        LocalDateTime sentDate = passwords.getSentDate();
+        Duration duration = Duration.between(sentDate, currentTime);
+        long minutes = duration.toMinutes();
+        if(minutes <= passwords.getExpiry()) {
+            userEntity.setPassword(forgetDto.getNewPassword());
+            userRepository.save(userEntity);
+            return "Password successfully updated";
+        }
+       throw new AuthenticationCredentialsNotFoundException("Code expired");
     }
 }
