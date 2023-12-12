@@ -30,7 +30,7 @@ public class AuthController {
 
 
     // api to get new access token with refresh token
-    @GetMapping("/access-token")
+    @PostMapping("/access-token")
     public JwtResponse getAccessToken(@RequestBody String refreshToken, Principal principal) {
         return userService.getAccessToken(refreshToken, UUID.fromString(principal.getName()));
     }
@@ -54,7 +54,7 @@ public class AuthController {
 
     @PermitAll
     @GetMapping("/get-verification-code")
-    public String sendVerifyCode(@RequestBody String email) {
+    public String sendVerifyCode(@RequestParam String email) {
         return userService.getVerificationCode(email);
     }
 

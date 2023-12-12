@@ -183,6 +183,9 @@ public class UserServiceImpl implements UserService{
     public String forgetPassword(ForgetDto forgetDto) {
         UserEntity userEntity = userRepository.findByEmail(forgetDto.getEmail())
                 .orElseThrow(() -> new DataNotFoundException("User not found with email: "));
+        if(!userEntity.getIsAuthenticated()) {
+            throw new AuthenticationCredentialsNotFoundException("User is not verified");
+        }
 
         UserPassword passwords = passwordRepository.getUserPasswordById(userEntity.getId(),forgetDto.getActivationCode())
                 .orElseThrow(()-> new DataNotFoundException("Code is not found"));
@@ -192,7 +195,7 @@ public class UserServiceImpl implements UserService{
         Duration duration = Duration.between(sentDate, currentTime);
         long minutes = duration.toMinutes();
         if(minutes <= passwords.getExpiry()) {
-            userEntity.setPassword(forgetDto.getNewPassword());
+            userEntity.setPassword(passwordEncoder.encode(forgetDto.getNewPassword()));
             userRepository.save(userEntity);
             return "Password successfully updated";
         }
