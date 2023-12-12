@@ -1,6 +1,8 @@
 package uz.pdp.eticket.controller;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.servlet.Servlet;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import uz.pdp.eticket.DTO.response.UserResponseDto;
