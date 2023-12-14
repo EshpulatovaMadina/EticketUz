@@ -2,6 +2,7 @@ package uz.pdp.eticket.config;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -11,7 +12,7 @@ import uz.pdp.eticket.exception.*;
 @ControllerAdvice
 public class GlobalExceptionHandler {
     @ExceptionHandler(value = AuthException.class)
-    public ResponseEntity<String> authException(AuthException e){
+    public ResponseEntity<String> authException(AuthException e) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
     }
     @ExceptionHandler(value = DataAlreadyExistsException.class)
@@ -30,7 +31,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(value = CannotBeChangedException.class)
-    public ResponseEntity<String> cannotBeChanged(CannotBeChangedException e){
+    public ResponseEntity<String> cannotBeChanged(CannotBeChangedException e) {
         return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(e.getMessage());
     }
 
@@ -46,8 +47,13 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(value = ExceededLimitException.class)
-    public ResponseEntity<String> badRequest(ExceededLimitException e){
+    public ResponseEntity<String> badRequest(ExceededLimitException e) {
         return ResponseEntity.status(HttpStatus.BANDWIDTH_LIMIT_EXCEEDED).body(e.getMessage());
+    }
+
+    @ExceptionHandler(value = AccessDeniedException.class)
+    public ResponseEntity<String> forbidden(AccessDeniedException e) {
+        return ResponseEntity.status(403).body(e.getMessage());
     }
 
 }

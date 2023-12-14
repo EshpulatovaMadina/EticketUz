@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import uz.pdp.eticket.DTO.response.UserResponseDto;
+import uz.pdp.eticket.service.userService.UserService;
 import uz.pdp.eticket.service.userService.UserServiceImpl;
 
 import java.security.Principal;
@@ -17,7 +18,7 @@ import java.util.UUID;
 @SecurityRequirement(name = "Bearer Authentication")
 @RequestMapping("/api/v1/user")
 public class UserController {
-    private final UserServiceImpl userServiceImpl;
+    private final UserService userServiceImpl;
     @PreAuthorize("hasAuthority('SUPER_ADMIN') or hasAuthority('ADMIN') or hasAuthority('USER')")
     @GetMapping("/me")
     public UserResponseDto getById(Principal principal) {
