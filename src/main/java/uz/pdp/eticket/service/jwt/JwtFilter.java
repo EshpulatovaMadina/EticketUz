@@ -8,6 +8,9 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
+import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import uz.pdp.eticket.exception.AuthException;
@@ -32,8 +35,13 @@ public class JwtFilter extends OncePerRequestFilter {
         try{
             String token = authorization.substring(7);
             Jws<Claims> claimsJws = jwtService.extractToken(token);
-            authenticationService.authenticate(claimsJws.getBody(),request);
-            filterChain.doFilter(request,response);
+            try {
+
+                authenticationService.authenticate(claimsJws.getBody(),request);
+                filterChain.doFilter(request,response);
+            }catch (NullPointerException e) {
+                throw new AccessDeniedException("Refresh token is not access token");
+            }
         }catch (ExpiredJwtException e) {
             handlerExceptionResolver.resolveException(request,response,null,new AuthException("Token expired"));
         }

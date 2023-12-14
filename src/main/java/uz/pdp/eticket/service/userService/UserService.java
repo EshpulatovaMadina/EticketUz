@@ -31,7 +31,7 @@ public interface UserService {
 
     UserEntity findById(UUID userId);
 
-    JwtResponse getAccessToken(String refreshToken, UUID userId);
+    String getAccessToken(String refreshToken, UUID userId);
 
     String forgetPassword(ForgetDto forgetDto);
 

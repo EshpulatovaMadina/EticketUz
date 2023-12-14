@@ -23,7 +23,7 @@ public class ScheduledNotification {
 
     @Scheduled(fixedRate = 60000)
     public void scheduleTaskUsingCronExpression() {
-        log.warn(bookingsService.checkExcpiryDate());
+        log.info(bookingsService.checkExcpiryDate());
     }
 
     @Scheduled(fixedRate = 50000)
@@ -33,6 +33,7 @@ public class ScheduledNotification {
             MailDto mailDto = new MailDto("The flight for which you bought a ticket will depart in 1 day", item.getEmail());
             mailService.sendMail(mailDto);
         });
+        log.info("Warn all users");
     }
 
 }

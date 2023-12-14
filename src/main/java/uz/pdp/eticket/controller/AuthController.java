@@ -15,6 +15,7 @@ import uz.pdp.eticket.DTO.request.VerifyDtoP;
 import uz.pdp.eticket.DTO.response.JwtResponse;
 import uz.pdp.eticket.DTO.response.SubjectDto;
 import uz.pdp.eticket.DTO.response.UserResponseDto;
+import uz.pdp.eticket.service.userService.UserService;
 import uz.pdp.eticket.service.userService.UserServiceImpl;
 
 import java.security.Principal;
@@ -26,12 +27,12 @@ import java.util.UUID;
 @Tag( name = "Auth Management")
 @SecurityRequirement( name = "Bearer Authentication")
 public class AuthController {
-    private final UserServiceImpl userService;
+    private final UserService userService;
 
 
     // api to get new access token with refresh token
     @PostMapping("/access-token")
-    public JwtResponse getAccessToken(@RequestBody String refreshToken, Principal principal) {
+    public String getAccessToken(@RequestBody String refreshToken, Principal principal) {
         return userService.getAccessToken(refreshToken, UUID.fromString(principal.getName()));
     }
 

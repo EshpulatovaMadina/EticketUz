@@ -47,7 +47,7 @@ public class JwtService {
                     .setSubject(user.getId().toString())
                     .setIssuedAt(iat)
                     .setExpiration(new Date(iat.getTime() + refreshExpiry))
-                    .addClaims(getAuthorities(user))
+//                    .addClaims(getAuthorities(user))
                     .signWith(Keys.hmacShaKeyFor(secret.getBytes()))
                     .compact();
         }
